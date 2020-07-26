@@ -1,7 +1,14 @@
-import IndexApp from "../components/indexComponent/IndexApp";
+import { Layout } from "../components/Layout";
+import { MyFooter } from "../components/common/MyFooter";
+import { LoginForm } from "../components/LoginForm";
 
-function HomePage() {
-  return <IndexApp />;
+function IndexPage() {
+  return (
+    <Layout title="Login">
+      <LoginForm header="Login" />
+      <MyFooter />
+    </Layout>
+  );
 }
 
-export default HomePage;
+export default IndexPage;
