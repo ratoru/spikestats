@@ -1,6 +1,8 @@
 import React, { FunctionComponent, Fragment } from "react";
 import Head from "next/head";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { richAndColorfulTheme } from "./themes";
+import { ThemeProvider } from "@material-ui/core";
 
 interface LayoutProps {
   title: string;
@@ -22,7 +24,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({ title, children }) => {
         <link rel="icon" type="image/svg+xml" href="/roundnet-logo.svg" />
       </Head>
       <CssBaseline />
-      {children}
+      <ThemeProvider theme={richAndColorfulTheme}>{children}</ThemeProvider>
     </Fragment>
   );
 };

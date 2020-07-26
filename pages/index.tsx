@@ -1,4 +1,4 @@
-import { Layout } from "../components/Layout";
+import { Layout } from "../components/Layout/Layout";
 import { MyFooter } from "../components/common/MyFooter";
 import { LoginForm } from "../components/LoginForm";
 

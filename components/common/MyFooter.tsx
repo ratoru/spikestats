@@ -1,11 +1,11 @@
 import React from "react";
-import { Typography, Divider, Container } from "@material-ui/core";
+import { Typography, Divider, Box } from "@material-ui/core";
 
 export const MyFooter = () => {
   return (
-    <Container>
+    <Box mt={8}>
       <Divider />
       <Typography align="center">Created by Raphael</Typography>
-    </Container>
+    </Box>
   );
 };

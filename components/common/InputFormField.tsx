@@ -25,6 +25,7 @@ export const InputFormField: React.FC<InputFormFieldProps> = ({
       label={label}
       variant="outlined"
       fullWidth
+      margin="normal"
       autoComplete={autoComplete}
       type={type}
       helperText={<ErrorMessage name={name} />}

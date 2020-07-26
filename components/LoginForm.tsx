@@ -3,10 +3,17 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
+import { makeStyles } from "@material-ui/core/styles";
 import { InputFormField } from "./common/InputFormField";
+
+const useStyles = makeStyles({
+  root: {
+    background: "#ECECEC",
+  },
+});
 
 interface FormValues {
   username: string;
@@ -28,6 +35,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
+  const classes = useStyles();
   const initialValues: FormValues = {
     username: "",
     password: "",
@@ -37,68 +45,44 @@ export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
   };
 
   return (
-    <Grid
-      container
-      spacing={3}
-      direction="column"
-      justify="space-evenly"
-      alignItems="center"
-    >
-      <Grid item style={{ textAlign: "start" }}>
-        <Typography component="h1" variant="h5">
-          {header}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={SignupSchema}
-        >
-          {({ dirty, isValid, handleReset }) => {
-            return (
-              <Form>
-                {" "}
-                <Grid
-                  container
-                  spacing={3}
-                  direction="column"
-                  justify="space-evenly"
-                  alignItems="center"
-                >
-                  <Grid item justify="center">
-                    <InputFormField
-                      name="username"
-                      label="Username"
-                      icon={<PersonRoundedIcon />}
-                    />
-                  </Grid>
-                  <Grid item justify="center">
-                    <InputFormField
-                      name="password"
-                      label="Password"
-                      type="password"
-                      icon={<LockRoundedIcon />}
-                    />
-                  </Grid>
-                  <Grid item justify="center">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      disabled={!dirty || !isValid}
-                      onClick={handleReset}
-                      type="submit"
-                      fullWidth
-                    >
-                      Submit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Form>
-            );
-          }}
-        </Formik>
-      </Grid>
-    </Grid>
+    <Container maxWidth="sm" className={classes.root}>
+      <Typography component="h1" variant="h5" style={{ textAlign: "left" }}>
+        {header}
+      </Typography>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={SignupSchema}
+      >
+        {({ dirty, isValid, handleReset }) => {
+          return (
+            <Form>
+              {" "}
+              <InputFormField
+                name="username"
+                label="Username"
+                icon={<PersonRoundedIcon />}
+              />
+              <InputFormField
+                name="password"
+                label="Password"
+                type="password"
+                icon={<LockRoundedIcon />}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={!dirty || !isValid}
+                onClick={handleReset}
+                type="submit"
+                fullWidth
+              >
+                Submit
+              </Button>
+            </Form>
+          );
+        }}
+      </Formik>
+    </Container>
   );
 };
