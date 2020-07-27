@@ -1,13 +1,17 @@
 import React from "react";
+import Link from "next/link";
+import Router from "next/router";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Typography from "@material-ui/core/Typography";
+import { Link as MuiLink } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { FormikField } from "./common/FormikField";
+import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +25,8 @@ interface FormValues {
 }
 interface LoginFormProps {
   header: string;
+  loginRoute: string;
+  registerRoute: string;
 }
 
 const SignupSchema = Yup.object().shape({
@@ -34,14 +40,29 @@ const SignupSchema = Yup.object().shape({
     .required("Required!"),
 });
 
-export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({
+  header,
+  loginRoute,
+  registerRoute,
+}) => {
   const classes = useStyles();
+  const theme = useTheme();
   const initialValues: FormValues = {
     username: "",
     password: "",
   };
+
   const handleSubmit = (values: FormValues): void => {
-    console.log("Submitted ", values);
+    // Call server HERE
+    if (values.username === "yes") {
+      Router.push(`${loginRoute}`);
+    } else {
+      const options = {
+        // Only stays the correct color for a one second.
+        style: { background: theme.palette.error.main },
+      };
+      toast.error("Invalid username or password.", options);
+    }
   };
 
   return (
@@ -69,16 +90,23 @@ export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
                 type="password"
                 icon={<LockRoundedIcon />}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={!dirty || !isValid}
-                onClick={handleReset}
-                type="submit"
-                fullWidth
-              >
-                Submit
-              </Button>
+              <Box my={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={!dirty || !isValid}
+                  type="submit"
+                  fullWidth
+                >
+                  Sign In
+                </Button>
+              </Box>
+              <Link href={`${registerRoute}`}>
+                <Typography>
+                  <MuiLink href="#">Register.</MuiLink>
+                </Typography>
+              </Link>
+              <ToastContainer />
             </Form>
           );
         }}

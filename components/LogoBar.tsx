@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -10,9 +11,10 @@ import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import { Typography } from "@material-ui/core";
-import Link from "next/link";
+import { useTheme } from "@material-ui/core/styles";
 
 export const LogoBar = () => {
+  // Boiler-plate code from MUI
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,14 +25,17 @@ export const LogoBar = () => {
     setAnchorEl(null);
   };
 
+  // Allows you to refer to your defined theme.
+  const theme = useTheme();
   return (
-    <AppBar position="sticky" color="primary">
+    <AppBar position="sticky" color="secondary">
       <Toolbar>
         <img
           src="/roundnet-logo.svg"
-          height={60}
-          width={60}
-          style={{ marginRight: 30 }}
+          width="100vw"
+          style={{
+            marginRight: 30,
+          }}
         />
         <Typography variant="subtitle1" style={{ flex: 1 }}>
           Roundnet-Stats{" "}
@@ -50,7 +55,10 @@ export const LogoBar = () => {
           onClose={handleClose}
         >
           <Link href="/" passHref>
-            <MenuItem component="a" style={{ backgroundColor: "primary" }}>
+            <MenuItem
+              component="a"
+              style={{ backgroundColor: theme.palette.secondary.main }}
+            >
               <ListItemIcon>
                 <LockOpenRoundedIcon />
               </ListItemIcon>
@@ -58,7 +66,10 @@ export const LogoBar = () => {
             </MenuItem>
           </Link>
           <Link href="/about" passHref>
-            <MenuItem component="a" style={{ backgroundColor: "error" }}>
+            <MenuItem
+              component="a"
+              style={{ backgroundColor: theme.palette.primary.main }}
+            >
               <ListItemIcon>
                 <InfoRoundedIcon />
               </ListItemIcon>
@@ -66,7 +77,10 @@ export const LogoBar = () => {
             </MenuItem>
           </Link>
           <Link href="/code" passHref>
-            <MenuItem component="a" style={{ backgroundColor: "secondary" }}>
+            <MenuItem
+              component="a"
+              style={{ backgroundColor: theme.palette.error.main }}
+            >
               <ListItemIcon>
                 <CodeRoundedIcon />
               </ListItemIcon>

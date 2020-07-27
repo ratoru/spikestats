@@ -8,12 +8,25 @@ function IndexPage() {
   return (
     <React.Fragment>
       <LogoBar />
-      <Grid container spacing={3} justify="center" alignItems="center">
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        justify="center"
+        alignItems="center"
+        style={{ minHeight: "100vh" }}
+      >
         <Grid item>
-          <LoginForm header="Login" />
+          <LoginForm
+            header="Login"
+            loginRoute="/groups"
+            registerRoute="/register"
+          />
+        </Grid>
+        <Grid item>
+          <MyFooter />
         </Grid>
       </Grid>
-      <MyFooter />
     </React.Fragment>
   );
 }
