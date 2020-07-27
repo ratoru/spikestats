@@ -1,9 +1,9 @@
+import React from "react";
 import { LogoBar } from "../components/LogoBar";
-import { Layout } from "../components/Layout/Layout";
 
 export default function About() {
   return (
-    <Layout title="About">
+    <React.Fragment>
       <LogoBar />
 
       <h1>About</h1>
@@ -25,6 +25,6 @@ export default function About() {
       <p>
         Special thanks to Christina Joo for helping me with the icon design.
       </p>
-    </Layout>
+    </React.Fragment>
   );
 }
