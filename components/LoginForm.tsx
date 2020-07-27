@@ -3,11 +3,11 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import { makeStyles } from "@material-ui/core/styles";
-import { InputFormField } from "./common/InputFormField";
+import { FormikField } from "./common/FormikField";
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
   };
 
   return (
-    <Container maxWidth="sm" className={classes.root}>
+    <Box padding={4} maxWidth="sm" className={classes.root}>
       <Typography component="h1" variant="h5" style={{ textAlign: "left" }}>
         {header}
       </Typography>
@@ -58,12 +58,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
           return (
             <Form>
               {" "}
-              <InputFormField
+              <FormikField
                 name="username"
                 label="Username"
                 icon={<PersonRoundedIcon />}
               />
-              <InputFormField
+              <FormikField
                 name="password"
                 label="Password"
                 type="password"
@@ -83,6 +83,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ header }) => {
           );
         }}
       </Formik>
-    </Container>
+    </Box>
   );
 };

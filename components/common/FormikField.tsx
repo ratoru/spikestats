@@ -11,7 +11,7 @@ interface InputFormFieldProps {
   type?: string;
 }
 
-export const InputFormField: React.FC<InputFormFieldProps> = ({
+export const FormikField: React.FC<InputFormFieldProps> = ({
   name,
   label,
   icon,
