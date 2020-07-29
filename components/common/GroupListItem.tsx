@@ -5,8 +5,11 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton,
+  Button,
   Collapse,
+  ButtonGroup,
+  Tooltip,
+  Divider,
 } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import ExpandLessRounded from "@material-ui/icons/ExpandLessRounded";
@@ -22,6 +25,7 @@ interface GroupListItemProps {
   onRenamePlayer: (groupname: string, player: string) => void;
 }
 
+// Navigates to the games page for that group.
 function openGroup() {
   console.log("open this group");
 }
@@ -32,42 +36,47 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
   onRenameGroup,
   onRenamePlayer,
 }) => {
+  // State to control the visibility of the player sublist
   const [open, setOpen] = React.useState(false);
-
   const openPlayers = () => {
     setOpen(!open);
   };
 
-  const handleRenamePlayer = (player: string) => {
+  // Wrapper for onRename to bind group to player.
+  const handleSpecificRename = (player: string) => {
     onRenamePlayer(group.groupname, player);
   };
 
   return (
-    <ListItem button onClick={openGroup}>
-      <ListItemSecondaryAction>
-        <IconButton edge="start" onClick={openPlayers}>
-          {open ? <ExpandLessRounded /> : <ExpandMoreRounded />}
-        </IconButton>
-      </ListItemSecondaryAction>
-      <ListItemText primary={group.groupname} />
-      <ListItemSecondaryAction>
-        <IconButton
-          onClick={() => onRenameGroup(group.groupname)}
-          edge="end"
-          aria-label="change groupname"
-        >
-          <EditRoundedIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-      <ListItemSecondaryAction>
-        <IconButton
-          onClick={() => onDelete(group.groupname)}
-          edge="end"
-          aria-label="delete group"
-        >
-          <DeleteForeverRoundedIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
+    <React.Fragment>
+      <ListItem button onClick={openGroup}>
+        <ListItemText primary={group.groupname} />
+        <ListItemSecondaryAction>
+          <ButtonGroup disableElevation variant="text">
+            <Tooltip title="Show Players" arrow>
+              <Button onClick={openPlayers} aria-label="show players">
+                {open ? <ExpandLessRounded /> : <ExpandMoreRounded />}
+              </Button>
+            </Tooltip>
+            <Tooltip title="Rename" arrow>
+              <Button
+                onClick={() => onRenameGroup(group.groupname)}
+                aria-label="change groupname"
+              >
+                <EditRoundedIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Delete" arrow>
+              <Button
+                onClick={() => onDelete(group.groupname)}
+                aria-label="delete group"
+              >
+                <DeleteForeverRoundedIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        </ListItemSecondaryAction>
+      </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List
           component="div"
@@ -82,12 +91,13 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
               <PlayerListItem
                 key={player}
                 player={player}
-                onRename={handleRenamePlayer}
+                onRename={handleSpecificRename}
               />
             );
           })}
         </List>
       </Collapse>
-    </ListItem>
+      <Divider />
+    </React.Fragment>
   );
 };

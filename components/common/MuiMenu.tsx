@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
   useTheme,
+  Tooltip,
 } from "@material-ui/core";
 import { Turn as Hamburger } from "hamburger-react";
 
@@ -48,16 +49,18 @@ export const MuiMenu: React.FC<MuiMenuProps> = ({
 
   return (
     <React.Fragment>
-      <div onClick={handleClick}>
-        <Hamburger
-          size={size}
-          color={color}
-          label="Show menu"
-          rounded
-          toggled={isOpen}
-          toggle={setOpen}
-        />
-      </div>
+      <Tooltip title="Menu" arrow>
+        <div onClick={handleClick}>
+          <Hamburger
+            size={size}
+            color={color}
+            label="Show menu"
+            rounded
+            toggled={isOpen}
+            toggle={setOpen}
+          />
+        </div>
+      </Tooltip>
       <Menu
         id="customized-menu"
         anchorEl={anchorEl}

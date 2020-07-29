@@ -2,18 +2,10 @@ import React, { useState } from "react";
 import List from "@material-ui/core/List";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
-import Divider from "@material-ui/core/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
 import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
 import { makeStyles } from "@material-ui/core/styles";
 import { GroupListItem } from "./common/GroupListItem";
-
-const handleAdd = () => {
-  console.log("New Group!");
-};
-
-const handleDelete = (groupname: string) => {
-  console.log("Handle delete.", groupname);
-};
 
 const handleRenameGroup = (groupname: string) => {
   console.log("Rename this group", groupname);
@@ -42,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const GroupList: React.FC = () => {
-  // Use stle
+  // Use style
   const classes = useStyles();
 
   // For testing porpuses.
@@ -58,21 +50,35 @@ export const GroupList: React.FC = () => {
   const initialGroups: Group[] = [group1, group2];
   const [groups, setGroups] = useState(initialGroups);
 
+  // Add a group
+  const handleAdd = () => {
+    const newGroup: Group = {
+      groupname: "New Group",
+      players: ["New Player 1", "New Player 2"],
+    };
+    let newGroups: Group[] = [...groups];
+    newGroups.push(newGroup);
+    setGroups(newGroups);
+    console.log("New Group!");
+  };
+
+  // Delete a group
+  const handleDelete = (groupname: string) => {
+    console.log("Handle delete.", groupname, groups);
+  };
+
   return (
     <React.Fragment>
       <List component="nav" className={classes.root}>
         {groups.map((group) => {
           return (
-            <React.Fragment>
-              <GroupListItem
-                key={group.groupname}
-                group={group}
-                onDelete={handleDelete}
-                onRenameGroup={handleRenameGroup}
-                onRenamePlayer={handleRenamePlayer}
-              />
-              <Divider />
-            </React.Fragment>
+            <GroupListItem
+              key={group.groupname}
+              group={group}
+              onDelete={handleDelete}
+              onRenameGroup={handleRenameGroup}
+              onRenamePlayer={handleRenamePlayer}
+            />
           );
         })}
       </List>
@@ -83,14 +89,16 @@ export const GroupList: React.FC = () => {
         style={{ minWidth: "100vw" }}
       >
         <Grid item>
-          <Fab
-            size="large"
-            className={classes.fab}
-            aria-label="add"
-            onClick={handleAdd}
-          >
-            <GroupAddRoundedIcon />
-          </Fab>
+          <Tooltip title="New Group" arrow placement="top">
+            <Fab
+              size="large"
+              className={classes.fab}
+              aria-label="add"
+              onClick={handleAdd}
+            >
+              <GroupAddRoundedIcon />
+            </Fab>
+          </Tooltip>
         </Grid>
       </Grid>
     </React.Fragment>
