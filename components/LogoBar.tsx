@@ -21,7 +21,7 @@ export const LogoBar = () => {
   const theme = useTheme();
 
   const menu: MuiMenuItem[] = [
-    ["Sing up", <LockOpenRoundedIcon />, "/"],
+    ["Sign up", <LockOpenRoundedIcon />, "/"],
     ["About", <InfoRoundedIcon />, "/about"],
     ["Code", <CodeRoundedIcon />, "/code"],
   ];

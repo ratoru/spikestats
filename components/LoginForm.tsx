@@ -11,7 +11,7 @@ import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { FormikField } from "./common/FormikField";
-import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles({
   root: {
@@ -57,11 +57,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     if (values.username === "yes") {
       Router.push(`${loginRoute}`);
     } else {
-      const options = {
-        // Only stays the correct color for a one second.
-        style: { background: theme.palette.error.main },
-      };
-      toast.error("Invalid username or password.", options);
+      Swal.fire({
+        icon: "error",
+        title: "Wrong username or password",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+      });
     }
   };
 
@@ -78,7 +82,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         {({ dirty, isValid, handleReset }) => {
           return (
             <Form>
-              {" "}
               <FormikField
                 name="username"
                 label="Username"
@@ -106,7 +109,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                   <MuiLink href="#">Register.</MuiLink>
                 </Typography>
               </Link>
-              <ToastContainer />
             </Form>
           );
         }}
