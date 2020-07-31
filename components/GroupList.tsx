@@ -4,18 +4,10 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
 import { GroupListItem } from "./common/GroupListItem";
-import { Typography } from "@material-ui/core";
-
-const handleRenameGroup = (groupname: string) => {
-  console.log(",Rename this group", groupname);
-};
-
-const handleRenamePlayer = (groupname: string, player: string) => {
-  console.log("Rename this player", groupname, player);
-};
 
 export interface Group {
   groupname: string;
@@ -139,6 +131,17 @@ export const GroupList: React.FC = () => {
     });
   };
 
+  // Template for error messages.
+  const errorToast = Swal.mixin({
+    title: "Something went wrong!",
+    icon: "error",
+    toast: true,
+    position: "center",
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+  });
+
   // Delete a group
   const handleDelete = (groupname: string) => {
     Swal.fire({
@@ -162,26 +165,71 @@ export const GroupList: React.FC = () => {
         // Call backend and revert if error.
         const apiSuccess = true;
         if (!apiSuccess) {
-          Swal.fire({
-            title: "Something went wrong!",
-            text: "The group was already deleted.",
-            icon: "error",
-            toast: true,
-            position: "center",
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-          });
+          errorToast.fire({ text: "The group was already deleted." });
           setGroups(prevGroups);
         }
       }
     });
   };
 
+  // Rename a group
+  const handleRenameGroup = (oldName: string, newName: string) => {
+    // New name can't be the old name.
+
+    const newGroups: Group[] = [];
+    for (let curGroup of groups) {
+      const curName = curGroup.groupname;
+      // Check if the name is unique.
+      if (newName === curName) {
+        errorToast.fire({ text: "Group name is not unique!" });
+        return;
+      }
+      if (curName === oldName) {
+        // Modify old name.
+        newGroups.push({ groupname: newName, players: curGroup.players });
+      } else {
+        newGroups.push(curGroup);
+      }
+    }
+    setGroups(newGroups);
+    // Call server here.
+  };
+
+  // Rename a player.
+  const handleRenamePlayer = (
+    groupname: string,
+    oldPlayer: string,
+    newPlayer: string
+  ) => {
+    // New name can't be the old name.
+    const newGroups: Group[] = [];
+    for (let curGroup of groups) {
+      let newPlayers = curGroup.players;
+      if (groupname === curGroup.groupname) {
+        // Check if the name is unique.
+        newPlayers = [];
+        for (let player of curGroup.players) {
+          if (player === newPlayer) {
+            errorToast.fire({ text: "Group name is not unique!" });
+            return;
+          }
+          if (player === oldPlayer) {
+            newPlayers.push(newPlayer);
+          } else {
+            newPlayers.push(player);
+          }
+        }
+        newGroups.push({ groupname: curGroup.groupname, players: newPlayers });
+      }
+      setGroups(newGroups);
+      // Call server here.
+    }
+  };
+
   let content: React.ReactNode;
   if (groups.length == 0) {
     content = (
-      <Typography>
+      <Typography align="center">
         Seems like you have no groups yet. Create one by clicking the button
         below.
       </Typography>

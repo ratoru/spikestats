@@ -79,7 +79,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         onSubmit={handleSubmit}
         validationSchema={SignupSchema}
       >
-        {({ dirty, isValid, handleReset }) => {
+        {({ dirty, isValid }) => {
           return (
             <Form>
               <FormikField

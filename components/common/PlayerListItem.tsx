@@ -8,10 +8,11 @@ import IconButton from "@material-ui/core/IconButton";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { FormikListItem } from "./FormikListItem";
 
 interface PlayerListItemProps {
   player: string;
-  onRename: (player: string) => void;
+  onRename: (oldPlayer: string, newPlayer: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,7 +28,30 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
   onRename,
 }) => {
   const classes = useStyles();
-  return (
+
+  // State to control editing of groupname.
+  const [editing, setEdit] = React.useState(false);
+
+  const handlePlayerRename = (values: { newName: string }): void => {
+    setEdit(!editing);
+    onRename(player, values.newName);
+  };
+
+  const onCancel = () => {
+    setEdit(!editing);
+  };
+
+  const editMode = (
+    <FormikListItem
+      initialValue={player}
+      label="Player Name"
+      onSubmit={handlePlayerRename}
+      onCancel={onCancel}
+      onClickAway={() => setEdit(false)}
+    />
+  );
+
+  const normalMode = (
     <ListItem className={classes.nested}>
       <ListItemIcon>
         <EmojiPeopleRoundedIcon />
@@ -36,7 +60,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
       <ListItemSecondaryAction>
         <Tooltip title="Rename Player" arrow>
           <IconButton
-            onClick={() => onRename(player)}
+            onClick={() => setEdit(!editing)}
             edge="end"
             aria-label="change player's name"
           >
@@ -46,4 +70,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
       </ListItemSecondaryAction>
     </ListItem>
   );
+  const content: React.ReactNode = editing ? editMode : normalMode;
+
+  return <React.Fragment>{content}</React.Fragment>;
 };
