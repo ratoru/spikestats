@@ -65,6 +65,8 @@ export const FormikListItem: React.FC<FormikListItemProps> = ({
                         defaultValue={initialValue}
                         autoFocus
                         autoComplete="off"
+                        error={!isValid}
+                        size="small"
                       />
                     }
                   />
