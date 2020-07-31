@@ -8,20 +8,10 @@ import { Typography, useTheme } from "@material-ui/core";
 import { MuiMenu, MuiMenuItem } from "./common/MuiMenu";
 
 export const LogoBar = () => {
-  // Boiler-plate code from MUI
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const theme = useTheme();
 
   const menu: MuiMenuItem[] = [
-    ["Sign up", <LockOpenRoundedIcon />, "/"],
+    ["Sign in", <LockOpenRoundedIcon />, "/"],
     ["About", <InfoRoundedIcon />, "/about"],
     ["Code", <CodeRoundedIcon />, "/code"],
   ];
@@ -36,7 +26,7 @@ export const LogoBar = () => {
             marginRight: 30,
           }}
         />
-        <Typography variant="subtitle1" style={{ flex: 1 }}>
+        <Typography variant="h6" style={{ flex: 1 }}>
           Roundnet-Stats{" "}
         </Typography>
         <MuiMenu items={menu} color={theme.palette.info.main} />

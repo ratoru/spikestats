@@ -1,13 +1,13 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { LogoBar } from "../components/LogoBar";
+import { MainBar } from "../components/MainBar";
 import { GroupList } from "../components/GroupList";
 
 export default function Groups() {
   return (
     <React.Fragment>
-      <LogoBar />
+      <MainBar />
       <Grid container justify="center" alignItems="center" spacing={5}>
         <Grid item xs={12}>
           <Typography align="center" variant="h1">
