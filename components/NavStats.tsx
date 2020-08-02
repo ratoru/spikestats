@@ -1,3 +1,6 @@
+// Some parts seem to be broken rn.
+// https://github.com/mbrn/material-table/issues/2244
+
 // Code adapted from the MUI documentation.
 import React, { ReactNode } from "react";
 import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
@@ -6,6 +9,7 @@ import Tab from "@material-ui/core/Tab";
 import AppBar from "@material-ui/core/AppBar";
 import Fab from "@material-ui/core/Fab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import TrendingUpRoundedIcon from "@material-ui/icons/TrendingUpRounded";
 import SportsBaseballRoundedIcon from "@material-ui/icons/SportsBaseballRounded";
@@ -42,8 +46,8 @@ function a11yProps(index: any) {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500,
+    // backgroundColor: theme.palette.background.paper,
+    width: "100vw",
   },
   appBar: {
     top: "auto",
@@ -100,14 +104,16 @@ export const NavStats: React.FC<StatsTabProps> = ({
             {...a11yProps(1)}
           />
         </Tabs>
-        <Fab
-          color="secondary"
-          aria-label="add"
-          className={classes.fabButton}
-          onClick={onAdd}
-        >
-          <AddRoundedIcon />
-        </Fab>
+        <Tooltip placement="top" title="Add Game">
+          <Fab
+            color="secondary"
+            aria-label="add"
+            className={classes.fabButton}
+            onClick={onAdd}
+          >
+            <AddRoundedIcon />
+          </Fab>
+        </Tooltip>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>
         {tab1Content}

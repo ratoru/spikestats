@@ -17,8 +17,8 @@ export const richAndColorfulTheme = createMuiTheme({
     success: {
       main: "#9AF490",
     },
-    background: {
-      paper: "ECECEC",
-    },
+    // background: {
+    //   paper: "#ECECEC",
+    // },
   },
 });
