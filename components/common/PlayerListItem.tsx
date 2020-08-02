@@ -6,7 +6,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
+import SportsHandballRoundedIcon from "@material-ui/icons/SportsHandballRounded";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FormikListItem } from "./FormikListItem";
 
@@ -54,7 +54,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
   const normalMode = (
     <ListItem className={classes.nested}>
       <ListItemIcon>
-        <EmojiPeopleRoundedIcon />
+        <SportsHandballRoundedIcon />
       </ListItemIcon>
       <ListItemText primary={player} />
       <ListItemSecondaryAction>

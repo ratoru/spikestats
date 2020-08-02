@@ -34,7 +34,7 @@ export const MainBar: React.FC = () => {
                 onClick={() => router.push("/groups")}
               >
                 <Box mr={2}>
-                  <img height="60vw" src="/roundnet-logo.svg" />
+                  <img height="50vw" src="/roundnet-logo.svg" />
                 </Box>
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
                   Roundnet-stats

@@ -1,17 +1,16 @@
 import React from "react";
-import {
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Button,
-  Collapse,
-  ButtonGroup,
-  Tooltip,
-  Divider,
-  Typography,
-} from "@material-ui/core";
+import { useRouter } from "next/router";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Button from "@material-ui/core/Button";
+import Collapse from "@material-ui/core/Collapse";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Tooltip from "@material-ui/core/Tooltip";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import ExpandLessRounded from "@material-ui/icons/ExpandLessRounded";
 import ExpandMoreRounded from "@material-ui/icons/ExpandMoreRounded";
@@ -27,17 +26,13 @@ interface GroupListItemProps {
   onRenamePlayer: (groupname: string, oldPlayer: string, newPlayer) => void;
 }
 
-// Navigates to the games page for that group.
-function openGroup() {
-  console.log("open this group");
-}
-
 export const GroupListItem: React.FC<GroupListItemProps> = ({
   group,
   onDelete,
   onRenameGroup,
   onRenamePlayer,
 }) => {
+  const router = useRouter();
   // State to control the visibility of the player sublist
   const [open, setOpen] = React.useState(false);
   const openPlayers = () => {
@@ -71,6 +66,10 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
     />
   );
 
+  // Navigates to the games page for that group.
+  const openGroup = () => {
+    router.push("/stats/[groupname]", `/stats/${group.groupname}`);
+  };
   const normalMode = (
     <ListItem button onClick={openGroup}>
       <ListItemText primary={<Typography>{group.groupname}</Typography>} />
