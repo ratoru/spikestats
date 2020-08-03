@@ -1,7 +1,7 @@
 // Adapted from MUI Documentation
 import React, { forwardRef } from "react";
 import MaterialTable, { Column } from "material-table";
-import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import FiberManualRecordRoundedIcon from "@material-ui/icons/FiberManualRecordRounded";
 // Imports to so that material-table icons are working.
 // Also see https://github.com/mbrn/material-table/issues/1004#issuecomment-525274793
@@ -22,6 +22,9 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 // typings are here:
 import { Icons } from "material-table";
+// Personal imports
+import { Game, Players } from "../types";
+import { gameToRow } from "../utils";
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -48,6 +51,7 @@ const tableIcons: Icons = {
 };
 
 interface Row {
+  id: number;
   blueTeam: string;
   redTeam: string;
   score: string;
@@ -60,12 +64,21 @@ interface TableState {
   data: Row[];
 }
 
-interface GameTableProps {}
+interface GameTableProps {
+  games: Game[];
+  players: Players;
+  onDelete: (id: number) => void;
+}
 
-export const GameTable: React.FC<GameTableProps> = () => {
+export const GameTable: React.FC<GameTableProps> = ({
+  games,
+  players,
+  onDelete,
+}) => {
   const theme = useTheme();
   const [state, setState] = React.useState<TableState>({
     columns: [
+      { title: "ID", field: "id", hidden: true },
       {
         title: "Blue Team",
         field: "blueTeam",
@@ -98,15 +111,7 @@ export const GameTable: React.FC<GameTableProps> = () => {
         defaultSort: "desc",
       },
     ],
-    data: [
-      {
-        blueTeam: "Raph, Alex",
-        redTeam: "Val, Son",
-        score: "21:10",
-        serve: 1,
-        date: new Date(),
-      },
-    ],
+    data: games.map((game) => gameToRow(game, players)),
   });
 
   return (
@@ -118,6 +123,7 @@ export const GameTable: React.FC<GameTableProps> = () => {
       editable={{
         onRowDelete: (oldData) =>
           new Promise((resolve) => {
+            onDelete(oldData.id);
             resolve();
             setState((prevState) => {
               const data = [...prevState.data];

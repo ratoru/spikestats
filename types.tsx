@@ -1,11 +1,9 @@
 // This file defines the basic type structure of the data structures used.
 
-export interface Team {
-  player1Id: number;
-  player2Id: number;
-}
+// Two player Ids.
+export type Team = [number, number];
 
-enum ServeTeam {
+export enum ServeTeam {
   Blue,
   Red,
 }
@@ -15,8 +13,8 @@ type Score = [number, number];
 
 export interface Game {
   id: number;
-  teamBlue: Team;
-  teamRed: Team;
+  blueTeam: Team;
+  redTeam: Team;
   score: Score;
   serve: ServeTeam;
   date: Date;
@@ -27,4 +25,5 @@ interface Player {
   name: string;
 }
 
-type Players = Map<number, string>;
+// export type Players = Map<Player["id"], Player["name"]>;
+export type Players = Map<number, string>;
