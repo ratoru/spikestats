@@ -13,8 +13,3 @@ export const errorToast = Swal.mixin({
   timer: 4000,
   timerProgressBar: true,
 });
-
-export const addGameSwal = withReactContent(Swal).mixin({
-  title: "Add Game",
-  showCancelButton: true,
-});

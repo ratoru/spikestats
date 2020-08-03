@@ -96,11 +96,18 @@ export const AddChips: React.FC<AddChipsProps> = ({ players }) => {
           Red Team
         </Typography>
       </Grid>
-      <Grid item xs={5} container justify="space-around" alignItems="center">
+      <Grid
+        item
+        xs={5}
+        container
+        spacing={2}
+        justify="space-around"
+        alignItems="center"
+      >
         {chips.map((chip, index) => {
           if (chip.isBlue) {
             return (
-              <Grid item>
+              <Grid item key={chip.id}>
                 <Chip
                   key={chip.id}
                   color="primary"
@@ -114,11 +121,18 @@ export const AddChips: React.FC<AddChipsProps> = ({ players }) => {
         })}
       </Grid>
       <Grid item xs={2} />
-      <Grid item xs={5} container justify="space-around" alignItems="center">
+      <Grid
+        item
+        xs={5}
+        container
+        spacing={2}
+        justify="space-around"
+        alignItems="center"
+      >
         {chips.map((chip, index) => {
           if (chip.isRed) {
             return (
-              <Grid item>
+              <Grid item key={chip.id}>
                 <Chip
                   key={chip.id}
                   color="secondary"
@@ -131,11 +145,18 @@ export const AddChips: React.FC<AddChipsProps> = ({ players }) => {
           }
         })}
       </Grid>
-      <Grid item xs={12} container justify="space-around" alignItems="center">
+      <Grid
+        item
+        xs={12}
+        container
+        spacing={2}
+        justify="space-around"
+        alignItems="center"
+      >
         {chips.map((chip, index) => {
           if (!(chip.isBlue || chip.isRed)) {
             return (
-              <Grid item>
+              <Grid item key={chip.id}>
                 <Chip
                   key={chip.id}
                   label={chip.label}

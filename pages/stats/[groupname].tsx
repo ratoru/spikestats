@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Typography from "@material-ui/core/Typography";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
@@ -45,6 +46,12 @@ export default function Stats() {
   };
 
   const handleAdd = () => {
+    const AddGameSwal = withReactContent(Swal);
+    AddGameSwal.fire({
+      title: "Add Game",
+      html: <AddChips players={examplePlayers} />,
+      showCancelButton: true,
+    });
     const dummyGame: Game = {
       id: 5,
       blueTeam: [1, 2],
