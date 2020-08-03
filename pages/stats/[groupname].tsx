@@ -6,7 +6,7 @@ import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { Game, Players, ServeTeam, Team } from "../../util/types";
-import { AddChips } from "../../components/AddChips";
+import { teamSelection } from "../../util/swals";
 import Typography from "@material-ui/core/Typography";
 
 export default function Stats() {
@@ -47,61 +47,14 @@ export default function Stats() {
   };
 
   const handleAdd = async () => {
-    const emptyTeamBlue: Team = [-1, -1];
-    const emptyTeamRed: Team = [-1, -1];
-    const selectedTeams = { blueTeam: emptyTeamBlue, redTeam: emptyTeamRed };
-    const handleSelectPlayer = (id: number, isBlue: boolean) => {
-      if (isBlue) {
-        if (selectedTeams.blueTeam[0] === -1) {
-          selectedTeams.blueTeam[0] = id;
-        } else {
-          selectedTeams.blueTeam[1] = id;
-        }
-      } else {
-        if (selectedTeams.redTeam[0] === -1) {
-          selectedTeams.redTeam[0] = id;
-        } else {
-          selectedTeams.redTeam[1] = id;
-        }
-      }
-    };
-    const handleRemovePlayer = (id: number, isBlue: boolean) => {
-      if (isBlue) {
-        if (selectedTeams.blueTeam[0] === id) {
-          selectedTeams.blueTeam[0] = -1;
-        } else {
-          selectedTeams.blueTeam[1] = -1;
-        }
-      } else {
-        if (selectedTeams.redTeam[0] === id) {
-          selectedTeams.redTeam[0] = -1;
-        } else {
-          selectedTeams.redTeam[1] = -1;
-        }
-      }
-    };
-    const AddGameSwal = withReactContent(Swal);
-    // I could also use preConfirm to check.
-    await AddGameSwal.fire({
-      title: "Add Game",
-      html: (
-        <AddChips
-          players={examplePlayers}
-          teams={selectedTeams}
-          onSelect={handleSelectPlayer}
-          onDelete={handleRemovePlayer}
-        />
-      ),
-      showCancelButton: true,
-      footer: "You must select exactly four players.",
-      progressSteps: ["1", "2", "3"],
-      currentProgressStep: "0",
-    }).then((result) => {
-      if (result.dismiss) {
+    teamSelection(examplePlayers)
+      .then((curTeamSelection) => {
+        console.log(curTeamSelection);
+      })
+      .catch((err) => {
         return;
-      }
-      console.log(selectedTeams);
-    });
+      });
+
     const dummyGame: Game = {
       id: 5,
       blueTeam: [1, 2],
