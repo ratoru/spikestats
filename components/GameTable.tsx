@@ -59,11 +59,6 @@ interface Row {
   date: Date;
 }
 
-interface TableState {
-  columns: Array<Column<Row>>;
-  data: Row[];
-}
-
 interface GameTableProps {
   games: Game[];
   players: Players;
@@ -76,60 +71,53 @@ export const GameTable: React.FC<GameTableProps> = ({
   onDelete,
 }) => {
   const theme = useTheme();
-  const [state, setState] = React.useState<TableState>({
-    columns: [
-      { title: "ID", field: "id", hidden: true },
-      {
-        title: "Blue Team",
-        field: "blueTeam",
-        headerStyle: { backgroundColor: theme.palette.primary.main },
-      },
-      {
-        title: "Red Team",
-        field: "redTeam",
-        headerStyle: { backgroundColor: theme.palette.error.main },
-      },
-      { title: "Score", field: "score" },
-      {
-        title: "Team with Serve",
-        field: "serve",
-        lookup: { 0: "Blue", 1: "Red" },
-        render: (rowData) => (
-          <FiberManualRecordRoundedIcon
-            style={{
-              fill: rowData.serve
-                ? theme.palette.error.main
-                : theme.palette.primary.main,
-            }}
-          />
-        ),
-      },
-      {
-        title: "Date",
-        field: "date",
-        type: "datetime",
-        defaultSort: "desc",
-      },
-    ],
-    data: games.map((game) => gameToRow(game, players)),
-  });
+  const columns: Array<Column<Row>> = [
+    { title: "ID", field: "id", hidden: true },
+    {
+      title: "Blue Team",
+      field: "blueTeam",
+      headerStyle: { backgroundColor: theme.palette.primary.main },
+    },
+    {
+      title: "Red Team",
+      field: "redTeam",
+      headerStyle: { backgroundColor: theme.palette.error.main },
+    },
+    { title: "Score", field: "score" },
+    {
+      title: "Team with Serve",
+      field: "serve",
+      lookup: { 0: "Blue", 1: "Red" },
+      render: (rowData) => (
+        <FiberManualRecordRoundedIcon
+          style={{
+            fill: rowData.serve
+              ? theme.palette.error.main
+              : theme.palette.primary.main,
+          }}
+        />
+      ),
+    },
+    {
+      title: "Date",
+      field: "date",
+      type: "datetime",
+      defaultSort: "desc",
+    },
+  ];
 
+  // No state used, so that add and delete are handled by parent element.
   return (
     <MaterialTable
       title="Your Games"
       icons={tableIcons}
-      columns={state.columns}
-      data={state.data}
+      columns={columns}
+      data={games.map((game) => gameToRow(game, players))}
       editable={{
         onRowDelete: (oldData) =>
           new Promise((resolve) => {
             onDelete(oldData.id);
             resolve();
-            setState((prevState) => {
-              const data = [...prevState.data];
-              data.splice(data.indexOf(oldData), 1);
-              return { ...prevState, data };
-            });
           }),
       }}
       options={{
