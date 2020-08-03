@@ -5,8 +5,9 @@ import withReactContent from "sweetalert2-react-content";
 import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
-import { Game, Players, ServeTeam } from "../../util/types";
+import { Game, Players, ServeTeam, Team } from "../../util/types";
 import { AddChips } from "../../components/AddChips";
+import Typography from "@material-ui/core/Typography";
 
 export default function Stats() {
   const router = useRouter();
@@ -45,12 +46,61 @@ export default function Stats() {
     setGames(games.filter((game) => game["id"] !== id));
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
+    const emptyTeamBlue: Team = [-1, -1];
+    const emptyTeamRed: Team = [-1, -1];
+    const selectedTeams = { blueTeam: emptyTeamBlue, redTeam: emptyTeamRed };
+    const handleSelectPlayer = (id: number, isBlue: boolean) => {
+      if (isBlue) {
+        if (selectedTeams.blueTeam[0] === -1) {
+          selectedTeams.blueTeam[0] = id;
+        } else {
+          selectedTeams.blueTeam[1] = id;
+        }
+      } else {
+        if (selectedTeams.redTeam[0] === -1) {
+          selectedTeams.redTeam[0] = id;
+        } else {
+          selectedTeams.redTeam[1] = id;
+        }
+      }
+    };
+    const handleRemovePlayer = (id: number, isBlue: boolean) => {
+      if (isBlue) {
+        if (selectedTeams.blueTeam[0] === id) {
+          selectedTeams.blueTeam[0] = -1;
+        } else {
+          selectedTeams.blueTeam[1] = -1;
+        }
+      } else {
+        if (selectedTeams.redTeam[0] === id) {
+          selectedTeams.redTeam[0] = -1;
+        } else {
+          selectedTeams.redTeam[1] = -1;
+        }
+      }
+    };
     const AddGameSwal = withReactContent(Swal);
-    AddGameSwal.fire({
+    // I could also use preConfirm to check.
+    await AddGameSwal.fire({
       title: "Add Game",
-      html: <AddChips players={examplePlayers} />,
+      html: (
+        <AddChips
+          players={examplePlayers}
+          teams={selectedTeams}
+          onSelect={handleSelectPlayer}
+          onDelete={handleRemovePlayer}
+        />
+      ),
       showCancelButton: true,
+      footer: "You must select exactly four players.",
+      progressSteps: ["1", "2", "3"],
+      currentProgressStep: "0",
+    }).then((result) => {
+      if (result.dismiss) {
+        return;
+      }
+      console.log(selectedTeams);
     });
     const dummyGame: Game = {
       id: 5,
@@ -63,7 +113,7 @@ export default function Stats() {
     setGames((games) => [...games, dummyGame]);
   };
 
-  const tab1 = <AddChips players={examplePlayers} />;
+  const tab1 = <Typography>{groupname}</Typography>;
   const tab2 = (
     <GameTable onDelete={handleDelete} games={games} players={examplePlayers} />
   );

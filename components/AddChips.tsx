@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import SentimentVerySatisfiedRoundedIcon from "@material-ui/icons/SentimentVerySatisfiedRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import { Players } from "../util/types";
+import { Players, Team } from "../util/types";
 
 interface PlayerChip {
   label: string;
@@ -17,6 +17,9 @@ interface PlayerChip {
 
 interface AddChipsProps {
   players: Players;
+  teams: { blueTeam: Team; redTeam: Team };
+  onSelect: (id: number, isBlue: boolean) => void;
+  onDelete: (id: number, isBlue: boolean) => void;
 }
 
 function selectChip(oldChip: PlayerChip, allChips: PlayerChip[]): PlayerChip {
@@ -38,7 +41,12 @@ function needToDisable(allChips: PlayerChip[]): boolean {
   return allChips.filter((chip) => chip.isBlue || chip.isRed).length >= 4;
 }
 
-export const AddChips: React.FC<AddChipsProps> = ({ players }) => {
+export const AddChips: React.FC<AddChipsProps> = ({
+  players,
+  teams,
+  onSelect,
+  onDelete,
+}) => {
   const initialChips: PlayerChip[] = [];
   players.forEach((name, id) => {
     initialChips.push({
@@ -59,11 +67,13 @@ export const AddChips: React.FC<AddChipsProps> = ({ players }) => {
         return { ...chip, disabled: !(chip.isBlue || chip.isRed) };
       });
     }
+    onSelect(newChips[index].id, newChips[index].isBlue);
     setChips(newChips);
   };
 
   const handleDelete = (index: number) => {
     let newChips = [...chips];
+    onDelete(newChips[index].id, newChips[index].isBlue);
     newChips[index] = { ...newChips[index], isBlue: false, isRed: false };
     if (!needToDisable(newChips)) {
       newChips = newChips.map((chip) => {
