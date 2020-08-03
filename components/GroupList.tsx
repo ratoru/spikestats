@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
 import { GroupListItem } from "./common/GroupListItem";
+import { errorToast } from "../util/swals";
 
 export interface Group {
   groupname: string;
@@ -130,17 +131,6 @@ export const GroupList: React.FC = () => {
       },
     });
   };
-
-  // Template for error messages.
-  const errorToast = Swal.mixin({
-    title: "Something went wrong!",
-    icon: "error",
-    toast: true,
-    position: "center",
-    showConfirmButton: false,
-    timer: 4000,
-    timerProgressBar: true,
-  });
 
   // Delete a group
   const handleDelete = (groupname: string) => {

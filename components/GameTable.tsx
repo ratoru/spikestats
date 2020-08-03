@@ -23,8 +23,8 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 // typings are here:
 import { Icons } from "material-table";
 // Personal imports
-import { Game, Players } from "../types";
-import { gameToRow } from "../utils";
+import { Game, Players } from "../util/types";
+import { gameToRow } from "../util/utils";
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -123,6 +123,10 @@ export const GameTable: React.FC<GameTableProps> = ({
       options={{
         actionsColumnIndex: -1,
         exportButton: true,
+        // Copied from https://github.com/mbrn/material-table/issues/598 for stripes
+        rowStyle: (_data: any, index: number, _level: number) => {
+          return index % 2 ? { backgroundColor: "#ECECEC" } : {};
+        },
       }}
       localization={{
         header: {
