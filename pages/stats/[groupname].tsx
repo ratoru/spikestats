@@ -62,12 +62,10 @@ export default function Stats() {
       .then((curTeamSelection) => {
         addedGame.blueTeam = curTeamSelection.blueTeam;
         addedGame.redTeam = curTeamSelection.redTeam;
-        console.log(curTeamSelection);
         return scoreSelection(examplePlayers, curTeamSelection);
       })
       .then((curScore) => {
         addedGame.score = curScore;
-        console.log(addedGame.score);
         return serveSelection(
           examplePlayers,
           { blueTeam: addedGame.blueTeam, redTeam: addedGame.redTeam },
@@ -76,7 +74,6 @@ export default function Stats() {
       })
       .then((curServingTeam) => {
         addedGame.serve = curServingTeam;
-        console.log(addedGame.serve);
         return confirmSelection(
           examplePlayers,
           { blueTeam: addedGame.blueTeam, redTeam: addedGame.redTeam },

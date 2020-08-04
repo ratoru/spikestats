@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { AddChips } from "../components/AddChips";
-import { AddScoreField } from "../components/AddScoreField";
-import { AddServe } from "../components/AddServe";
+import { AddChips } from "../components/addComponents/AddChips";
+import { AddScoreField } from "../components/addComponents/AddScoreField";
+import { AddServe } from "../components/addComponents/AddServe";
+import { AddConfirm } from "../components/addComponents/AddConfirm";
 import { Team, Players, ServeTeam } from "./types";
-import { AddConfirm } from "../components/AddConfirm";
 
 // Template for error messages.
 export const errorToast = Swal.mixin({

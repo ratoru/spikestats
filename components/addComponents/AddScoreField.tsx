@@ -2,21 +2,10 @@ import React, { useState } from "react";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import Typography from "@material-ui/core/Typography";
-import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import SentimentVerySatisfiedRoundedIcon from "@material-ui/icons/SentimentVerySatisfiedRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import { Players, Team } from "../util/types";
-
-interface PlayerChip {
-  label: string;
-  isBlue: boolean;
-  isRed: boolean;
-  disabled: boolean;
-  id: number;
-}
+import { Players, Team } from "../../util/types";
 
 interface AddScoreField {
   players: Players;

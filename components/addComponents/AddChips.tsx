@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import FaceRoundedIcon from "@material-ui/icons/FaceRounded";
 import SentimentVerySatisfiedRoundedIcon from "@material-ui/icons/SentimentVerySatisfiedRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import { Players, Team } from "../util/types";
+import { Players, Team } from "../../util/types";
 
 interface PlayerChip {
   label: string;

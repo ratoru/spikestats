@@ -1,25 +1,32 @@
 import React, { useState } from "react";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
+import Radio from "@material-ui/core/Radio";
 import Typography from "@material-ui/core/Typography";
 import SportsHandballIcon from "@material-ui/icons/SportsHandball";
 import SentimentVerySatisfiedRoundedIcon from "@material-ui/icons/SentimentVerySatisfiedRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import { Players, Team, ServeTeam } from "../util/types";
+import { Players, Team } from "../../util/types";
 
-interface AddConfirmProps {
+interface AddServeProps {
   players: Players;
   teams: { blueTeam: Team; redTeam: Team };
   score: [number, number];
-  serve: ServeTeam;
+  onChange: (newSelection: string) => void;
 }
 
-export const AddConfirm: React.FC<AddConfirmProps> = ({
+export const AddServe: React.FC<AddServeProps> = ({
   players,
   teams,
   score,
-  serve,
+  onChange,
 }) => {
+  const [selectedValue, setSelectedValue] = React.useState("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+    onChange(event.target.value);
+  };
   return (
     <Grid
       container
@@ -50,7 +57,7 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
         })}
       </Grid>
       <Grid item xs={2}>
-        <Typography variant="h6" style={{ textAlign: "center" }}>
+        <Typography variant="h5" style={{ textAlign: "center" }}>
           {score[0]}:{score[1]}
         </Typography>
       </Grid>
@@ -84,12 +91,31 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
         alignItems="center"
       >
         <Grid item>
-          <Typography
-            variant="subtitle1"
-            display="inline"
-            color={serve ? "secondary" : "primary"}
-          >
-            {serve ? "Red" : "Blue"} Serve <SportsHandballIcon />
+          <Typography variant="subtitle1" display="inline">
+            Blue Serve
+          </Typography>
+          <Radio
+            checked={selectedValue === "blue"}
+            onChange={handleChange}
+            color="primary"
+            checkedIcon={<SportsHandballIcon />}
+            value="blue"
+            name="blueServe"
+            inputProps={{ "aria-label": "Initial serve blue" }}
+          />
+        </Grid>
+        <Grid item>
+          <Radio
+            checked={selectedValue === "red"}
+            onChange={handleChange}
+            color="secondary"
+            checkedIcon={<SportsHandballIcon />}
+            value="red"
+            name="redServe"
+            inputProps={{ "aria-label": "Initial serve red" }}
+          />
+          <Typography variant="subtitle1" display="inline">
+            Red Serve
           </Typography>
         </Grid>
       </Grid>

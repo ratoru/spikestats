@@ -1,32 +1,25 @@
 import React, { useState } from "react";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
-import Radio from "@material-ui/core/Radio";
 import Typography from "@material-ui/core/Typography";
 import SportsHandballIcon from "@material-ui/icons/SportsHandball";
 import SentimentVerySatisfiedRoundedIcon from "@material-ui/icons/SentimentVerySatisfiedRounded";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import { Players, Team } from "../util/types";
+import { Players, Team, ServeTeam } from "../../util/types";
 
-interface AddServeProps {
+interface AddConfirmProps {
   players: Players;
   teams: { blueTeam: Team; redTeam: Team };
   score: [number, number];
-  onChange: (newSelection: string) => void;
+  serve: ServeTeam;
 }
 
-export const AddServe: React.FC<AddServeProps> = ({
+export const AddConfirm: React.FC<AddConfirmProps> = ({
   players,
   teams,
   score,
-  onChange,
+  serve,
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState("");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
-    onChange(event.target.value);
-  };
   return (
     <Grid
       container
@@ -91,31 +84,12 @@ export const AddServe: React.FC<AddServeProps> = ({
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="subtitle1" display="inline">
-            Blue Serve
-          </Typography>
-          <Radio
-            checked={selectedValue === "blue"}
-            onChange={handleChange}
-            color="primary"
-            checkedIcon={<SportsHandballIcon />}
-            value="blue"
-            name="blueServe"
-            inputProps={{ "aria-label": "Initial serve blue" }}
-          />
-        </Grid>
-        <Grid item>
-          <Radio
-            checked={selectedValue === "red"}
-            onChange={handleChange}
-            color="secondary"
-            checkedIcon={<SportsHandballIcon />}
-            value="red"
-            name="redServe"
-            inputProps={{ "aria-label": "Initial serve red" }}
-          />
-          <Typography variant="subtitle1" display="inline">
-            Red Serve
+          <Typography
+            variant="subtitle1"
+            display="inline"
+            color={serve ? "secondary" : "primary"}
+          >
+            {serve ? "Red" : "Blue"} Serve <SportsHandballIcon />
           </Typography>
         </Grid>
       </Grid>
