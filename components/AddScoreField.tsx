@@ -98,7 +98,7 @@ export const AddScoreField: React.FC<AddScoreField> = ({
         justify="space-around"
         alignItems="center"
       >
-        <Grid item>
+        <Grid item xs={6}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -122,7 +122,7 @@ export const AddScoreField: React.FC<AddScoreField> = ({
             }}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={6}>
           <TextField
             variant="outlined"
             margin="normal"
