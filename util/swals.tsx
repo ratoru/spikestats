@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { makeStyles } from "@material-ui/core/styles";
 import { AddChips } from "../components/AddChips";
+import { AddScoreField } from "../components/AddScoreField";
 import { Team, Players } from "./types";
 
 // Template for error messages.
@@ -66,7 +68,8 @@ export async function teamSelection(players: Players): Promise<Selection> {
       />
     ),
     showCancelButton: true,
-    progressSteps: ["1", "2", "3"],
+    confirmButtonText: "Next &rarr;",
+    progressSteps: ["1", "2", "3", "4"],
     currentProgressStep: "0",
     preConfirm: () => {
       if (
@@ -87,6 +90,51 @@ export async function teamSelection(players: Players): Promise<Selection> {
       reject();
     } else {
       resolve(finalSelection);
+    }
+  });
+}
+
+// Score Selection
+export async function scoreSelection(
+  players: Players,
+  teamSelection: Selection
+): Promise<[number, number]> {
+  let blueScore: number = 0;
+  let redScore: number = 0;
+  const handleChange = (score: number, isBlue: boolean) => {
+    isBlue ? (blueScore = score) : (redScore = score);
+  };
+  const scoreSwal = withReactContent(Swal);
+  const { value: finalScore } = await scoreSwal.fire({
+    title: "Enter the Score",
+    html: (
+      <AddScoreField
+        players={players}
+        teams={teamSelection}
+        blueScore={blueScore}
+        redScore={redScore}
+        onChange={handleChange}
+      />
+    ),
+    showCancelButton: true,
+    confirmButtonText: "Next &rarr;",
+    progressSteps: ["1", "2", "3", "4"],
+    currentProgressStep: "1",
+    preConfirm: () => {
+      if (blueScore >= 0 && redScore >= 0 && blueScore !== redScore) {
+        const score: [number, number] = [blueScore, redScore];
+        return score;
+      }
+      scoreSwal.showValidationMessage("The score can't be a tie.");
+      return false;
+    },
+  });
+  // Correct and neccessary syntax??
+  return new Promise((resolve, reject) => {
+    if (!finalScore) {
+      reject();
+    } else {
+      resolve(finalScore);
     }
   });
 }

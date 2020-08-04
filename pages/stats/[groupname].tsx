@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import Typography from "@material-ui/core/Typography";
 import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
-import { Game, Players, ServeTeam, Team } from "../../util/types";
-import { teamSelection } from "../../util/swals";
-import Typography from "@material-ui/core/Typography";
+import { Game, Players, ServeTeam } from "../../util/types";
+import { teamSelection, scoreSelection } from "../../util/swals";
 
 export default function Stats() {
   const router = useRouter();
@@ -47,11 +45,26 @@ export default function Stats() {
   };
 
   const handleAdd = async () => {
+    const addedGame: Game = {
+      id: 100,
+      blueTeam: [-1, -1],
+      redTeam: [-1, -1],
+      score: [-1, -1],
+      serve: ServeTeam.Blue,
+      date: new Date(),
+    };
     teamSelection(examplePlayers)
       .then((curTeamSelection) => {
+        addedGame.blueTeam = curTeamSelection.blueTeam;
+        addedGame.redTeam = curTeamSelection.redTeam;
         console.log(curTeamSelection);
+        return scoreSelection(examplePlayers, curTeamSelection);
       })
-      .catch((err) => {
+      .then((curScore) => {
+        addedGame.score = curScore;
+        console.log(curScore);
+      })
+      .catch(() => {
         return;
       });
 
