@@ -3,7 +3,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { AddChips } from "../components/AddChips";
 import { AddScoreField } from "../components/AddScoreField";
-import { Team, Players } from "./types";
+import { AddServe } from "../components/AddServe";
+import { Team, Players, ServeTeam } from "./types";
 
 // Template for error messages.
 export const errorToast = Swal.mixin({
@@ -133,6 +134,50 @@ export async function scoreSelection(
       reject();
     } else {
       resolve(finalScore);
+    }
+  });
+}
+
+// Serve Selection
+export async function serveSelection(
+  players: Players,
+  teamSelection: Selection,
+  score: [number, number]
+): Promise<ServeTeam> {
+  let curServeSelection = "";
+  const handleChange = (newSelection: string) => {
+    curServeSelection = newSelection;
+  };
+
+  const scoreSwal = withReactContent(Swal);
+  const { value: teamWithServe } = await scoreSwal.fire({
+    title: "Initial Serve",
+    html: (
+      <AddServe
+        players={players}
+        teams={teamSelection}
+        score={score}
+        onChange={handleChange}
+      />
+    ),
+    showCancelButton: true,
+    confirmButtonText: "Next &rarr;",
+    progressSteps: ["1", "2", "3", "4"],
+    currentProgressStep: "2",
+    preConfirm: () => {
+      if (curServeSelection === "") {
+        scoreSwal.showValidationMessage("Select who had the initial serve.");
+        return false;
+      }
+      return curServeSelection === "blue" ? ServeTeam.Blue : ServeTeam.Red;
+    },
+  });
+  // Correct and neccessary syntax??
+  return new Promise((resolve, reject) => {
+    if (!teamWithServe) {
+      reject();
+    } else {
+      resolve(teamWithServe);
     }
   });
 }
