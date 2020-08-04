@@ -5,6 +5,7 @@ import { AddChips } from "../components/AddChips";
 import { AddScoreField } from "../components/AddScoreField";
 import { AddServe } from "../components/AddServe";
 import { Team, Players, ServeTeam } from "./types";
+import { AddConfirm } from "../components/AddConfirm";
 
 // Template for error messages.
 export const errorToast = Swal.mixin({
@@ -169,7 +170,7 @@ export async function serveSelection(
         scoreSwal.showValidationMessage("Select who had the initial serve.");
         return false;
       }
-      return curServeSelection === "blue" ? ServeTeam.Blue : ServeTeam.Red;
+      return curServeSelection;
     },
   });
   // Correct and neccessary syntax??
@@ -177,7 +178,41 @@ export async function serveSelection(
     if (!teamWithServe) {
       reject();
     } else {
-      resolve(teamWithServe);
+      resolve(teamWithServe === "blue" ? ServeTeam.Blue : ServeTeam.Red);
+    }
+  });
+}
+
+// Confirm Selection
+export async function confirmSelection(
+  players: Players,
+  teamSelection: Selection,
+  score: [number, number],
+  serve: ServeTeam
+): Promise<boolean> {
+  const scoreSwal = withReactContent(Swal);
+  const result = await scoreSwal.fire({
+    icon: "success",
+    title: "Confirm Game",
+    html: (
+      <AddConfirm
+        players={players}
+        teams={teamSelection}
+        score={score}
+        serve={serve}
+      />
+    ),
+    showCancelButton: true,
+    confirmButtonText: "Finish",
+    progressSteps: ["1", "2", "3", "4"],
+    currentProgressStep: "3",
+  });
+  // Correct and neccessary syntax??
+  return new Promise((resolve, reject) => {
+    if (!result) {
+      reject();
+    } else {
+      resolve(true);
     }
   });
 }

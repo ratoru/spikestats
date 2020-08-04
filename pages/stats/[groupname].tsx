@@ -9,6 +9,7 @@ import {
   teamSelection,
   scoreSelection,
   serveSelection,
+  confirmSelection,
 } from "../../util/swals";
 
 export default function Stats() {
@@ -76,20 +77,20 @@ export default function Stats() {
       .then((curServingTeam) => {
         addedGame.serve = curServingTeam;
         console.log(addedGame.serve);
+        return confirmSelection(
+          examplePlayers,
+          { blueTeam: addedGame.blueTeam, redTeam: addedGame.redTeam },
+          addedGame.score,
+          curServingTeam
+        );
+      })
+      .then(() => {
+        setGames((games) => [...games, addedGame]);
+        // Call server!
       })
       .catch(() => {
         return;
       });
-
-    const dummyGame: Game = {
-      id: 5,
-      blueTeam: [1, 2],
-      redTeam: [3, 0],
-      score: [21, 10],
-      serve: ServeTeam.Blue,
-      date: new Date(),
-    };
-    setGames((games) => [...games, dummyGame]);
   };
 
   const tab1 = <Typography>{groupname}</Typography>;
