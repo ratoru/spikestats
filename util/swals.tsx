@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { makeStyles } from "@material-ui/core/styles";
 import { AddChips } from "../components/AddChips";
 import { AddScoreField } from "../components/AddScoreField";
 import { Team, Players } from "./types";
@@ -55,7 +54,6 @@ export async function teamSelection(players: Players): Promise<Selection> {
       }
     }
   };
-
   const AddGameSwal = withReactContent(Swal);
   const { value: finalSelection } = await AddGameSwal.fire({
     title: "Choose Teams",
