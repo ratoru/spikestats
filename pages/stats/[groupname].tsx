@@ -6,6 +6,7 @@ import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { Game, Players, ServeTeam } from "../../util/types";
 import { teamSelection, scoreSelection } from "../../util/swals";
+import { AddServe } from "../../components/AddServe";
 
 export default function Stats() {
   const router = useRouter();
@@ -79,7 +80,13 @@ export default function Stats() {
     setGames((games) => [...games, dummyGame]);
   };
 
-  const tab1 = <Typography>{groupname}</Typography>;
+  const tab1 = (
+    <AddServe
+      players={examplePlayers}
+      teams={{ blueTeam: [0, 1], redTeam: [3, 2] }}
+      score={[21, 18]}
+    />
+  );
   const tab2 = (
     <GameTable onDelete={handleDelete} games={games} players={examplePlayers} />
   );
