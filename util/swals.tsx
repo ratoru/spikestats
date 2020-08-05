@@ -99,8 +99,8 @@ export async function scoreSelection(
   players: Players,
   teamSelection: Selection
 ): Promise<[number, number]> {
-  let blueScore: number = 0;
-  let redScore: number = 0;
+  let blueScore: number;
+  let redScore: number;
   const handleChange = (score: number, isBlue: boolean) => {
     isBlue ? (blueScore = score) : (redScore = score);
   };

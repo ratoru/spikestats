@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
+import { AllCharts } from "../../components/AllCharts";
 import { Game, Players, ServeTeam } from "../../util/types";
 import {
   teamSelection,
@@ -11,6 +12,7 @@ import {
   serveSelection,
   confirmSelection,
 } from "../../util/swals";
+import { group } from "console";
 
 export default function Stats() {
   const router = useRouter();
@@ -90,7 +92,9 @@ export default function Stats() {
       });
   };
 
-  const tab1 = <Typography>{groupname}</Typography>;
+  const tab1 = (
+    <AllCharts groupname={groupname} games={games} players={examplePlayers} />
+  );
   const tab2 = (
     <GameTable onDelete={handleDelete} games={games} players={examplePlayers} />
   );

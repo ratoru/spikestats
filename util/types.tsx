@@ -27,3 +27,9 @@ interface Player {
 
 // export type Players = Map<Player["id"], Player["name"]>;
 export type Players = Map<number, string>;
+
+// Chart Data Definitons
+export type ServeData = [
+  { name: string; value: number; disabled: boolean },
+  { name: string; value: number }
+];
