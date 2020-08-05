@@ -1,4 +1,5 @@
 import React, { useRef, useLayoutEffect } from "react";
+import Box from "@material-ui/core/Box";
 /* Imports for amCharts*/
 // Have to add nextjs transpiler
 // https://github.com/amcharts/amcharts4/issues/1043
@@ -28,10 +29,12 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
 
     let chart = am4core.create("chartdiv", am4charts.SlicedChart);
     chart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
-    chart.paddingLeft = 150;
+    // chart.paddingLeft = 150;
 
     // Touch interface
     chart.tapToActivate = true;
+    // Make chart adjust to screen size more.
+    chart.responsive.enabled = true;
 
     chart.data = data;
 
@@ -47,15 +50,16 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
     series.ticks.template.locationX = 1;
     series.ticks.template.locationY = 0;
 
-    series.labelsContainer.width = 100;
+    // Might be a good setting to have.
+    // series.labelsContainer.width = am4core.percent(30);
 
     chart.legend = new am4charts.Legend();
     chart.legend.position = "top";
-    chart.legend.paddingRight = 160;
     chart.legend.paddingBottom = 40;
-    let marker = chart.legend.markers.template.children.getIndex(0);
-    chart.legend.markers.template.width = 40;
-    chart.legend.markers.template.height = 40;
+    // chart.legend.paddingRight = 160;
+    // let marker = chart.legend.markers.template.children.getIndex(0);
+    // chart.legend.markers.template.width = 40;
+    // chart.legend.markers.template.height = 40;
     // Doesn't work for some reason.
     // marker.cornerRadius(20,20,20,20);
 
@@ -71,7 +75,7 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
     chartFinal.current.data = data;
   }, [data]);
 
-  return <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>;
+  return <Box width={1} height={500} id="chartdiv"></Box>;
 };
 
 export default ServePictorial;
