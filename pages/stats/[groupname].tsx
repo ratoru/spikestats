@@ -33,7 +33,7 @@ export default function Stats() {
       blueTeam: [4, 3],
       redTeam: [1, 2],
       score: [21, 17],
-      serve: ServeTeam.Blue,
+      serve: ServeTeam.Red,
       date: new Date(),
     },
     {

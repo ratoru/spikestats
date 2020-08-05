@@ -21,6 +21,7 @@ function teamToString(team: Team, players: Players): string {
 // Takes in a list of Games and returns serveData.
 export function getServeData(games: Game[]): ServeData {
   const winPercentage = getServeWinPercentage(games);
+  console.log(winPercentage);
   return [
     {
       name: "No Serve",
@@ -37,9 +38,9 @@ export function getServeData(games: Game[]): ServeData {
 // Takes in a list of Games and returns the win percentage of the team
 // with the inital serve.
 function getServeWinPercentage(games: Game[]): number {
-  return (
-    games.filter((game) => {
-      return game.score[game.serve] > game.score[~game.serve];
-    }).length / games.length
-  );
+  const wins = games.filter((game) => {
+    return game.score[game.serve] > game.score[game.serve ? 0 : 1];
+  }).length;
+  const total = games.length;
+  return (wins / total) * 100;
 }
