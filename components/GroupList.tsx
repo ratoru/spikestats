@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import List from "@material-ui/core/List";
-import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
@@ -19,12 +18,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100vw",
     // maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
-  fab: {
-    position: "fixed",
-    bottom: theme.spacing(4),
-    backgroundColor: theme.palette.success.main,
+  fabButton: {
+    position: "absolute",
+    bottom: theme.spacing(5),
+    left: 0,
+    right: 0,
+    margin: "0 auto",
   },
 }));
 
@@ -244,25 +245,17 @@ export const GroupList: React.FC = () => {
   return (
     <React.Fragment>
       {content}
-      <Grid
-        container
-        spacing={0}
-        justify="center"
-        style={{ minWidth: "100vw" }}
-      >
-        <Grid item>
-          <Tooltip title="New Group" arrow placement="top">
-            <Fab
-              size="large"
-              className={classes.fab}
-              aria-label="add"
-              onClick={handleAdd}
-            >
-              <GroupAddRoundedIcon />
-            </Fab>
-          </Tooltip>
-        </Grid>
-      </Grid>
+      <Tooltip title="New Group" arrow placement="top">
+        <Fab
+          size="large"
+          className={classes.fabButton}
+          aria-label="add"
+          color="secondary"
+          onClick={handleAdd}
+        >
+          <GroupAddRoundedIcon />
+        </Fab>
+      </Tooltip>
     </React.Fragment>
   );
 };

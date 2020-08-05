@@ -27,7 +27,7 @@ export const AllCharts: React.FC<AllChartsProps> = ({
     <Grid container spacing={4} justify="center" alignItems="baseline">
       <Grid item xs={12}>
         <Typography variant="h5" style={{ textAlign: "center" }}>
-          {groupname}
+          {groupname}'s Stats!
         </Typography>
       </Grid>
       <Grid item xs={12} container justify="center" alignItems="center">

@@ -21,7 +21,6 @@ function teamToString(team: Team, players: Players): string {
 // Takes in a list of Games and returns serveData.
 export function getServeData(games: Game[]): ServeData {
   const winPercentage = getServeWinPercentage(games);
-  console.log(winPercentage);
   return [
     {
       name: "No Serve",

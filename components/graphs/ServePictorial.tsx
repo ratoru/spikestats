@@ -50,7 +50,6 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
     series.ticks.template.locationX = 1;
     series.ticks.template.locationY = 0;
 
-    // Might be a good setting to have.
     // series.labelsContainer.width = am4core.percent(30);
 
     chart.legend = new am4charts.Legend();
