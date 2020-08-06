@@ -5,6 +5,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Tooltip from "@material-ui/core/Tooltip";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -55,43 +56,54 @@ export const FormikListItem: React.FC<FormikListItemProps> = ({
             return (
               <Form>
                 <ListItem>
-                  <ListItemText
-                    primary={
-                      <Field
-                        name="newName"
-                        as={TextField}
-                        variant="outlined"
-                        label={label}
-                        defaultValue={initialValue}
-                        autoFocus
-                        autoComplete="off"
-                        error={!isValid}
-                        size="small"
+                  <Grid
+                    container
+                    xs={12}
+                    justify="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item xs={8}>
+                      <ListItemText
+                        primary={
+                          <Field
+                            name="newName"
+                            as={TextField}
+                            variant="outlined"
+                            label={label}
+                            defaultValue={initialValue}
+                            autoFocus
+                            autoComplete="off"
+                            error={!isValid}
+                            size="small"
+                          />
+                        }
                       />
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <ButtonGroup variant="contained">
-                      {/*Can't add Tooltip because of bug https://github.com/mui-org/material-ui/issues/11601 */}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={!dirty || !isValid}
-                      >
-                        <CheckCircleRoundedIcon />
-                      </Button>
-                      <Tooltip title="Cancel" arrow>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={onCancel}
-                        >
-                          <CancelRoundedIcon />
-                        </Button>
-                      </Tooltip>
-                    </ButtonGroup>
-                  </ListItemSecondaryAction>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ListItemSecondaryAction>
+                        <ButtonGroup variant="contained">
+                          {/*Can't add Tooltip because of bug https://github.com/mui-org/material-ui/issues/11601 */}
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={!dirty || !isValid}
+                          >
+                            <CheckCircleRoundedIcon />
+                          </Button>
+                          <Tooltip title="Cancel" arrow>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={onCancel}
+                            >
+                              <CancelRoundedIcon />
+                            </Button>
+                          </Tooltip>
+                        </ButtonGroup>
+                      </ListItemSecondaryAction>
+                    </Grid>
+                  </Grid>
                 </ListItem>
               </Form>
             );

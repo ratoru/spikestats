@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
+import am4themes_material from "@amcharts/amcharts4/themes/material";
 // Types
 import { ServeData } from "../../util/types";
 
@@ -21,7 +21,7 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
     // ... Chart code
     // Themes begin
     am4core.useTheme(am4themes_animated);
-    am4core.useTheme(am4themes_kelly);
+    am4core.useTheme(am4themes_material);
     // Themes end
 
     let iconPath =

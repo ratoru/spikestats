@@ -33,3 +33,8 @@ export type ServeData = [
   { name: string; value: number; disabled: boolean },
   { name: string; value: number }
 ];
+
+export interface PlayerPointsDataInstance {
+  name: string;
+  points: number;
+}

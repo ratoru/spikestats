@@ -51,6 +51,22 @@ export default function Stats() {
       serve: ServeTeam.Red,
       date: new Date(),
     },
+    {
+      id: uuidv4(),
+      blueTeam: [ids.id1, ids.id3],
+      redTeam: [ids.id4, ids.id2],
+      score: [23, 21],
+      serve: ServeTeam.Red,
+      date: new Date(),
+    },
+    {
+      id: uuidv4(),
+      blueTeam: [ids.id5, ids.id2],
+      redTeam: [ids.id4, ids.id3],
+      score: [15, 21],
+      serve: ServeTeam.Red,
+      date: new Date(),
+    },
   ];
   const [games, setGames] = useState(exampleGames);
   const handleDelete = (id: string) => {
