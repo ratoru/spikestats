@@ -9,10 +9,11 @@ import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import SportsHandballRoundedIcon from "@material-ui/icons/SportsHandballRounded";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FormikListItem } from "./FormikListItem";
+import { Player } from "../../util/types";
 
 interface PlayerListItemProps {
-  player: string;
-  onRename: (oldPlayer: string, newPlayer: string) => void;
+  player: Player;
+  onRename: (oldPlayerId: string, newName: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,7 +35,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
 
   const handlePlayerRename = (values: { newName: string }): void => {
     setEdit(!editing);
-    onRename(player, values.newName);
+    onRename(player.uuid, values.newName);
   };
 
   const onCancel = () => {
@@ -43,7 +44,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
 
   const editMode = (
     <FormikListItem
-      initialValue={player}
+      initialValue={player.name}
       label="Player Name"
       onSubmit={handlePlayerRename}
       onCancel={onCancel}
@@ -56,7 +57,7 @@ export const PlayerListItem: React.FC<PlayerListItemProps> = ({
       <ListItemIcon>
         <SportsHandballRoundedIcon />
       </ListItemIcon>
-      <ListItemText primary={player} />
+      <ListItemText primary={player.name} />
       <ListItemSecondaryAction>
         <Tooltip title="Rename Player" arrow>
           <IconButton

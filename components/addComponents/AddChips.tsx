@@ -12,14 +12,13 @@ interface PlayerChip {
   isBlue: boolean;
   isRed: boolean;
   disabled: boolean;
-  id: number;
+  id: string;
 }
 
 interface AddChipsProps {
   players: Players;
-  teams: { blueTeam: Team; redTeam: Team };
-  onSelect: (id: number, isBlue: boolean) => void;
-  onDelete: (id: number, isBlue: boolean) => void;
+  onSelect: (id: string, isBlue: boolean) => void;
+  onDelete: (id: string, isBlue: boolean) => void;
 }
 
 function selectChip(oldChip: PlayerChip, allChips: PlayerChip[]): PlayerChip {
@@ -43,7 +42,6 @@ function needToDisable(allChips: PlayerChip[]): boolean {
 
 export const AddChips: React.FC<AddChipsProps> = ({
   players,
-  teams,
   onSelect,
   onDelete,
 }) => {

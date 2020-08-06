@@ -6,19 +6,24 @@ import GroupAddRoundedIcon from "@material-ui/icons/GroupAddRounded";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
+import { v4 as uuidv4 } from "uuid";
 import { GroupListItem } from "./common/GroupListItem";
-import { errorToast } from "../util/swals";
+import {
+  errorToast,
+  groupPlayerSelection,
+  groupConfirmation,
+} from "../util/swals";
+import { Players } from "../util/types";
 
 export interface Group {
   groupname: string;
-  players: string[];
+  groupId: string;
+  players: Players;
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100vw",
-    // maxWidth: 360,
-    // backgroundColor: theme.palette.background.paper,
   },
   fabButton: {
     position: "absolute",
@@ -34,33 +39,15 @@ export const GroupList: React.FC = () => {
   const classes = useStyles();
 
   // Use state hook
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<Group[]>([]);
 
   // Add a group
   const handleAdd = async () => {
     let newGroup: Group = {
+      groupId: uuidv4(),
       groupname: "",
-      players: [],
+      players: new Map(),
     };
-
-    // Template for adding players.
-    const PlayerSwal = Swal.mixin({
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Next &rarr;",
-      footer: "Leave box empty to stop adding players.",
-      input: "text",
-      inputPlaceholder: "New Name",
-      inputValidator: (value) => {
-        for (let player of newGroup.players) {
-          if (player === value) {
-            return "Name is not unique!";
-          }
-        }
-      },
-      progressSteps: ["1", "2", "3"],
-      currentProgressStep: "1",
-    });
 
     // Ask for new group name.
     const { value: newGroupname } = await Swal.fire({
@@ -90,47 +77,18 @@ export const GroupList: React.FC = () => {
     newGroup.groupname = `${newGroupname}`;
 
     // Add Players until "" is returned.
-    let { value: newPlayer, dismiss: reason } = await PlayerSwal.fire({
-      title: `Add Player #${newGroup.players.length + 1}`,
-      text: `So far you have: ${newGroup.players.join(", ")}`,
-    });
-    if (reason) {
-      return;
-    }
-    while (newPlayer) {
-      newGroup.players.push(`${newPlayer}`);
-      const { value: temp, dismiss: curReason } = await PlayerSwal.fire({
-        title: `Add Player #${newGroup.players.length + 1}`,
-        text: `So far you have: ${newGroup.players.join(", ")}`,
-      });
-      if (curReason) {
+    groupPlayerSelection(newGroup.groupname)
+      .then((createdPlayers) => {
+        newGroup.players = createdPlayers;
+        return groupConfirmation(newGroup.groupname, newGroup.players);
+      })
+      .then(() => {
+        setGroups((groups) => [...groups, newGroup]);
+        // Call server
+      })
+      .catch(() => {
         return;
-      }
-      newPlayer = temp;
-    }
-
-    Swal.fire({
-      title: `Group: ${newGroup.groupname}`,
-      text: `Players: ${newGroup.players.join(", ")}`,
-      icon: "success",
-      confirmButtonText: "Finish",
-      showCancelButton: true,
-      progressSteps: ["1", "2", "3"],
-      currentProgressStep: "2",
-      preConfirm: () => {
-        // If everything went well.
-        if (newGroup.groupname !== "" && newGroup.players.length >= 4) {
-          setGroups((groups) => [...groups, newGroup]);
-          // Call server here.
-        } else {
-          Swal.fire({
-            title: "Something went wrong.",
-            text: "Remember: You need at least four players.",
-            icon: "error",
-          });
-        }
-      },
-    });
+      });
   };
 
   // Delete a group
@@ -177,7 +135,7 @@ export const GroupList: React.FC = () => {
       }
       if (curName === oldName) {
         // Modify old name.
-        newGroups.push({ groupname: newName, players: curGroup.players });
+        newGroups.push({ ...curGroup, groupname: newName });
       } else {
         newGroups.push(curGroup);
       }
@@ -187,34 +145,29 @@ export const GroupList: React.FC = () => {
   };
 
   // Rename a player.
-  const handleRenamePlayer = (
-    groupname: string,
-    oldPlayer: string,
-    newPlayer: string
-  ) => {
+  const handleRenamePlayer = (oldPlayerId: string, newName: string) => {
     // New name can't be the old name.
     const newGroups: Group[] = [];
     for (let curGroup of groups) {
-      let newPlayers = curGroup.players;
-      if (groupname === curGroup.groupname) {
+      let newPlayers = new Map(curGroup.players);
+      if (newPlayers.has(oldPlayerId)) {
         // Check if the name is unique.
-        newPlayers = [];
-        for (let player of curGroup.players) {
-          if (player === newPlayer) {
-            errorToast.fire({ text: "Group name is not unique!" });
-            return;
+        let isDuplicate = false;
+        Array.from(newPlayers, ([key, value]) => {
+          if (key !== oldPlayerId && newName === value) {
+            errorToast.fire({ text: "Player name is not unique!" });
+            isDuplicate = true; // I don't think you can return from here.
           }
-          if (player === oldPlayer) {
-            newPlayers.push(newPlayer);
-          } else {
-            newPlayers.push(player);
-          }
+        });
+        if (isDuplicate) {
+          return;
         }
-        newGroups.push({ groupname: curGroup.groupname, players: newPlayers });
+        newPlayers.set(oldPlayerId, newName);
       }
-      setGroups(newGroups);
-      // Call server here.
+      newGroups.push({ ...curGroup, players: newPlayers });
     }
+    setGroups(newGroups);
+    // Call server here.
   };
 
   let content: React.ReactNode;

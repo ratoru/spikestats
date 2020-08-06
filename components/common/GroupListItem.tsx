@@ -23,7 +23,7 @@ interface GroupListItemProps {
   group: Group;
   onDelete: (groupname: string) => void;
   onRenameGroup: (oldName: string, newName: string) => void;
-  onRenamePlayer: (groupname: string, oldPlayer: string, newPlayer) => void;
+  onRenamePlayer: (oldPlayerId: string, newName: string) => void;
 }
 
 export const GroupListItem: React.FC<GroupListItemProps> = ({
@@ -40,9 +40,9 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
   };
 
   // Wrapper for onRename to bind group to player.
-  const handleSpecificPlayer = (oldPlayer: string, newPlayer: string) => {
-    onRenamePlayer(group.groupname, oldPlayer, newPlayer);
-  };
+  // const handleSpecificPlayer = (oldPlayerId: string, newName: string) => {
+  //   onRenamePlayer(group.groupId, oldPlayerId, newName);
+  // };
 
   // State to control editing of groupname.
   const [editing, setEdit] = React.useState(false);
@@ -114,12 +114,12 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
             </ListSubheader>
           }
         >
-          {group.players.map((player) => {
+          {Array.from(group.players, ([key, val]) => {
             return (
               <PlayerListItem
-                key={player}
-                player={player}
-                onRename={handleSpecificPlayer}
+                key={key}
+                player={{ uuid: key, name: val }}
+                onRename={onRenamePlayer}
               />
             );
           })}

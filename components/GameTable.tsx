@@ -51,7 +51,7 @@ const tableIcons: Icons = {
 };
 
 interface Row {
-  id: number;
+  id: string;
   blueTeam: string;
   redTeam: string;
   score: string;
@@ -62,7 +62,7 @@ interface Row {
 interface GameTableProps {
   games: Game[];
   players: Players;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
 export const GameTable: React.FC<GameTableProps> = ({

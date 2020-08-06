@@ -51,7 +51,7 @@ export default function About() {
           </Grid>
           <Grid item xs={12}>
             <Typography>
-              Special thanks to Christina Joo for helping me with the icon
+              Special thanks to Christina Joo for helping me with the logo
               design.
             </Typography>
           </Grid>

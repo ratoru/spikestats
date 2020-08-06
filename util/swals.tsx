@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { v4 as uuidv4 } from "uuid";
 import { AddChips } from "../components/addComponents/AddChips";
 import { AddScoreField } from "../components/addComponents/AddScoreField";
 import { AddServe } from "../components/addComponents/AddServe";
 import { AddConfirm } from "../components/addComponents/AddConfirm";
+import { AddGroupPlayers } from "../components/addComponents/AddGroupPlayers";
+import { GroupConfirm } from "../components/addComponents/GroupConfirm";
 import { Team, Players, ServeTeam } from "./types";
 
 // Template for error messages.
@@ -23,36 +26,36 @@ interface Selection {
   redTeam: Team;
 }
 export async function teamSelection(players: Players): Promise<Selection> {
-  const emptyTeamBlue: Team = [-1, -1];
-  const emptyTeamRed: Team = [-1, -1];
+  const emptyTeamBlue: Team = ["", ""];
+  const emptyTeamRed: Team = ["", ""];
   const selectedTeams = { blueTeam: emptyTeamBlue, redTeam: emptyTeamRed };
-  const handleSelectPlayer = (id: number, isBlue: boolean) => {
+  const handleSelectPlayer = (id: string, isBlue: boolean) => {
     if (isBlue) {
-      if (selectedTeams.blueTeam[0] === -1) {
+      if (selectedTeams.blueTeam[0] === "") {
         selectedTeams.blueTeam[0] = id;
       } else {
         selectedTeams.blueTeam[1] = id;
       }
     } else {
-      if (selectedTeams.redTeam[0] === -1) {
+      if (selectedTeams.redTeam[0] === "") {
         selectedTeams.redTeam[0] = id;
       } else {
         selectedTeams.redTeam[1] = id;
       }
     }
   };
-  const handleRemovePlayer = (id: number, isBlue: boolean) => {
+  const handleRemovePlayer = (id: string, isBlue: boolean) => {
     if (isBlue) {
       if (selectedTeams.blueTeam[0] === id) {
-        selectedTeams.blueTeam[0] = -1;
+        selectedTeams.blueTeam[0] = "";
       } else {
-        selectedTeams.blueTeam[1] = -1;
+        selectedTeams.blueTeam[1] = "";
       }
     } else {
       if (selectedTeams.redTeam[0] === id) {
-        selectedTeams.redTeam[0] = -1;
+        selectedTeams.redTeam[0] = "";
       } else {
-        selectedTeams.redTeam[1] = -1;
+        selectedTeams.redTeam[1] = "";
       }
     }
   };
@@ -62,7 +65,6 @@ export async function teamSelection(players: Players): Promise<Selection> {
     html: (
       <AddChips
         players={players}
-        teams={selectedTeams}
         onSelect={handleSelectPlayer}
         onDelete={handleRemovePlayer}
       />
@@ -73,10 +75,10 @@ export async function teamSelection(players: Players): Promise<Selection> {
     currentProgressStep: "0",
     preConfirm: () => {
       if (
-        selectedTeams.blueTeam[0] === -1 ||
-        selectedTeams.blueTeam[1] === -1 ||
-        selectedTeams.redTeam[0] === -1 ||
-        selectedTeams.redTeam[1] === -1
+        selectedTeams.blueTeam[0] === "" ||
+        selectedTeams.blueTeam[1] === "" ||
+        selectedTeams.redTeam[0] === "" ||
+        selectedTeams.redTeam[1] === ""
       ) {
         AddGameSwal.showValidationMessage("You must select four players.");
         return false;
@@ -210,6 +212,78 @@ export async function confirmSelection(
   // Correct and neccessary syntax??
   return new Promise((resolve, reject) => {
     if (!result) {
+      reject();
+    } else {
+      resolve(true);
+    }
+  });
+}
+
+// Group's Player Selection
+export async function groupPlayerSelection(
+  groupname: string
+): Promise<Players> {
+  const players: Players = new Map();
+  const handleAdd = (input: string) => {
+    players.set(uuidv4(), input);
+  };
+  const handleDelete = (playerId: string) => {
+    console.log("Delete", players.get(playerId));
+    players.delete(playerId);
+  };
+
+  const addGroupPlayersSwal = withReactContent(Swal);
+  const { value: playerMap } = await addGroupPlayersSwal.fire({
+    title: `${groupname}`,
+    html: (
+      <AddGroupPlayers
+        players={players}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+      />
+    ),
+    showCancelButton: true,
+    confirmButtonText: "Next &rarr;",
+    progressSteps: ["1", "2", "3"],
+    currentProgressStep: "1",
+    preConfirm: () => {
+      if (players.size < 4) {
+        addGroupPlayersSwal.showValidationMessage(
+          "You need at least 4 players."
+        );
+        return false;
+      }
+      return players;
+    },
+  });
+  // Correct and neccessary syntax??
+  return new Promise((resolve, reject) => {
+    if (!playerMap) {
+      reject();
+    } else {
+      resolve(playerMap);
+    }
+  });
+}
+
+// Group Confirmation
+export async function groupConfirmation(
+  groupname: string,
+  players: Players
+): Promise<boolean> {
+  const confirmSwal = withReactContent(Swal);
+  const result = await confirmSwal.fire({
+    title: "Confirm",
+    icon: "success",
+    html: <GroupConfirm groupname={groupname} players={players} />,
+    showCancelButton: true,
+    confirmButtonText: "Finish",
+    progressSteps: ["1", "2", "3"],
+    currentProgressStep: "2",
+  });
+  // Correct and neccessary syntax??
+  return new Promise((resolve, reject) => {
+    if (result.dismiss) {
       reject();
     } else {
       resolve(true);

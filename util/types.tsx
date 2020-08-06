@@ -1,7 +1,7 @@
 // This file defines the basic type structure of the data structures used.
 
-// Two player Ids.
-export type Team = [number, number];
+// Two player Ids. (Both uuids)
+export type Team = [string, string];
 
 export enum ServeTeam {
   Blue,
@@ -12,7 +12,7 @@ export enum ServeTeam {
 type Score = [number, number];
 
 export interface Game {
-  id: number;
+  id: string; // Uuid4
   blueTeam: Team;
   redTeam: Team;
   score: Score;
@@ -20,13 +20,13 @@ export interface Game {
   date: Date;
 }
 
-interface Player {
-  id: number;
+export interface Player {
+  uuid: string;
   name: string;
 }
 
 // export type Players = Map<Player["id"], Player["name"]>;
-export type Players = Map<number, string>;
+export type Players = Map<string, string>;
 
 // Chart Data Definitons
 export type ServeData = [
