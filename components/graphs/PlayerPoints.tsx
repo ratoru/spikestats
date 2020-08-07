@@ -10,11 +10,11 @@ import am4themes_material from "@amcharts/amcharts4/themes/material";
 // Types
 import { PlayerPointsDataInstance } from "../../util/types";
 
-interface ServePictorialProps {
+interface PlayerPointsProps {
   data: PlayerPointsDataInstance[];
 }
 
-const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
+const PlayerPoints: React.FC<PlayerPointsProps> = ({ data }) => {
   const chartFinal = useRef(null);
 
   useLayoutEffect(() => {
@@ -30,6 +30,7 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
 
     chart.data = data;
 
+    chart.responsive.enabled = true;
     // Create axes
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = "name";
@@ -43,6 +44,7 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.minWidth = 50;
+    // valueAxis.title.text = "Points";
 
     // Create series
     let series = chart.series.push(new am4charts.ColumnSeries());
@@ -87,4 +89,4 @@ const ServePictorial: React.FC<ServePictorialProps> = ({ data }) => {
   return <Box width={1} height={500} id="chartdivPlayers"></Box>;
 };
 
-export default ServePictorial;
+export default PlayerPoints;

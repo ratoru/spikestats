@@ -29,6 +29,7 @@ export interface Player {
 export type Players = Map<string, string>;
 
 // Chart Data Definitons
+// DP = data point
 export type ServeData = [
   { name: string; value: number; disabled: boolean },
   { name: string; value: number }
@@ -37,4 +38,9 @@ export type ServeData = [
 export interface PlayerPointsDataInstance {
   name: string;
   points: number;
+}
+
+export interface PlayerWinsDP {
+  name: string;
+  wins: number;
 }

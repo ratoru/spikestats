@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
+import Typography from "@material-ui/core/Typography";
 import { MainBar } from "../../components/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
@@ -115,8 +116,12 @@ export default function Stats() {
       });
   };
 
-  const tab1 = (
+  const tab1 = games.length ? (
     <AllCharts groupname={groupname} games={games} players={examplePlayers} />
+  ) : (
+    <Typography variant="h5" style={{ textAlign: "center" }}>
+      There is no data to display yet. Add games by clicking the button below.
+    </Typography>
   );
   const tab2 = (
     <GameTable onDelete={handleDelete} games={games} players={examplePlayers} />

@@ -6,6 +6,7 @@ import {
   Players,
   ServeData,
   PlayerPointsDataInstance,
+  PlayerWinsDP,
 } from "./types";
 
 // Takes in a Game and converts it to the format used in the GameTable.
@@ -69,6 +70,29 @@ export function getPlayerPointsData(
   }
   points.forEach((value, key) => {
     data.push({ name: players.get(key), points: value });
+  });
+  return data;
+}
+
+// Takes in a list of games and returns how often each player won (in absolute terms).
+export function getPlayerWinsData(
+  games: Game[],
+  players: Players
+): PlayerWinsDP[] {
+  const data: PlayerWinsDP[] = [];
+  // Should be of key: id, value: points.
+  const wins = new Map(Array.from(players.keys()).map((key) => [key, 0]));
+  for (let game of games) {
+    if (game.score[0] > game.score[1]) {
+      wins.set(game.blueTeam[0], wins.get(game.blueTeam[0]) + 1);
+      wins.set(game.blueTeam[1], wins.get(game.blueTeam[1]) + 1);
+    } else {
+      wins.set(game.redTeam[0], wins.get(game.redTeam[0]) + 1);
+      wins.set(game.redTeam[1], wins.get(game.redTeam[1]) + 1);
+    }
+  }
+  wins.forEach((value, key) => {
+    data.push({ name: players.get(key), wins: value });
   });
   return data;
 }
