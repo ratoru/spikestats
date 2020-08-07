@@ -55,14 +55,14 @@ export const AllCharts: React.FC<AllChartsProps> = ({
       <Grid item xs={12} container justify="center" alignItems="center">
         <Grid item xs={12}>
           <Typography variant="h6" style={{ textAlign: "center" }}>
-            How many wins was each player a part of?
+            Compare individual team compositions.
           </Typography>
           <Typography variant="subtitle1" style={{ textAlign: "center" }}>
-            At the moment it's wins out of total games (including games you
-            didn't play in).
+            Hover over a slice. The number in parantheses shows their win
+            percentage. That's games won / games played. (Not total games.)
           </Typography>
           <Typography variant="subtitle1" style={{ textAlign: "center" }}>
-            Drag players across the line to compare their # of wins.
+            Drag players across the line to compare their win percentage.
           </Typography>
           <Grid item xs={12}>
             <PlayerWins data={getPlayerWinsData(games, players)} />

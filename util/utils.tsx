@@ -74,7 +74,7 @@ export function getPlayerPointsData(
   return data;
 }
 
-// Takes in a list of games and returns how often each player won (in absolute terms).
+// Takes in a list of games and returns how often each player won (in relative terms).
 export function getPlayerWinsData(
   games: Game[],
   players: Players
@@ -82,7 +82,9 @@ export function getPlayerWinsData(
   const data: PlayerWinsDP[] = [];
   // Should be of key: id, value: points.
   const wins = new Map(Array.from(players.keys()).map((key) => [key, 0]));
+  const totalGames = new Map(Array.from(players.keys()).map((key) => [key, 0]));
   for (let game of games) {
+    addTotalGames(game.blueTeam, game.redTeam, totalGames);
     if (game.score[0] > game.score[1]) {
       wins.set(game.blueTeam[0], wins.get(game.blueTeam[0]) + 1);
       wins.set(game.blueTeam[1], wins.get(game.blueTeam[1]) + 1);
@@ -92,7 +94,18 @@ export function getPlayerWinsData(
     }
   }
   wins.forEach((value, key) => {
-    data.push({ name: players.get(key), wins: value });
+    data.push({ name: players.get(key), wins: value / totalGames.get(key) });
   });
   return data;
+}
+
+function addTotalGames(
+  blueTeam: Team,
+  redTeam: Team,
+  totalGames: Map<string, number>
+): void {
+  totalGames.set(blueTeam[0], totalGames.get(blueTeam[0]) + 1);
+  totalGames.set(blueTeam[1], totalGames.get(blueTeam[1]) + 1);
+  totalGames.set(redTeam[0], totalGames.get(redTeam[0]) + 1);
+  totalGames.set(redTeam[1], totalGames.get(redTeam[1]) + 1);
 }
