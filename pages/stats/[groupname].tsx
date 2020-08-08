@@ -38,11 +38,27 @@ export default function Stats() {
   const exampleGames: Game[] = [
     {
       id: uuidv4(),
+      blueTeam: [ids.id1, ids.id5],
+      redTeam: [ids.id2, ids.id4],
+      score: [21, 14],
+      serve: ServeTeam.Blue,
+      date: new Date(2020, 7, 1, 9, 49, 0),
+    },
+    {
+      id: uuidv4(),
+      blueTeam: [ids.id2, ids.id1],
+      redTeam: [ids.id5, ids.id4],
+      score: [8, 21],
+      serve: ServeTeam.Blue,
+      date: new Date(2020, 7, 2, 10, 20, 0),
+    },
+    {
+      id: uuidv4(),
       blueTeam: [ids.id1, ids.id3],
       redTeam: [ids.id2, ids.id5],
       score: [21, 17],
       serve: ServeTeam.Red,
-      date: new Date(),
+      date: new Date(2020, 7, 3, 18, 1, 1),
     },
     {
       id: uuidv4(),
@@ -50,7 +66,7 @@ export default function Stats() {
       redTeam: [ids.id4, ids.id3],
       score: [10, 21],
       serve: ServeTeam.Red,
-      date: new Date(),
+      date: new Date(2020, 7, 5, 5, 10, 18),
     },
     {
       id: uuidv4(),
@@ -58,7 +74,7 @@ export default function Stats() {
       redTeam: [ids.id4, ids.id2],
       score: [23, 21],
       serve: ServeTeam.Red,
-      date: new Date(),
+      date: new Date(2020, 7, 5, 10, 11, 40),
     },
     {
       id: uuidv4(),
@@ -71,7 +87,7 @@ export default function Stats() {
   ];
   const [games, setGames] = useState(exampleGames);
   const handleDelete = (id: string) => {
-    console.log("Delete this game from the server.", id);
+    // Call server here.
     setGames(games.filter((game) => game["id"] !== id));
   };
 

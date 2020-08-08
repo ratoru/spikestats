@@ -7,6 +7,7 @@ import {
   ServeData,
   PlayerPointsDataInstance,
   PlayerWinsDP,
+  WinPercentageDP,
 } from "./types";
 
 // Takes in a Game and converts it to the format used in the GameTable.
@@ -108,4 +109,84 @@ function addTotalGames(
   totalGames.set(blueTeam[1], totalGames.get(blueTeam[1]) + 1);
   totalGames.set(redTeam[0], totalGames.get(redTeam[0]) + 1);
   totalGames.set(redTeam[1], totalGames.get(redTeam[1]) + 1);
+}
+
+// Gets a list of games and players and returns a map with a list of winrates over time mapped to
+// each players name.
+export function getWinPercentage(
+  games: Game[],
+  players: Players
+): Map<string, WinPercentageDP[]> {
+  const dataIds: Map<string, WinPercentageDP[]> = new Map();
+  players.forEach((value, key) => dataIds.set(key, []));
+  const valuesPerPlayer: Map<
+    string,
+    { wins: number; total: number }
+  > = new Map();
+  players.forEach((value, key) =>
+    valuesPerPlayer.set(key, { wins: 0, total: 0 })
+  );
+
+  console.log(valuesPerPlayer);
+  for (let game of games) {
+    const player1 = game.blueTeam[0];
+    const player2 = game.blueTeam[1];
+    const player3 = game.redTeam[0];
+    const player4 = game.redTeam[1];
+    incrementNumTotal(player1, valuesPerPlayer);
+    incrementNumTotal(player2, valuesPerPlayer);
+    incrementNumTotal(player3, valuesPerPlayer);
+    incrementNumTotal(player4, valuesPerPlayer);
+    if (game.score[0] > game.score[1]) {
+      incrementNumWins(player1, valuesPerPlayer);
+      incrementNumWins(player2, valuesPerPlayer);
+    } else {
+      incrementNumWins(player3, valuesPerPlayer);
+      incrementNumWins(player4, valuesPerPlayer);
+    }
+    setNewWinPercentageDP(player1, game, valuesPerPlayer, dataIds);
+    setNewWinPercentageDP(player2, game, valuesPerPlayer, dataIds);
+    setNewWinPercentageDP(player3, game, valuesPerPlayer, dataIds);
+    setNewWinPercentageDP(player4, game, valuesPerPlayer, dataIds);
+  }
+  const finalData = new Map<string, WinPercentageDP[]>();
+  dataIds.forEach((value, key) => {
+    finalData.set(players.get(key), value);
+  });
+  console.log(finalData);
+  return finalData;
+}
+
+function incrementNumTotal(
+  id: string,
+  valuesPerPlayer: Map<string, { wins: number; total: number }>
+): void {
+  const newPoint = { ...valuesPerPlayer.get(id) };
+  newPoint.total = newPoint.total + 1;
+  valuesPerPlayer.set(id, newPoint);
+}
+
+function incrementNumWins(
+  id: string,
+  valuesPerPlayer: Map<string, { wins: number; total: number }>
+): void {
+  const playerScore = valuesPerPlayer.get(id);
+  valuesPerPlayer.set(id, {
+    ...playerScore,
+    wins: playerScore.wins + 1,
+  });
+}
+
+function setNewWinPercentageDP(
+  id: string,
+  game: Game,
+  valuesPerPlayer: Map<string, { wins: number; total: number }>,
+  dataIds: Map<string, WinPercentageDP[]>
+) {
+  const values = valuesPerPlayer.get(id);
+  const dataPoint: WinPercentageDP = {
+    date: game.date,
+    winPercentage: (values.wins / values.total) * 100,
+  };
+  dataIds.set(id, [...dataIds.get(id), dataPoint]);
 }

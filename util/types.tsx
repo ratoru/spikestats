@@ -44,3 +44,8 @@ export interface PlayerWinsDP {
   name: string;
   wins: number;
 }
+
+export interface WinPercentageDP {
+  date: Date;
+  winPercentage: number;
+}

@@ -6,6 +6,7 @@ import {
   getServeData,
   getPlayerPointsData,
   getPlayerWinsData,
+  getWinPercentage,
 } from "../util/utils";
 
 // Need to use browser rendering for all amCharts.
@@ -21,6 +22,10 @@ const PlayerPoints = dynamic(() => import("./graphs/PlayerPoints"), {
 });
 
 const PlayerWins = dynamic(() => import("./graphs/PlayerWins"), {
+  ssr: false,
+});
+
+const WinPercentage = dynamic(() => import("./graphs/WinPercentage"), {
   ssr: false,
 });
 
@@ -41,6 +46,16 @@ export const AllCharts: React.FC<AllChartsProps> = ({
         <Typography variant="h5" style={{ textAlign: "center" }}>
           {groupname}'s Stats!
         </Typography>
+      </Grid>
+      <Grid item xs={12} container justify="center" alignItems="center">
+        <Grid item xs={12}>
+          <Typography variant="h6" style={{ textAlign: "center" }}>
+            How did each player's winrate develop over time?
+          </Typography>
+        </Grid>
+        <Grid item>
+          <WinPercentage data={getWinPercentage(games, players)} />
+        </Grid>
       </Grid>
       <Grid item xs={12} container justify="center" alignItems="center">
         <Grid item xs={12}>
