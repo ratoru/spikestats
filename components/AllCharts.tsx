@@ -70,7 +70,7 @@ export const AllCharts: React.FC<AllChartsProps> = ({
       <Grid item xs={12} container justify="center" alignItems="center">
         <Grid item xs={12}>
           <Typography variant="h6" style={{ textAlign: "center" }}>
-            Compare individual team compositions.
+            Compare individual winrates independent of team compositions.
           </Typography>
           <Typography variant="subtitle1" style={{ textAlign: "center" }}>
             Hover over a slice. The number in parantheses shows their win
