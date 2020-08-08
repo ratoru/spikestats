@@ -51,6 +51,9 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
       series.tooltip.label.padding(12, 12, 12, 12);
       series.name = name;
       series.minBulletDistance = 15; // For bullets
+      // Make legend update with the cursor.
+      series.legendSettings.valueText = "{valueY.close}";
+      series.legendSettings.itemValueText = "[bold]{valueY}[/bold]";
       // Make bullets grow on hover
       let bullet = series.bullets.push(new am4charts.CircleBullet());
       bullet.circle.strokeWidth = 2;
@@ -84,7 +87,7 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
 
     // Create legend
     chart.legend = new am4charts.Legend();
-    chart.legend.position = "right";
+    chart.legend.position = "top";
     chart.legend.scrollable = true;
     chart.legend.itemContainers.template.events.on("over", function (event) {
       processOver(event.target.dataItem.dataContext);
@@ -145,7 +148,8 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
 
   // When the data prop changes it will update the chart
   useLayoutEffect(() => {
-    chartFinal.current.data = data;
+    // chartFinal.current.data = data;
+    // data.forEach((personalData, name) => createSeries(personalData, name));
   }, [data]);
 
   return <Box width={1} height={500} id="chartdivWinPercentage"></Box>;

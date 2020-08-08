@@ -88,7 +88,7 @@ export const NavStats: React.FC<StatsTabProps> = ({
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" color="transparent" className={classes.appBar}>
+      <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Tabs
           value={value}
           onChange={handleChange}

@@ -127,7 +127,6 @@ export function getWinPercentage(
     valuesPerPlayer.set(key, { wins: 0, total: 0 })
   );
 
-  console.log(valuesPerPlayer);
   for (let game of games) {
     const player1 = game.blueTeam[0];
     const player2 = game.blueTeam[1];
@@ -153,7 +152,6 @@ export function getWinPercentage(
   dataIds.forEach((value, key) => {
     finalData.set(players.get(key), value);
   });
-  console.log(finalData);
   return finalData;
 }
 
