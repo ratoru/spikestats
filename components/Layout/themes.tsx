@@ -21,6 +21,7 @@ export const richAndColorfulTheme = createMuiTheme({
     //   paper: "#ECECEC",
     // },
   },
+  // Sweetalert2 has zindex of 1060.
   zIndex: {
     mobileStepper: 900,
     speedDial: 950,

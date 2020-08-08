@@ -37,7 +37,7 @@ export const AddServe: React.FC<AddServeProps> = ({
     >
       <Grid
         item
-        xs={5}
+        xs={4}
         container
         spacing={2}
         justify="space-around"
@@ -56,14 +56,14 @@ export const AddServe: React.FC<AddServeProps> = ({
           );
         })}
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={4}>
         <Typography variant="h5" style={{ textAlign: "center" }}>
           {score[0]}:{score[1]}
         </Typography>
       </Grid>
       <Grid
         item
-        xs={5}
+        xs={4}
         container
         spacing={2}
         justify="space-around"
@@ -90,7 +90,7 @@ export const AddServe: React.FC<AddServeProps> = ({
         justify="space-around"
         alignItems="center"
       >
-        <Grid item>
+        <Grid item xs={6}>
           <Typography variant="subtitle1" display="inline">
             Blue Serve
           </Typography>
@@ -104,7 +104,7 @@ export const AddServe: React.FC<AddServeProps> = ({
             inputProps={{ "aria-label": "Initial serve blue" }}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={6}>
           <Radio
             checked={selectedValue === "red"}
             onChange={handleChange}

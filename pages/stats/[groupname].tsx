@@ -48,7 +48,7 @@ export default function Stats() {
       id: uuidv4(),
       blueTeam: [ids.id2, ids.id1],
       redTeam: [ids.id5, ids.id4],
-      score: [8, 21],
+      score: [21, 8],
       serve: ServeTeam.Blue,
       date: new Date(2020, 7, 2, 10, 20, 0),
     },
