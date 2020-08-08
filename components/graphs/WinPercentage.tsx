@@ -26,6 +26,11 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
     // Create chart instance
     let chart = am4core.create("chartdivWinPercentage", am4charts.XYChart);
 
+    // Touch interface
+    chart.tapToActivate = true;
+    // Make chart adjust to screen size more.
+    chart.responsive.enabled = true;
+
     // Create axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.minGridDistance = 50;
@@ -148,8 +153,14 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
 
   // When the data prop changes it will update the chart
   useLayoutEffect(() => {
-    // chartFinal.current.data = data;
-    // data.forEach((personalData, name) => createSeries(personalData, name));
+    const newData = Array.from(data);
+    console.log(newData);
+    let i = 0;
+    chartFinal.current.series.each(function (series) {
+      const seriesData = newData[i];
+      series.data = seriesData[1];
+      i++;
+    });
   }, [data]);
 
   return <Box width={1} height={500} id="chartdivWinPercentage"></Box>;

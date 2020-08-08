@@ -28,6 +28,11 @@ const PlayerPoints: React.FC<PlayerPointsProps> = ({ data }) => {
     let chart = am4core.create("chartdivPlayers", am4charts.XYChart);
     chart.scrollbarX = new am4core.Scrollbar();
 
+    // Touch interface
+    chart.tapToActivate = true;
+    // Make chart adjust to screen size more.
+    chart.responsive.enabled = true;
+
     chart.data = data;
 
     chart.responsive.enabled = true;

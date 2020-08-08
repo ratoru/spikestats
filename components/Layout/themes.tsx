@@ -21,4 +21,9 @@ export const richAndColorfulTheme = createMuiTheme({
     //   paper: "#ECECEC",
     // },
   },
+  zIndex: {
+    mobileStepper: 900,
+    speedDial: 950,
+    appBar: 1000,
+  },
 });

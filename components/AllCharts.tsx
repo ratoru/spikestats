@@ -46,6 +46,9 @@ export const AllCharts: React.FC<AllChartsProps> = ({
         <Typography variant="h5" style={{ textAlign: "center" }}>
           {groupname}'s Stats!
         </Typography>
+        <Typography variant="h6" style={{ textAlign: "center" }}>
+          Your group played {games.length} games so far.
+        </Typography>
       </Grid>
       <Grid item xs={12} container justify="center" alignItems="center">
         <Grid item xs={12}>
