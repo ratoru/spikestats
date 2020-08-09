@@ -124,6 +124,8 @@ export default function Stats() {
         );
       })
       .then(() => {
+        // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
+        addedGame.date = new Date();
         setGames((games) => [...games, addedGame]);
         // Call server!
       })

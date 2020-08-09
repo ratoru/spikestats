@@ -62,7 +62,7 @@ export const FormikListItem: React.FC<FormikListItemProps> = ({
                     justify="space-between"
                     alignItems="center"
                   >
-                    <Grid item xs={8}>
+                    <Grid item xs={7}>
                       <ListItemText
                         primary={
                           <Field
@@ -79,7 +79,7 @@ export const FormikListItem: React.FC<FormikListItemProps> = ({
                         }
                       />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={5}>
                       <ListItemSecondaryAction>
                         <ButtonGroup variant="contained">
                           {/*Can't add Tooltip because of bug https://github.com/mui-org/material-ui/issues/11601 */}
