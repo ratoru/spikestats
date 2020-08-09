@@ -154,7 +154,6 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
   // When the data prop changes it will update the chart
   useLayoutEffect(() => {
     const newData = Array.from(data);
-    console.log(newData);
     let i = 0;
     chartFinal.current.series.each(function (series) {
       const seriesData = newData[i];

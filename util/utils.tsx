@@ -6,7 +6,8 @@ import {
   Players,
   ServeData,
   PlayerPointsDataInstance,
-  PlayerWinsDP,
+  PlayerWinsSliceDP,
+  PlayerWinsTreeDP,
   WinPercentageDP,
 } from "./types";
 
@@ -76,11 +77,11 @@ export function getPlayerPointsData(
 }
 
 // Takes in a list of games and returns how often each player won (in relative terms).
-export function getPlayerWinsData(
+export function getPlayerWinsSliceData(
   games: Game[],
   players: Players
-): PlayerWinsDP[] {
-  const data: PlayerWinsDP[] = [];
+): PlayerWinsSliceDP[] {
+  const data: PlayerWinsSliceDP[] = [];
   // Should be of key: id, value: points.
   const wins = new Map(Array.from(players.keys()).map((key) => [key, 0]));
   const totalGames = new Map(Array.from(players.keys()).map((key) => [key, 0]));
@@ -109,6 +110,43 @@ function addTotalGames(
   totalGames.set(blueTeam[1], totalGames.get(blueTeam[1]) + 1);
   totalGames.set(redTeam[0], totalGames.get(redTeam[0]) + 1);
   totalGames.set(redTeam[1], totalGames.get(redTeam[1]) + 1);
+}
+
+// Gets a list of games and players and returns a list of PlayerWinsTreeDPs.
+export function getPlayerWinsTreeData(
+  games: Game[],
+  players: Players
+): PlayerWinsTreeDP[] {
+  const wins = new Map<string, number>();
+  const losses = new Map<string, number>();
+  players.forEach((value, key) => {
+    wins.set(key, 0);
+    losses.set(key, 0);
+  });
+  for (let game of games) {
+    const [winners, losers] =
+      game.score[0] > game.score[1]
+        ? [game.blueTeam, game.redTeam]
+        : [game.redTeam, game.blueTeam];
+    console.log("Winners", winners);
+    wins.set(winners[0], wins.get(winners[0]) + 1);
+    wins.set(winners[1], wins.get(winners[1]) + 1);
+    losses.set(losers[0], losses.get(losers[0]) + 1);
+    losses.set(losers[1], losses.get(losers[1]) + 1);
+  }
+  const data: PlayerWinsTreeDP[] = [];
+  players.forEach((value, key) => {
+    const dataPoint: PlayerWinsTreeDP = {
+      name: value,
+      children: [
+        { name: "Wins", value: wins.get(key) },
+        { name: "Losses", value: losses.get(key) },
+      ],
+    };
+    data.push(dataPoint);
+  });
+  console.log(data);
+  return data;
 }
 
 // Gets a list of games and players and returns a map with a list of winrates over time mapped to

@@ -5,7 +5,7 @@ import { Game, Players } from "../util/types";
 import {
   getServeData,
   getPlayerPointsData,
-  getPlayerWinsData,
+  getPlayerWinsTreeData,
   getWinPercentage,
 } from "../util/utils";
 
@@ -21,7 +21,7 @@ const PlayerPoints = dynamic(() => import("./graphs/PlayerPoints"), {
   ssr: false,
 });
 
-const PlayerWins = dynamic(() => import("./graphs/PlayerWins"), {
+const PlayerWinsTree = dynamic(() => import("./graphs/PlayerWinsTree"), {
   ssr: false,
 });
 
@@ -73,17 +73,10 @@ export const AllCharts: React.FC<AllChartsProps> = ({
       <Grid item xs={12} container justify="center" alignItems="center">
         <Grid item xs={12}>
           <Typography variant="h6" style={{ textAlign: "center" }}>
-            Compare individual winrates independent of team compositions.
-          </Typography>
-          <Typography variant="subtitle1" style={{ textAlign: "center" }}>
-            Hover over a slice. The number in parantheses shows their win
-            percentage. That's games won / games played. (Not total games.)
-          </Typography>
-          <Typography variant="subtitle1" style={{ textAlign: "center" }}>
-            Drag players across the line to compare their win percentage.
+            A second way of looking at player wins.
           </Typography>
           <Grid item xs={12}>
-            <PlayerWins data={getPlayerWinsData(games, players)} />
+            <PlayerWinsTree data={getPlayerWinsTreeData(games, players)} />
           </Grid>
         </Grid>
       </Grid>

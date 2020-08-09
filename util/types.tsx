@@ -40,9 +40,14 @@ export interface PlayerPointsDataInstance {
   points: number;
 }
 
-export interface PlayerWinsDP {
+export interface PlayerWinsSliceDP {
   name: string;
   wins: number;
+}
+
+export interface PlayerWinsTreeDP {
+  name: string;
+  children: { name: string; value: number }[];
 }
 
 export interface WinPercentageDP {
