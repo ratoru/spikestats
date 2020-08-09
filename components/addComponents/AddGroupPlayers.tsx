@@ -95,7 +95,7 @@ export const AddGroupPlayers: React.FC<AddGroupPlayersProps> = ({
             helperText="Name has to be unique."
             autoFocus
             value={input}
-            error={chips.indexOf(input) !== -1 || input.length === 0}
+            error={chips.indexOf(input) !== -1}
             onChange={(event) => {
               setInput(event.target.value);
             }}

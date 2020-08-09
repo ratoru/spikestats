@@ -30,7 +30,7 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
     >
       <Grid
         item
-        xs={5}
+        xs={4}
         container
         spacing={2}
         justify="space-around"
@@ -49,14 +49,14 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
           );
         })}
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={4}>
         <Typography variant="h6" style={{ textAlign: "center" }}>
           {score[0]}:{score[1]}
         </Typography>
       </Grid>
       <Grid
         item
-        xs={5}
+        xs={4}
         container
         spacing={2}
         justify="space-around"

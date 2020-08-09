@@ -71,8 +71,12 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
     router.push("/stats/[groupname]", `/stats/${group.groupname}`);
   };
   const normalMode = (
-    <ListItem button onClick={openGroup}>
-      <ListItemText primary={<Typography>{group.groupname}</Typography>} />
+    <ListItem button onClick={openGroup} style={{ height: 80 }}>
+      <ListItemText
+        inset
+        primary={group.groupname}
+        primaryTypographyProps={{ variant: "h6" }}
+      />
       <ListItemSecondaryAction>
         <ButtonGroup disableElevation variant="text">
           <Tooltip title="Show Players" arrow>
