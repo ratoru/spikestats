@@ -8,7 +8,10 @@ async fn main() -> std::io::Result<()> {
     // Start http server
     HttpServer::new(move || {
         App::new()
-            .route("/users/{id}", web::get().to(handlers::get_user_by_id))
+            .route(
+                "/users/{username}",
+                web::get().to(handlers::get_user_by_username),
+            )
             .route("/users", web::post().to(handlers::add_user))
     })
     .bind("127.0.0.1:8080")?

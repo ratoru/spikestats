@@ -1,0 +1,1 @@
+{"rustc":1392210074234315346,"features":"[\"default\", \"std\"]","target":5110803710281627557,"profile":11677938664258541388,"path":8576948039285210505,"deps":[[13162044883162415050,"build_script_build",false,541859432011257329]],"local":[{"CheckDepInfo":{"dep_info":"debug/.fingerprint/httparse-8d22901fc0102cdb/dep-lib-httparse"}}],"rustflags":[],"metadata":2528502927445155352}
