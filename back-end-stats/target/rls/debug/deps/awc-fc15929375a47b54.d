@@ -1,0 +1,14 @@
+/Users/raphael/programming/web-projects/roundnet-stats/back-end-stats/target/rls/debug/deps/awc-fc15929375a47b54.rmeta: /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/lib.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/builder.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/connect.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/error.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/frozen.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/request.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/response.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/sender.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/test.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/ws.rs
+
+/Users/raphael/programming/web-projects/roundnet-stats/back-end-stats/target/rls/debug/deps/awc-fc15929375a47b54.d: /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/lib.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/builder.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/connect.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/error.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/frozen.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/request.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/response.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/sender.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/test.rs /Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/ws.rs
+
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/lib.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/builder.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/connect.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/error.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/frozen.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/request.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/response.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/sender.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/test.rs:
+/Users/raphael/.cargo/registry/src/github.com-1ecc6299db9ec823/awc-1.0.1/src/ws.rs:
