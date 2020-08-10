@@ -128,7 +128,6 @@ export function getPlayerWinsTreeData(
       game.score[0] > game.score[1]
         ? [game.blueTeam, game.redTeam]
         : [game.redTeam, game.blueTeam];
-    console.log("Winners", winners);
     wins.set(winners[0], wins.get(winners[0]) + 1);
     wins.set(winners[1], wins.get(winners[1]) + 1);
     losses.set(losers[0], losses.get(losers[0]) + 1);
@@ -145,7 +144,6 @@ export function getPlayerWinsTreeData(
     };
     data.push(dataPoint);
   });
-  console.log(data);
   return data;
 }
 
