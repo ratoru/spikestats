@@ -8,10 +8,10 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 // Types
-import { PlayerWinsDP } from "../../util/types";
+import { PlayerWinsSliceDP } from "../../util/types";
 
 interface PlayerWinsProps {
-  data: PlayerWinsDP[];
+  data: PlayerWinsSliceDP[];
 }
 
 const PlayerWins: React.FC<PlayerWinsProps> = ({ data }) => {
