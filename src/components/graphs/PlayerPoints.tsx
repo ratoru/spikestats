@@ -72,7 +72,8 @@ const PlayerPoints: React.FC<PlayerPointsProps> = ({ data }) => {
     hoverState.properties.fillOpacity = 1;
 
     series.columns.template.adapter.add("fill", function (fill, target) {
-      return chart.colors.getIndex(target.dataItem.index);
+      // * 2 to get the same colors as TreeMap.
+      return chart.colors.getIndex(target.dataItem.index * 2);
     });
 
     // Cursor

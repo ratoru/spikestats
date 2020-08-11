@@ -30,6 +30,7 @@ const WinPercentage: React.FC<WinPercentageProps> = ({ data }) => {
     chart.tapToActivate = true;
     // Make chart adjust to screen size more.
     chart.responsive.enabled = true;
+    chart.colors.step = 2;
 
     // Create axes
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());

@@ -40,6 +40,10 @@ const PlayerWinsTree: React.FC<PlayerWinsTreeProps> = ({ data }) => {
     chart.dataFields.name = "name";
     chart.dataFields.children = "children";
 
+    // Chart Layout
+    // chart.layoutAlgorithm = chart.sliceDice;
+    chart.sorting = "none";
+
     // chart.zoomable = false;
     let bgColor = new am4core.InterfaceColorSet().getFor("background");
 
