@@ -12,3 +12,6 @@ actix-rt = "1.1.1"
 listenfd = "0.3"
 serde = "1.0.115"
 serde_json = "1.0"
+dotenv = "0.15.0"
+r2d2 = "0.8.9"
+uuid = { version = "0.8", features = ["serde", "v4"] }

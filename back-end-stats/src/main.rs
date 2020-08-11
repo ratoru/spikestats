@@ -1,6 +1,6 @@
-use actix_web::{web, App, HttpServer};
+use actix_web::{App, HttpServer};
 use listenfd::ListenFd;
-mod handlers;
+mod users;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -8,14 +8,7 @@ async fn main() -> std::io::Result<()> {
     let mut listenfd = ListenFd::from_env();
 
     // Start http server
-    let mut server = HttpServer::new(move || {
-        App::new()
-            .route(
-                "/users/{username}",
-                web::get().to(handlers::get_user_by_username),
-            )
-            .route("/users", web::post().to(handlers::add_user))
-    });
+    let mut server = HttpServer::new(move || App::new().configure(users::init_routes));
     // Allows server to auto-reload.
     server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
         server.listen(l)?
