@@ -2,6 +2,6 @@ version: "3"
 
 services:
   actix-server:
-    build: ./back-end-stats
+    build: ./back-end
     ports:
       - 8080:8080

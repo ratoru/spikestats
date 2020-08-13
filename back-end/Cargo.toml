@@ -1,5 +1,5 @@
 [package]
-name = "back-end-stats"
+name = "back-end"
 version = "0.1.0"
 authors = ["Raphael <raphael.t.ruban@gmail.com>"]
 edition = "2018"

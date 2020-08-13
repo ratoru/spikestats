@@ -17,8 +17,8 @@ RUN cargo build --release --offline
 
 FROM rust:1-slim-buster
 
-COPY --from=builder /code/target/release/back-end-stats /usr/bin/back-end-stats
+COPY --from=builder /code/target/release/back-end /usr/bin/back-end
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/usr/bin/back-end-stats" ]
+ENTRYPOINT [ "/usr/bin/back-end" ]
