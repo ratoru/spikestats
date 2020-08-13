@@ -1,7 +1,17 @@
 version: "3"
 
 services:
+  pg-databank:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: my_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: statsarefun
   actix-server:
     build: ./back-end
     ports:
       - 8080:8080
+    depends_on:
+      - pg-databank
