@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  actix-server:
+    build: ./back-end-stats
+    ports:
+      - 8080:8080
