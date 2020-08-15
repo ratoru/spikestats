@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  pg-databank:
+  db:
     image: postgres
     ports:
       - 5432:5432
@@ -13,5 +13,7 @@ services:
     build: ./back-end
     ports:
       - 8080:8080
+    volumes:
+      - ./back-end:/usr/src/app
     depends_on:
-      - pg-databank
+      - db

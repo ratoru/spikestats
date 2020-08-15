@@ -1,24 +1,12 @@
-FROM rust:1-slim-buster AS base
-
-ENV USER=root
-
-WORKDIR /code
-RUN cargo init
-COPY Cargo.toml /code/Cargo.toml
-RUN cargo fetch
-
-COPY src /code/src
-
-CMD [ "cargo", "test", "--offline" ]
-
-FROM base AS builder
-
-RUN cargo build --release --offline
-
-FROM rust:1-slim-buster
-
-COPY --from=builder /code/target/release/back-end /usr/bin/back-end
-
+FROM rust
+WORKDIR /usr/src/app
+RUN USER=root cargo init
+COPY Cargo.toml Cargo.lock diesel.toml .env ./
+RUN cargo build
+RUN cargo install diesel_cli
+COPY src ./src
+COPY migrations ./migrations
+COPY target ./target
 EXPOSE 8080
-
-ENTRYPOINT [ "/usr/bin/back-end" ]
+RUN cargo build
+CMD ["systemfd", "--no-pid", "-s", "http:8080", "--", "cargo", "watch", "-x", "run"]
