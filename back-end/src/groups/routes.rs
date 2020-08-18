@@ -15,17 +15,17 @@ async fn find(req: HttpRequest) -> impl Responder {
 }
 
 #[post("/groups")]
-async fn add(req: HttpRequest) -> impl Responder {
+async fn add(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 
 #[delete("/groups/{id}")]
-async fn remove(req: HttpRequest) -> impl Responder {
+async fn remove(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 
 #[put("/groups/{id}")]
-async fn rename(req: HttpRequest) -> impl Responder {
+async fn rename(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 

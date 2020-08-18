@@ -6,7 +6,7 @@ use uuid::Uuid;
 use crate::games::model;
 
 #[get("/games")]
-async fn find_all(req: HttpRequest) -> impl Responder {
+async fn find_all(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok().json(model::Game {
         id: Uuid::new_v4(),
         blue_team: (Uuid::new_v4(), Uuid::new_v4()),
@@ -19,12 +19,12 @@ async fn find_all(req: HttpRequest) -> impl Responder {
 }
 
 #[post("/games")]
-async fn add(req: HttpRequest) -> impl Responder {
+async fn add(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 
 #[delete("/games/{id}")]
-async fn remove(req: HttpRequest) -> impl Responder {
+async fn remove(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 

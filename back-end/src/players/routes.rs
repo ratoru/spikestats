@@ -1,4 +1,4 @@
-use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
+use actix_web::{get, post, put, web, HttpRequest, HttpResponse, Responder};
 // use serde_json::json;
 use uuid::Uuid;
 
@@ -15,12 +15,12 @@ async fn find_all(req: HttpRequest) -> impl Responder {
 }
 
 #[post("/players")]
-async fn add_all(req: HttpRequest) -> impl Responder {
+async fn add_all(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 
 #[put("/players/{id}")]
-async fn rename(req: HttpRequest) -> impl Responder {
+async fn rename(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
 }
 

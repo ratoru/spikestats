@@ -9,11 +9,11 @@ services:
       POSTGRES_DB: my_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: statsarefun
-  actix-server:
-    build: ./back-end
-    ports:
-      - 8080:8080
-    volumes:
-      - ./back-end:/usr/src/app
-    depends_on:
-      - db
+  # actix-server:
+  #   build: ./back-end
+  #   ports:
+  #     - 8080:8080
+  #   volumes:
+  #     - ./back-end:/usr/src/app
+  #   depends_on:
+  #     - db
