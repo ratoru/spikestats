@@ -6,6 +6,6 @@ use uuid::Uuid;
 #[table_name = "groups"]
 pub struct Group {
     pub id: Uuid,
-    pub name: String,
+    pub group_name: String,
     pub user_id: Uuid,
 }

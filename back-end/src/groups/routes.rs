@@ -9,7 +9,7 @@ async fn find(req: HttpRequest) -> impl Responder {
     let id_req = Uuid::parse_str(req.match_info().get("id").unwrap()).unwrap();
     HttpResponse::Ok().json(model::Group {
         id: id_req,
-        name: "Tolle Gruppe".to_string(),
+        group_name: "Tolle Gruppe".to_string(),
         user_id: Uuid::new_v4(),
     })
 }

@@ -9,7 +9,7 @@ async fn find_all(req: HttpRequest) -> impl Responder {
     let id_req = Uuid::parse_str(req.match_info().get("id").unwrap()).unwrap();
     HttpResponse::Ok().json(model::Player {
         id: id_req,
-        name: "Ein Spieler".to_string(),
+        player_name: "Ein Spieler".to_string(),
         group_id: Uuid::new_v4(),
     })
 }

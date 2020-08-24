@@ -8,7 +8,7 @@ use crate::users::model;
 async fn find() -> impl Responder {
     HttpResponse::Ok().json(model::User {
         id: Uuid::new_v4(),
-        name: "Raphael".to_string(),
+        user_name: "Raphael".to_string(),
         password: "Good".to_string(),
     })
 }

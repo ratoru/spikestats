@@ -29,20 +29,21 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to create pool.");
 
     // Start http server
-    let mut server = HttpServer::new(move || {
+    HttpServer::new(move || {
         App::new()
             .data(pool.clone())
             .configure(users::init_routes)
             .configure(groups::init_routes)
             .configure(players::init_routes)
             .configure(games::init_routes)
-    });
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
     // Allows server to auto-reload.
     // server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
     //     server.listen(l)?
     // } else {
     //     server.bind("0.0.0.0:8080")?
     // };
-
-    server.bind("127.0.0.1:8080").run().await
 }

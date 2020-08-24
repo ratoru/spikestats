@@ -1,11 +1,9 @@
-use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Deserialize, Serialize)]
-// #[table_name = "users"]
+#[derive(Deserialize, Serialize, Queryable)]
 pub struct User {
     pub id: Uuid,
-    pub name: String,
+    pub user_name: String,
     pub password: String,
 }

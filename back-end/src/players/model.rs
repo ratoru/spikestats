@@ -1,9 +1,11 @@
+use crate::schema::players;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Deserialize, Serialize, Queryable)]
+#[derive(Deserialize, Serialize, Queryable, Insertable)]
+#[table_name = "players"]
 pub struct Player {
     pub id: Uuid,
-    pub name: String,
+    pub player_name: String,
     pub group_id: Uuid,
 }
