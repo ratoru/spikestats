@@ -5,7 +5,7 @@ table! {
         red_team -> Array<Uuid>,
         score -> Array<Int2>,
         serve -> Bool,
-        date_played -> Date,
+        date_played -> Timestamp,
         group_id -> Uuid,
     }
 }

@@ -9,11 +9,11 @@ use crate::games::model;
 async fn find_all(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok().json(model::Game {
         id: Uuid::new_v4(),
-        blue_team: (Uuid::new_v4(), Uuid::new_v4()),
-        red_team: (Uuid::new_v4(), Uuid::new_v4()),
-        score: (21, 17),
+        blue_team: vec![Uuid::new_v4(), Uuid::new_v4()],
+        red_team: vec![Uuid::new_v4(), Uuid::new_v4()],
+        score: vec![21, 17],
         serve: true,
-        date: Local::now(),
+        date_played: Local::now().naive_local(),
         group_id: Uuid::new_v4(),
     })
 }
