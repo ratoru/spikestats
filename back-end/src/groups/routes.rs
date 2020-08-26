@@ -1,17 +1,19 @@
-use actix_web::{delete, get, post, put, web, Error, HttpRequest, HttpResponse, Responder};
-// use serde_json::json;
-use crate::groups::model;
-use crate::schema::groups::dsl::*;
+use crate::groups::Group;
+use crate::schema::{groups, users};
+use crate::users::User;
 use crate::Pool;
-// use diesel::QueryDsl;
+use actix_web::{delete, get, post, put, web, Error, HttpResponse};
+use diesel::BelongingToDsl;
+use diesel::QueryDsl;
 use diesel::RunQueryDsl;
-use model::Group;
 use uuid::Uuid;
 
 #[get("/groups/{user_id}")]
-async fn find(req: HttpRequest, db: web::Data<Pool>) -> Result<HttpResponse, Error> {
-    let id_req = Uuid::parse_str(req.match_info().get("user_id").unwrap()).unwrap();
-    Ok(web::block(move || get_all_groups(db, id_req))
+async fn find_groups_by_id(
+    id_req: web::Path<Uuid>,
+    db: web::Data<Pool>,
+) -> Result<HttpResponse, Error> {
+    Ok(web::block(move || get_all_groups(db, id_req.into_inner()))
         .await
         .map(|group| HttpResponse::Ok().json(group))
         .map_err(|_| HttpResponse::InternalServerError())?)
@@ -19,31 +21,66 @@ async fn find(req: HttpRequest, db: web::Data<Pool>) -> Result<HttpResponse, Err
 
 fn get_all_groups(
     pool: web::Data<Pool>,
-    _id_req: Uuid,
+    id_req: Uuid,
 ) -> Result<Vec<Group>, diesel::result::Error> {
     let conn = pool.get().unwrap();
-    let items = groups.load::<Group>(&conn)?;
-    Ok(items)
+    let user = users::table.find(id_req).first::<User>(&conn)?;
+    let group_list = Group::belonging_to(&user).load::<Group>(&conn)?;
+    Ok(group_list)
 }
 
 #[post("/groups")]
-async fn add(_req: HttpRequest) -> impl Responder {
-    HttpResponse::Ok()
+pub async fn add_group(db: web::Data<Pool>, item: web::Json<Group>) -> Result<HttpResponse, Error> {
+    Ok(web::block(move || add_single_group(db, item.into_inner()))
+        .await
+        .map(|_| HttpResponse::Created().finish())
+        .map_err(|_| HttpResponse::InternalServerError())?)
+}
+
+fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), diesel::result::Error> {
+    let conn = db.get().unwrap();
+    diesel::insert_into(groups::table)
+        .values(&item)
+        .execute(&conn)?;
+    Ok(())
 }
 
 #[delete("/groups/{id}")]
-async fn remove(_req: HttpRequest) -> impl Responder {
-    HttpResponse::Ok()
+pub async fn delete_group(db: web::Data<Pool>, id: web::Path<Uuid>) -> Result<HttpResponse, Error> {
+    Ok(web::block(move || delete_single_group(db, id.into_inner()))
+        .await
+        .map(|count| HttpResponse::Ok().json(count))
+        .map_err(|_| HttpResponse::InternalServerError())?)
 }
 
-#[put("/groups/{id}")]
-async fn rename(_req: HttpRequest) -> impl Responder {
-    HttpResponse::Ok()
+fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, diesel::result::Error> {
+    let conn = db.get().unwrap();
+    let count = diesel::delete(groups::table.find(id)).execute(&conn)?;
+    Ok(count)
+}
+
+#[put("/groups")]
+pub async fn rename_group(
+    db: web::Data<Pool>,
+    new_group: web::Json<Group>,
+) -> Result<HttpResponse, Error> {
+    Ok(
+        web::block(move || rename_single_group(db, new_group.into_inner()))
+            .await
+            .map(|_| HttpResponse::Ok().finish())
+            .map_err(|_| HttpResponse::InternalServerError())?,
+    )
+}
+
+fn rename_single_group(db: web::Data<Pool>, new_group: Group) -> Result<(), diesel::result::Error> {
+    let conn = db.get().unwrap();
+    diesel::update(&new_group).set(&new_group).execute(&conn)?;
+    Ok(())
 }
 
 pub fn init_routes(config: &mut web::ServiceConfig) {
-    config.service(find);
-    config.service(add);
-    config.service(remove);
-    config.service(rename);
+    config.service(find_groups_by_id);
+    config.service(add_group);
+    config.service(delete_group);
+    config.service(rename_group);
 }
