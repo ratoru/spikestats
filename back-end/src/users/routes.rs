@@ -7,7 +7,7 @@ use diesel::RunQueryDsl;
 use uuid::Uuid;
 
 #[get("/users/{id}")]
-pub async fn get_user_by_id(
+async fn get_user_by_id(
     db: web::Data<Pool>,
     user_id: web::Path<Uuid>,
 ) -> Result<HttpResponse, Error> {
@@ -25,10 +25,7 @@ fn db_get_user_by_id(pool: web::Data<Pool>, user_id: Uuid) -> Result<User, diese
 }
 
 #[post("/users")]
-pub async fn add_user(
-    db: web::Data<Pool>,
-    item: web::Json<InputUser>,
-) -> Result<HttpResponse, Error> {
+async fn add_user(db: web::Data<Pool>, item: web::Json<InputUser>) -> Result<HttpResponse, Error> {
     Ok(web::block(move || add_single_user(db, item))
         .await
         .map(|new_uuid| HttpResponse::Created().json(new_uuid))

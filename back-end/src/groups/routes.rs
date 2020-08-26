@@ -30,7 +30,7 @@ fn get_all_groups(
 }
 
 #[post("/groups")]
-pub async fn add_group(db: web::Data<Pool>, item: web::Json<Group>) -> Result<HttpResponse, Error> {
+async fn add_group(db: web::Data<Pool>, item: web::Json<Group>) -> Result<HttpResponse, Error> {
     Ok(web::block(move || add_single_group(db, item.into_inner()))
         .await
         .map(|_| HttpResponse::Created().finish())
@@ -46,7 +46,7 @@ fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), diesel::resu
 }
 
 #[delete("/groups/{id}")]
-pub async fn delete_group(db: web::Data<Pool>, id: web::Path<Uuid>) -> Result<HttpResponse, Error> {
+async fn delete_group(db: web::Data<Pool>, id: web::Path<Uuid>) -> Result<HttpResponse, Error> {
     Ok(web::block(move || delete_single_group(db, id.into_inner()))
         .await
         .map(|count| HttpResponse::Ok().json(count))
@@ -60,7 +60,7 @@ fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, diesel::r
 }
 
 #[put("/groups")]
-pub async fn rename_group(
+async fn rename_group(
     db: web::Data<Pool>,
     new_group: web::Json<Group>,
 ) -> Result<HttpResponse, Error> {
