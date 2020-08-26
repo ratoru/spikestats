@@ -11,7 +11,13 @@ pub struct User {
 
 #[derive(Deserialize, Serialize, Insertable)]
 #[table_name = "users"]
-pub struct NewUser {
+pub struct NewUser<'a> {
+    pub user_name: &'a str,
+    pub password: &'a str,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct InputUser {
     pub user_name: String,
     pub password: String,
 }
