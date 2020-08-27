@@ -1,7 +1,9 @@
+use crate::error_handler::ServiceError;
 use crate::groups::Group;
 use crate::schema::{groups, users};
 use crate::users::User;
 use crate::Pool;
+use actix_web::error::BlockingError;
 use actix_web::{delete, get, post, put, web, Error, HttpResponse};
 use diesel::BelongingToDsl;
 use diesel::QueryDsl;
@@ -12,33 +14,39 @@ use uuid::Uuid;
 async fn find_groups_by_id(
     id_req: web::Path<Uuid>,
     db: web::Data<Pool>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || get_all_groups(db, id_req.into_inner()))
         .await
         .map(|group| HttpResponse::Ok().json(group))
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map_err(|e| match e {
+            BlockingError::Error(serv_err) => serv_err,
+            BlockingError::Canceled => ServiceError::InternalServerError,
+        })?)
 }
 
-fn get_all_groups(
-    pool: web::Data<Pool>,
-    id_req: Uuid,
-) -> Result<Vec<Group>, diesel::result::Error> {
-    let conn = pool.get().unwrap();
+fn get_all_groups(pool: web::Data<Pool>, id_req: Uuid) -> Result<Vec<Group>, ServiceError> {
+    let conn = pool.get().map_err(|_| ServiceError::InternalServerError)?;
     let user = users::table.find(id_req).first::<User>(&conn)?;
     let group_list = Group::belonging_to(&user).load::<Group>(&conn)?;
     Ok(group_list)
 }
 
 #[post("/groups")]
-async fn add_group(db: web::Data<Pool>, item: web::Json<Group>) -> Result<HttpResponse, Error> {
+async fn add_group(
+    db: web::Data<Pool>,
+    item: web::Json<Group>,
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || add_single_group(db, item.into_inner()))
         .await
         .map(|_| HttpResponse::Created().finish())
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map_err(|e| match e {
+            BlockingError::Error(serv_err) => serv_err,
+            BlockingError::Canceled => ServiceError::InternalServerError,
+        })?)
 }
 
-fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     diesel::insert_into(groups::table)
         .values(&item)
         .execute(&conn)?;

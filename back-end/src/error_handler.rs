@@ -1,0 +1,52 @@
+use actix_web::{HttpResponse, ResponseError};
+use diesel::result::Error as DieselError;
+use std::fmt;
+
+#[derive(Debug)]
+pub enum ServiceError {
+    InternalServerError,
+    BadRequest,
+    NotFound,
+    Conflict,
+}
+
+impl fmt::Display for ServiceError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let error_message: &str;
+        match self {
+            ServiceError::InternalServerError => error_message = "Internal Server Error",
+            ServiceError::BadRequest => error_message = "Bad Request",
+            ServiceError::NotFound => error_message = "Not Found",
+            ServiceError::Conflict => error_message = "Conflict",
+        };
+        f.write_str(error_message)
+    }
+}
+
+impl From<DieselError> for ServiceError {
+    fn from(error: DieselError) -> ServiceError {
+        match error {
+            DieselError::DatabaseError(_, _) => ServiceError::Conflict,
+            DieselError::NotFound => ServiceError::NotFound,
+            DieselError::DeserializationError(_) => ServiceError::BadRequest,
+            _ => ServiceError::InternalServerError,
+        }
+    }
+}
+
+impl ResponseError for ServiceError {
+    fn error_response(&self) -> HttpResponse {
+        match self {
+            ServiceError::InternalServerError => {
+                HttpResponse::InternalServerError().json("Internal Server Error, Please try later")
+            }
+            ServiceError::BadRequest => HttpResponse::BadRequest().json("Bad Request. Try again."),
+            ServiceError::NotFound => {
+                HttpResponse::NotFound().json("Not Found. Try something else.")
+            }
+            ServiceError::Conflict => {
+                HttpResponse::Conflict().json("Conflict. Try something else.")
+            }
+        }
+    }
+}
