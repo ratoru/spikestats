@@ -3,8 +3,7 @@ use crate::groups::Group;
 use crate::schema::{groups, users};
 use crate::users::User;
 use crate::Pool;
-use actix_web::error::BlockingError;
-use actix_web::{delete, get, post, put, web, Error, HttpResponse};
+use actix_web::{delete, get, post, put, web, HttpResponse};
 use diesel::BelongingToDsl;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
@@ -17,11 +16,7 @@ async fn find_groups_by_id(
 ) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || get_all_groups(db, id_req.into_inner()))
         .await
-        .map(|group| HttpResponse::Ok().json(group))
-        .map_err(|e| match e {
-            BlockingError::Error(serv_err) => serv_err,
-            BlockingError::Canceled => ServiceError::InternalServerError,
-        })?)
+        .map(|group| HttpResponse::Ok().json(group))?)
 }
 
 fn get_all_groups(pool: web::Data<Pool>, id_req: Uuid) -> Result<Vec<Group>, ServiceError> {
@@ -38,11 +33,7 @@ async fn add_group(
 ) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || add_single_group(db, item.into_inner()))
         .await
-        .map(|_| HttpResponse::Created().finish())
-        .map_err(|e| match e {
-            BlockingError::Error(serv_err) => serv_err,
-            BlockingError::Canceled => ServiceError::InternalServerError,
-        })?)
+        .map(|_| HttpResponse::Created().finish())?)
 }
 
 fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), ServiceError> {
@@ -54,15 +45,17 @@ fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), ServiceError
 }
 
 #[delete("/groups/{id}")]
-async fn delete_group(db: web::Data<Pool>, id: web::Path<Uuid>) -> Result<HttpResponse, Error> {
+async fn delete_group(
+    db: web::Data<Pool>,
+    id: web::Path<Uuid>,
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || delete_single_group(db, id.into_inner()))
         .await
-        .map(|count| HttpResponse::Ok().json(count))
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map(|count| HttpResponse::Ok().json(count))?)
 }
 
-fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let count = diesel::delete(groups::table.find(id)).execute(&conn)?;
     Ok(count)
 }
@@ -71,17 +64,16 @@ fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, diesel::r
 async fn rename_group(
     db: web::Data<Pool>,
     new_group: web::Json<Group>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(
         web::block(move || rename_single_group(db, new_group.into_inner()))
             .await
-            .map(|_| HttpResponse::Ok().finish())
-            .map_err(|_| HttpResponse::InternalServerError())?,
+            .map(|_| HttpResponse::Ok().finish())?,
     )
 }
 
-fn rename_single_group(db: web::Data<Pool>, new_group: Group) -> Result<(), diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn rename_single_group(db: web::Data<Pool>, new_group: Group) -> Result<(), ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     diesel::update(&new_group).set(&new_group).execute(&conn)?;
     Ok(())
 }

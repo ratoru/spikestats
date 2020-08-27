@@ -1,8 +1,9 @@
+use crate::error_handler::ServiceError;
 use crate::games::Game;
 use crate::groups::Group;
 use crate::schema::{games, groups};
 use crate::Pool;
-use actix_web::{delete, get, post, web, Error, HttpResponse};
+use actix_web::{delete, get, post, web, HttpResponse};
 use diesel::{BelongingToDsl, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
@@ -10,33 +11,31 @@ use uuid::Uuid;
 async fn find_games_by_id(
     group_id: web::Path<Uuid>,
     db: web::Data<Pool>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || get_all_games(db, group_id.into_inner()))
         .await
-        .map(|game| HttpResponse::Ok().json(game))
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map(|game| HttpResponse::Ok().json(game))?)
 }
 
-fn get_all_games(
-    pool: web::Data<Pool>,
-    group_id: Uuid,
-) -> Result<Vec<Game>, diesel::result::Error> {
-    let conn = pool.get().unwrap();
+fn get_all_games(pool: web::Data<Pool>, group_id: Uuid) -> Result<Vec<Game>, ServiceError> {
+    let conn = pool.get().map_err(|_| ServiceError::InternalServerError)?;
     let group = groups::table.find(group_id).first::<Group>(&conn)?;
     let game_list = Game::belonging_to(&group).load::<Game>(&conn)?;
     Ok(game_list)
 }
 
 #[post("/games")]
-async fn add_game(db: web::Data<Pool>, game: web::Json<Game>) -> Result<HttpResponse, Error> {
+async fn add_game(
+    db: web::Data<Pool>,
+    game: web::Json<Game>,
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || add_single_game(db, game.into_inner()))
         .await
-        .map(|_| HttpResponse::Created().finish())
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map(|_| HttpResponse::Created().finish())?)
 }
 
-fn add_single_game(db: web::Data<Pool>, game: Game) -> Result<(), diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn add_single_game(db: web::Data<Pool>, game: Game) -> Result<(), ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     diesel::insert_into(games::table)
         .values(&game)
         .execute(&conn)?;
@@ -44,15 +43,17 @@ fn add_single_game(db: web::Data<Pool>, game: Game) -> Result<(), diesel::result
 }
 
 #[delete("/games/{id}")]
-async fn delete_game(db: web::Data<Pool>, id: web::Path<Uuid>) -> Result<HttpResponse, Error> {
+async fn delete_game(
+    db: web::Data<Pool>,
+    id: web::Path<Uuid>,
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || delete_single_game(db, id.into_inner()))
         .await
-        .map(|count| HttpResponse::Ok().json(count))
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map(|count| HttpResponse::Ok().json(count))?)
 }
 
-fn delete_single_game(db: web::Data<Pool>, id: Uuid) -> Result<usize, diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn delete_single_game(db: web::Data<Pool>, id: Uuid) -> Result<usize, ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let count = diesel::delete(games::table.find(id)).execute(&conn)?;
     Ok(count)
 }

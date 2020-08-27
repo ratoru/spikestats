@@ -1,8 +1,9 @@
+use crate::error_handler::ServiceError;
 use crate::groups::Group;
 use crate::players::Player;
 use crate::schema::{groups, players};
 use crate::Pool;
-use actix_web::{get, post, put, web, Error, HttpResponse};
+use actix_web::{get, post, put, web, HttpResponse};
 use diesel::BelongingToDsl;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
@@ -12,20 +13,16 @@ use uuid::Uuid;
 async fn get_players_by_id(
     db: web::Data<Pool>,
     group_id: web::Path<Uuid>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(
         web::block(move || get_group_players(db, group_id.into_inner()))
             .await
-            .map(|player| HttpResponse::Ok().json(player))
-            .map_err(|_| HttpResponse::InternalServerError())?,
+            .map(|player| HttpResponse::Ok().json(player))?,
     )
 }
 
-fn get_group_players(
-    db: web::Data<Pool>,
-    group_id: Uuid,
-) -> Result<Vec<Player>, diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn get_group_players(db: web::Data<Pool>, group_id: Uuid) -> Result<Vec<Player>, ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let group = groups::table.find(group_id).first::<Group>(&conn)?;
     let player_list = Player::belonging_to(&group).load::<Player>(&conn)?;
     Ok(player_list)
@@ -35,18 +32,14 @@ fn get_group_players(
 async fn add_players(
     db: web::Data<Pool>,
     players: web::Json<Vec<Player>>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || insert_players(db, players.into_inner()))
         .await
-        .map(|count| HttpResponse::Created().json(count))
-        .map_err(|_| HttpResponse::InternalServerError())?)
+        .map(|count| HttpResponse::Created().json(count))?)
 }
 
-fn insert_players(
-    db: web::Data<Pool>,
-    players: Vec<Player>,
-) -> Result<usize, diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn insert_players(db: web::Data<Pool>, players: Vec<Player>) -> Result<usize, ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let count = diesel::insert_into(players::table)
         .values(&players)
         .execute(&conn)?;
@@ -57,20 +50,16 @@ fn insert_players(
 async fn rename_player(
     db: web::Data<Pool>,
     new_player: web::Json<Player>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, ServiceError> {
     Ok(
         web::block(move || rename_single_player(db, new_player.into_inner()))
             .await
-            .map(|_| HttpResponse::Ok().finish())
-            .map_err(|_| HttpResponse::InternalServerError())?,
+            .map(|_| HttpResponse::Ok().finish())?,
     )
 }
 
-fn rename_single_player(
-    db: web::Data<Pool>,
-    new_player: Player,
-) -> Result<(), diesel::result::Error> {
-    let conn = db.get().unwrap();
+fn rename_single_player(db: web::Data<Pool>, new_player: Player) -> Result<(), ServiceError> {
+    let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     diesel::update(&new_player)
         .set(&new_player)
         .execute(&conn)?;

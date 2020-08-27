@@ -1,3 +1,4 @@
+use actix_web::error::BlockingError;
 use actix_web::{HttpResponse, ResponseError};
 use diesel::result::Error as DieselError;
 use std::fmt;
@@ -30,6 +31,15 @@ impl From<DieselError> for ServiceError {
             DieselError::NotFound => ServiceError::NotFound,
             DieselError::DeserializationError(_) => ServiceError::BadRequest,
             _ => ServiceError::InternalServerError,
+        }
+    }
+}
+
+impl From<BlockingError<ServiceError>> for ServiceError {
+    fn from(error: BlockingError<ServiceError>) -> ServiceError {
+        match error {
+            BlockingError::Error(serv_err) => serv_err,
+            BlockingError::Canceled => ServiceError::InternalServerError,
         }
     }
 }
