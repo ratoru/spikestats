@@ -173,10 +173,20 @@ export const GroupList: React.FC = () => {
   let content: React.ReactNode;
   if (groups.length == 0) {
     content = (
-      <Typography align="center">
-        Seems like you have no groups yet. Create one by clicking the button
-        below.
-      </Typography>
+      <React.Fragment>
+        <Typography align="center">
+          A group contains players you commonly play with. Please note that once
+          a group has been created players can't be added or deleted. Players
+          can be renamed, though.
+        </Typography>
+        <Typography align="center">
+          By clicking on a group, you can view that group's statistics.
+        </Typography>
+        <Typography align="center">
+          Seems like you have no groups yet. Create one by clicking the button
+          below.
+        </Typography>
+      </React.Fragment>
     );
   } else {
     content = (

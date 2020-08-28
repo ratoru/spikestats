@@ -1,3 +1,4 @@
+use crate::auth_handler::authorize_user;
 use crate::error_handler::ServiceError;
 use crate::groups::Group;
 use crate::schema::{groups, users};
@@ -13,7 +14,9 @@ use uuid::Uuid;
 async fn find_groups_by_id(
     id_req: web::Path<Uuid>,
     db: web::Data<Pool>,
+    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
+    authorize_user(http_req)?;
     Ok(web::block(move || get_all_groups(db, id_req.into_inner()))
         .await
         .map(|group| HttpResponse::Ok().json(group))?)
@@ -30,7 +33,9 @@ fn get_all_groups(pool: web::Data<Pool>, id_req: Uuid) -> Result<Vec<Group>, Ser
 async fn add_group(
     db: web::Data<Pool>,
     item: web::Json<Group>,
+    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
+    authorize_user(http_req)?;
     Ok(web::block(move || add_single_group(db, item.into_inner()))
         .await
         .map(|_| HttpResponse::Created().finish())?)
@@ -48,7 +53,9 @@ fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), ServiceError
 async fn delete_group(
     db: web::Data<Pool>,
     id: web::Path<Uuid>,
+    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
+    authorize_user(http_req)?;
     Ok(web::block(move || delete_single_group(db, id.into_inner()))
         .await
         .map(|count| HttpResponse::Ok().json(count))?)
@@ -64,7 +71,9 @@ fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, ServiceEr
 async fn rename_group(
     db: web::Data<Pool>,
     new_group: web::Json<Group>,
+    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
+    authorize_user(http_req)?;
     Ok(
         web::block(move || rename_single_group(db, new_group.into_inner()))
             .await

@@ -2,6 +2,7 @@
 extern crate diesel;
 extern crate dotenv;
 
+pub mod auth_handler;
 pub mod error_handler;
 pub mod schema;
 

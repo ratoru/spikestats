@@ -1,6 +1,7 @@
 use actix_web::error::BlockingError;
 use actix_web::{HttpResponse, ResponseError};
 use diesel::result::Error as DieselError;
+use jsonwebtoken::errors::Error as JwtError;
 use std::fmt;
 
 #[derive(Debug)]
@@ -9,6 +10,8 @@ pub enum ServiceError {
     BadRequest,
     NotFound,
     Conflict,
+    Unauthorized,
+    Forbidden,
 }
 
 impl fmt::Display for ServiceError {
@@ -19,6 +22,8 @@ impl fmt::Display for ServiceError {
             ServiceError::BadRequest => error_message = "Bad Request",
             ServiceError::NotFound => error_message = "Not Found",
             ServiceError::Conflict => error_message = "Conflict",
+            ServiceError::Unauthorized => error_message = "Authenticate Yoursel",
+            ServiceError::Forbidden => error_message = "Access forbidden",
         };
         f.write_str(error_message)
     }
@@ -44,6 +49,12 @@ impl From<BlockingError<ServiceError>> for ServiceError {
     }
 }
 
+impl From<JwtError> for ServiceError {
+    fn from(_error: JwtError) -> ServiceError {
+        ServiceError::Forbidden
+    }
+}
+
 impl ResponseError for ServiceError {
     fn error_response(&self) -> HttpResponse {
         match self {
@@ -57,6 +68,8 @@ impl ResponseError for ServiceError {
             ServiceError::Conflict => {
                 HttpResponse::Conflict().json("Conflict. Try something else.")
             }
+            ServiceError::Unauthorized => HttpResponse::Unauthorized().json("Authorize yourself."),
+            ServiceError::Forbidden => HttpResponse::Forbidden().json("Access forbidden."),
         }
     }
 }

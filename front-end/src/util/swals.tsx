@@ -12,7 +12,7 @@ import { Team, Players, ServeTeam } from "./types";
 
 // Template for error messages.
 export const errorToast = Swal.mixin({
-  title: "Something went wrong!",
+  title: "Something went wrong with the server!",
   icon: "error",
   toast: true,
   position: "center",
