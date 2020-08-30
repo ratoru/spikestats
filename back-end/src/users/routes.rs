@@ -1,29 +1,23 @@
-use crate::auth_handler::{create_cookie, generate_token};
+use crate::auth_handler;
 use crate::error_handler::ServiceError;
 use crate::schema::users::dsl::*;
 use crate::users::{InputUser, NewUser, ReturnUser, User};
 use crate::Pool;
-use actix_web::{get, post, web, HttpResponse};
+use actix_web::{get, post, web, HttpRequest, HttpResponse};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
-use uuid::Uuid;
 
 // This route is for testing purposes and should be deleted later.
-#[get("/users/{id}")]
-async fn get_user_by_id(
-    db: web::Data<Pool>,
-    user_id: web::Path<Uuid>,
-) -> Result<HttpResponse, ServiceError> {
-    Ok(
-        web::block(move || db_get_user_by_id(db, user_id.into_inner()))
-            .await
-            .map(|user| HttpResponse::Ok().json(user))?,
-    )
+#[get("/users")]
+async fn get_all_users(db: web::Data<Pool>) -> Result<HttpResponse, ServiceError> {
+    Ok(web::block(move || db_get_all_users(db))
+        .await
+        .map(|user| HttpResponse::Ok().json(user))?)
 }
 
-fn db_get_user_by_id(pool: web::Data<Pool>, user_id: Uuid) -> Result<User, ServiceError> {
+fn db_get_all_users(pool: web::Data<Pool>) -> Result<Vec<User>, ServiceError> {
     let conn = pool.get().map_err(|_| ServiceError::InternalServerError)?;
-    let user = users.find(user_id).get_result::<User>(&conn)?;
-    Ok(user)
+    let all_users = users.load::<User>(&conn)?;
+    Ok(all_users)
 }
 
 #[post("/users")]
@@ -64,21 +58,21 @@ async fn login(
         .await
         .map(|jwt| {
             HttpResponse::Created()
-                .cookie(create_cookie(&jwt))
-                .json(jwt)
+                .cookie(auth_handler::create_cookie(&jwt))
+                .json("Login succesful.")
         })?)
 }
 
 fn login_user(db: web::Data<Pool>, info: InputUser) -> Result<String, ServiceError> {
-    let res = authenticate_user(db, info)?;
+    let res = find_user(db, info)?;
     let return_user = ReturnUser {
         id: res.id,
         user_name: res.user_name,
     };
-    generate_token(return_user)
+    auth_handler::generate_token(return_user)
 }
 
-fn authenticate_user(db: web::Data<Pool>, info: InputUser) -> Result<User, ServiceError> {
+fn find_user(db: web::Data<Pool>, info: InputUser) -> Result<User, ServiceError> {
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let res = users
         .filter(user_name.eq(info.user_name))
@@ -87,8 +81,18 @@ fn authenticate_user(db: web::Data<Pool>, info: InputUser) -> Result<User, Servi
     Ok(res)
 }
 
+#[get("/checkAuth")]
+async fn check_authentication(http_req: HttpRequest) -> Result<HttpResponse, ServiceError> {
+    // Can't move httprequest into different thread with block.
+    let token = auth_handler::get_header_token(http_req, true)?;
+    Ok(web::block(move || auth_handler::authorize_token(&token))
+        .await
+        .map(|_| HttpResponse::Ok().finish())?)
+}
+
 pub fn init_routes(config: &mut web::ServiceConfig) {
-    config.service(get_user_by_id);
+    config.service(get_all_users);
     config.service(add_user);
     config.service(login);
+    config.service(check_authentication);
 }

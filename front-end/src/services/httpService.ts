@@ -15,6 +15,8 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 axios.defaults.baseURL = apiUrl;
+// Send cookies on each request.
+axios.defaults.withCredentials = true;
 
 export default {
   get: axios.get,

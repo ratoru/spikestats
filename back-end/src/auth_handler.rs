@@ -15,22 +15,21 @@ struct MyClaim {
     user_name: String,
 }
 
-// Checks the JWT-Token in a header. The header name is passed in as a param.
-// A bearer token is expected to be of the form Authorization = Bearer "token".
-fn authorize_header(http_req: HttpRequest, is_cookie: bool) -> Result<(), ServiceError> {
-    let token = get_token(http_req, is_cookie)?;
+// Decodes a token, thereby checking whether the token was set correctly.
+pub fn authorize_token(token: &str) -> Result<(), ServiceError> {
     let secret =
         std::env::var("ACCESS_TOKEN_SECRET").map_err(|_| ServiceError::InternalServerError)?;
-    // Skip "Bearer " with [7..] and "Authorization=" with [14..]
     decode::<MyClaim>(
-        &token,
+        token,
         &DecodingKey::from_secret(secret.as_ref()),
         &Validation::default(),
     )?;
     Ok(())
 }
 
-fn get_token(http_req: HttpRequest, is_cookie: bool) -> Result<String, ServiceError> {
+// Gets a token from the header of a request.
+// is_cookie toggles between Httponly Cookies and Auth Bearer.
+pub fn get_header_token(http_req: HttpRequest, is_cookie: bool) -> Result<String, ServiceError> {
     let mut header_name = "Authorization";
     let mut prefix_length = 7;
     if is_cookie {
@@ -42,11 +41,13 @@ fn get_token(http_req: HttpRequest, is_cookie: bool) -> Result<String, ServiceEr
     let token: &str = auth_header
         .to_str()
         .map_err(|_| ServiceError::Unauthorized)?;
+    // Skip "Bearer " with [7..] and "Authorization=" with [14..]
     Ok(token[prefix_length..].to_owned())
 }
 
 pub fn authorize_user(http_req: HttpRequest) -> Result<(), ServiceError> {
-    authorize_header(http_req, true)
+    let token = get_header_token(http_req, true)?;
+    authorize_token(&token)
 }
 
 pub fn generate_token(return_user: ReturnUser) -> Result<String, ServiceError> {
