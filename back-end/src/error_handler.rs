@@ -22,7 +22,7 @@ impl fmt::Display for ServiceError {
             ServiceError::BadRequest => error_message = "Bad Request",
             ServiceError::NotFound => error_message = "Not Found",
             ServiceError::Conflict => error_message = "Conflict",
-            ServiceError::Unauthorized => error_message = "Authenticate Yoursel",
+            ServiceError::Unauthorized => error_message = "Authenticate Yourself",
             ServiceError::Forbidden => error_message = "Access forbidden",
         };
         f.write_str(error_message)
@@ -49,9 +49,10 @@ impl From<BlockingError<ServiceError>> for ServiceError {
     }
 }
 
+// Maybe change to 401 error.
 impl From<JwtError> for ServiceError {
     fn from(_error: JwtError) -> ServiceError {
-        ServiceError::Forbidden
+        ServiceError::Unauthorized
     }
 }
 
@@ -68,7 +69,9 @@ impl ResponseError for ServiceError {
             ServiceError::Conflict => {
                 HttpResponse::Conflict().json("Conflict. Try something else.")
             }
-            ServiceError::Unauthorized => HttpResponse::Unauthorized().json("Authorize yourself."),
+            ServiceError::Unauthorized => {
+                HttpResponse::Unauthorized().json("Authenticate yourself.")
+            }
             ServiceError::Forbidden => HttpResponse::Forbidden().json("Access forbidden."),
         }
     }

@@ -5,7 +5,7 @@ use crate::groups::Group;
 use crate::schema::{games, groups};
 use crate::Pool;
 use actix_web::{delete, get, post, web, HttpResponse};
-use diesel::{BelongingToDsl, QueryDsl, RunQueryDsl};
+use diesel::{BelongingToDsl, ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
 #[get("/games/{group_id}")]
@@ -23,7 +23,9 @@ async fn find_games_by_id(
 fn get_all_games(pool: web::Data<Pool>, group_id: Uuid) -> Result<Vec<Game>, ServiceError> {
     let conn = pool.get().map_err(|_| ServiceError::InternalServerError)?;
     let group = groups::table.find(group_id).first::<Group>(&conn)?;
-    let game_list = Game::belonging_to(&group).load::<Game>(&conn)?;
+    let game_list = Game::belonging_to(&group)
+        .order(games::date_played.asc())
+        .load::<Game>(&conn)?;
     Ok(game_list)
 }
 

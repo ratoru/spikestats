@@ -31,7 +31,8 @@ export default function About() {
           <Grid item xs={12}>
             <Typography>
               Hi! This little web app allows you to track your 'Roundnet' games.
-              I hope you enjoy it.
+              I hope you enjoy it. Please never save any sensitive information
+              on this website.
             </Typography>
           </Grid>
           <Grid item xs={12}>

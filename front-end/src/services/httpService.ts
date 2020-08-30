@@ -1,5 +1,6 @@
 import axios from "axios";
 import { errorToast } from "../util/swals";
+import { apiUrl } from "../../app-config.json";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -12,6 +13,8 @@ axios.interceptors.response.use(null, (error) => {
   }
   return Promise.reject(error);
 });
+
+axios.defaults.baseURL = apiUrl;
 
 export default {
   get: axios.get,

@@ -63,7 +63,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         toast: true,
         position: "center",
         showConfirmButton: false,
-        timer: 5000,
+        timer: 4000,
         timerProgressBar: true,
       });
     }

@@ -5,9 +5,7 @@ use crate::schema::{groups, users};
 use crate::users::User;
 use crate::Pool;
 use actix_web::{delete, get, post, put, web, HttpResponse};
-use diesel::BelongingToDsl;
-use diesel::QueryDsl;
-use diesel::RunQueryDsl;
+use diesel::{BelongingToDsl, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
 #[get("/groups/{user_id}")]

@@ -1,14 +1,13 @@
-use crate::auth_handler::generate_token;
+use crate::auth_handler::{create_cookie, generate_token};
 use crate::error_handler::ServiceError;
 use crate::schema::users::dsl::*;
 use crate::users::{InputUser, NewUser, ReturnUser, User};
 use crate::Pool;
 use actix_web::{get, post, web, HttpResponse};
-use diesel::ExpressionMethods;
-use diesel::QueryDsl;
-use diesel::RunQueryDsl;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
+// This route is for testing purposes and should be deleted later.
 #[get("/users/{id}")]
 async fn get_user_by_id(
     db: web::Data<Pool>,
@@ -63,7 +62,11 @@ async fn login(
 ) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || login_user(db, user.into_inner()))
         .await
-        .map(|jwt| HttpResponse::Created().json(jwt))?)
+        .map(|jwt| {
+            HttpResponse::Created()
+                .cookie(create_cookie(&jwt))
+                .json(jwt)
+        })?)
 }
 
 fn login_user(db: web::Data<Pool>, info: InputUser) -> Result<String, ServiceError> {
