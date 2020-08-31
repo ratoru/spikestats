@@ -1,4 +1,8 @@
 // This file defines the basic type structure of the data structures used.
+export interface User {
+  username: string;
+  password: string;
+}
 
 // Two player Ids. (Both uuids)
 export type Team = [string, string];
@@ -17,7 +21,7 @@ export interface Game {
   redTeam: Team;
   score: Score;
   serve: ServeTeam;
-  date: Date;
+  date_played: Date;
 }
 
 export interface Player {

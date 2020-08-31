@@ -38,7 +38,7 @@ export const GroupList: React.FC = () => {
   // Use style
   const classes = useStyles();
 
-  // Use state hook
+  // Store groups in state
   const [groups, setGroups] = useState<Group[]>([]);
 
   // Add a group
@@ -76,7 +76,6 @@ export const GroupList: React.FC = () => {
     }
     newGroup.groupname = `${newGroupname}`;
 
-    // Add Players until "" is returned.
     groupPlayerSelection(newGroup.groupname)
       .then((createdPlayers) => {
         newGroup.players = createdPlayers;
@@ -110,7 +109,6 @@ export const GroupList: React.FC = () => {
         setGroups(
           groups.filter((curGroup) => curGroup.groupname !== groupname)
         );
-        console.log(",Handle delete.", groupname, groups);
         // Call backend and revert if error.
         const apiSuccess = true;
         if (!apiSuccess) {
@@ -126,6 +124,8 @@ export const GroupList: React.FC = () => {
     // New name can't be the old name.
 
     const newGroups: Group[] = [];
+    const oldGroups: Group[] = groups;
+    let changedGroup: Group;
     for (let curGroup of groups) {
       const curName = curGroup.groupname;
       // Check if the name is unique.
@@ -135,13 +135,18 @@ export const GroupList: React.FC = () => {
       }
       if (curName === oldName) {
         // Modify old name.
-        newGroups.push({ ...curGroup, groupname: newName });
+        changedGroup = { ...curGroup, groupname: newName };
+        newGroups.push(changedGroup);
       } else {
         newGroups.push(curGroup);
       }
     }
     setGroups(newGroups);
     // Call server here.
+    if (true) {
+      errorToast.fire({ text: "Group doesn't exist anymore." });
+      setGroups(oldGroups);
+    }
   };
 
   // Rename a player.

@@ -100,7 +100,7 @@ export const GameTable: React.FC<GameTableProps> = ({
     },
     {
       title: "Date",
-      field: "date",
+      field: "date_played",
       type: "datetime",
       defaultSort: "desc",
     },

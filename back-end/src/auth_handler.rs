@@ -9,22 +9,22 @@ use uuid::Uuid;
 const TOKEN_LIFETIME: i64 = 2;
 
 #[derive(Serialize, Deserialize)]
-struct MyClaim {
-    exp: i64,
-    id: Uuid,
-    user_name: String,
+pub struct MyClaim {
+    pub exp: i64,
+    pub id: Uuid,
+    pub username: String,
 }
 
 // Decodes a token, thereby checking whether the token was set correctly.
-pub fn authorize_token(token: &str) -> Result<(), ServiceError> {
+pub fn authorize_token(token: &str) -> Result<MyClaim, ServiceError> {
     let secret =
         std::env::var("ACCESS_TOKEN_SECRET").map_err(|_| ServiceError::InternalServerError)?;
-    decode::<MyClaim>(
+    let result = decode::<MyClaim>(
         token,
         &DecodingKey::from_secret(secret.as_ref()),
         &Validation::default(),
     )?;
-    Ok(())
+    Ok(result.claims)
 }
 
 // Gets a token from the header of a request.
@@ -45,7 +45,7 @@ pub fn get_header_token(http_req: HttpRequest, is_cookie: bool) -> Result<String
     Ok(token[prefix_length..].to_owned())
 }
 
-pub fn authorize_user(http_req: HttpRequest) -> Result<(), ServiceError> {
+pub fn authorize_user(http_req: HttpRequest) -> Result<MyClaim, ServiceError> {
     let token = get_header_token(http_req, true)?;
     authorize_token(&token)
 }
@@ -57,7 +57,7 @@ pub fn generate_token(return_user: ReturnUser) -> Result<String, ServiceError> {
     let my_claims = MyClaim {
         exp: exp_time.timestamp(),
         id: return_user.id,
-        user_name: return_user.user_name,
+        username: return_user.username,
     };
     encode(
         &Header::default(),
@@ -72,5 +72,6 @@ pub fn create_cookie(jwt: &str) -> Cookie {
     Cookie::build("Authorization", jwt.to_owned())
         .max_age_time(Duration::hours(TOKEN_LIFETIME))
         .http_only(true)
+        .same_site(actix_web::cookie::SameSite::None)
         .finish()
 }

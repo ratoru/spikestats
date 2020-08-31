@@ -29,7 +29,7 @@ table! {
 table! {
     users (id) {
         id -> Uuid,
-        user_name -> Text,
+        username -> Text,
         password -> Text,
     }
 }
@@ -38,9 +38,4 @@ joinable!(games -> groups (group_id));
 joinable!(groups -> users (user_id));
 joinable!(players -> groups (group_id));
 
-allow_tables_to_appear_in_same_query!(
-    games,
-    groups,
-    players,
-    users,
-);
+allow_tables_to_appear_in_same_query!(games, groups, players, users,);

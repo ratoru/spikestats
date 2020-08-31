@@ -1,4 +1,4 @@
-use crate::auth_handler::authorize_user;
+use crate::auth_handler::{authorize_user, MyClaim};
 use crate::error_handler::ServiceError;
 use crate::groups::Group;
 use crate::schema::{groups, users};
@@ -8,14 +8,14 @@ use actix_web::{delete, get, post, put, web, HttpResponse};
 use diesel::{BelongingToDsl, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
-#[get("/groups/{user_id}")]
+// Decodes jwt in httponly cookie to get user_id.
+#[get("/groups")]
 async fn find_groups_by_id(
-    id_req: web::Path<Uuid>,
     db: web::Data<Pool>,
     http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
-    Ok(web::block(move || get_all_groups(db, id_req.into_inner()))
+    let claim: MyClaim = authorize_user(http_req)?;
+    Ok(web::block(move || get_all_groups(db, claim.id))
         .await
         .map(|group| HttpResponse::Ok().json(group))?)
 }

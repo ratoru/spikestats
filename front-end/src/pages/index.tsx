@@ -21,6 +21,7 @@ function IndexPage() {
             header="Login"
             loginRoute="/groups"
             registerRoute="/register"
+            apiRoute="/login"
           />
         </Grid>
         <Grid item>

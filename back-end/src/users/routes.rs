@@ -36,7 +36,7 @@ fn add_single_user(
 ) -> Result<ReturnUser, ServiceError> {
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let new_user = NewUser {
-        user_name: &item.user_name,
+        username: &item.username,
         password: &item.password,
     };
     let res = diesel::insert_into(users)
@@ -44,7 +44,7 @@ fn add_single_user(
         .get_result::<User>(&conn)?;
     let new_user = ReturnUser {
         id: res.id,
-        user_name: res.user_name,
+        username: res.username,
     };
     Ok(new_user)
 }
@@ -67,7 +67,7 @@ fn login_user(db: web::Data<Pool>, info: InputUser) -> Result<String, ServiceErr
     let res = find_user(db, info)?;
     let return_user = ReturnUser {
         id: res.id,
-        user_name: res.user_name,
+        username: res.username,
     };
     auth_handler::generate_token(return_user)
 }
@@ -75,12 +75,23 @@ fn login_user(db: web::Data<Pool>, info: InputUser) -> Result<String, ServiceErr
 fn find_user(db: web::Data<Pool>, info: InputUser) -> Result<User, ServiceError> {
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let res = users
-        .filter(user_name.eq(info.user_name))
+        .filter(username.eq(info.username))
         .filter(password.eq(info.password))
         .get_result::<User>(&conn)?;
     Ok(res)
 }
 
+// Removes HttpOnly cookie.
+#[post("/logout")]
+async fn logout() -> Result<HttpResponse, ServiceError> {
+    let c = actix_web::http::Cookie::parse(
+        "Authorization=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+    )
+    .unwrap();
+    Ok(HttpResponse::Ok().cookie(c).finish())
+}
+
+// Returns whether the user is logged in or not.
 #[get("/checkAuth")]
 async fn check_authentication(http_req: HttpRequest) -> Result<HttpResponse, ServiceError> {
     // Can't move httprequest into different thread with block.
@@ -95,4 +106,5 @@ pub fn init_routes(config: &mut web::ServiceConfig) {
     config.service(add_user);
     config.service(login);
     config.service(check_authentication);
+    config.service(logout);
 }

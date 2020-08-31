@@ -11,7 +11,9 @@ import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { FormikField } from "./FormikField";
-import Swal from "sweetalert2";
+import { errorToast } from "../../util/swals";
+import { User } from "../../util/types";
+import http from "../../services/httpService";
 
 const useStyles = makeStyles({
   root: {
@@ -27,6 +29,7 @@ interface LoginFormProps {
   header: string;
   loginRoute: string;
   registerRoute: string;
+  apiRoute: string;
 }
 
 const SignupSchema = Yup.object().shape({
@@ -44,6 +47,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   header,
   loginRoute,
   registerRoute,
+  apiRoute,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -52,20 +56,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     password: "",
   };
 
-  const handleSubmit = (values: FormValues): void => {
+  const handleSubmit = async (values: FormValues): Promise<void> => {
+    const user: User = {
+      username: values.username,
+      password: values.password,
+    };
     // Call server HERE
-    if (values.username === "yes") {
+    try {
+      await http.post(apiRoute, user);
       Router.push(`${loginRoute}`);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Wrong username or password",
-        toast: true,
-        position: "center",
-        showConfirmButton: false,
-        timer: 4000,
-        timerProgressBar: true,
-      });
+    } catch (error) {
+      errorToast.fire({ title: "Wrong username or password." });
     }
   };
 
