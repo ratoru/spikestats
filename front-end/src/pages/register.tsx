@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { LogoBar } from "../components/LogoBar";
-import { RegisterForm } from "../components/RegisterForm";
+import { LogoBar } from "../components/appBars/LogoBar";
+import { RegisterForm } from "../components/forms/RegisterForm";
 import { MyFooter } from "../components/common/MyFooter";
 
 export default function Code() {

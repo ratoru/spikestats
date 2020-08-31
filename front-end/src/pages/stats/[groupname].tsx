@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@material-ui/core/Typography";
-import { MainBar } from "../../components/MainBar";
+import { MainBar } from "../../components/appBars/MainBar";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { AllCharts } from "../../components/AllCharts";

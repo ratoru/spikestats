@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
-import { GroupListItem } from "./common/GroupListItem";
+import { GroupListItem } from "./lists/GroupListItem";
 import {
   errorToast,
   groupPlayerSelection,

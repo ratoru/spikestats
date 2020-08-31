@@ -1,8 +1,8 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { MyFooter } from "../components/common/MyFooter";
-import { LoginForm } from "../components/LoginForm";
-import { LogoBar } from "../components/LogoBar";
+import { LoginForm } from "../components/forms/LoginForm";
+import { LogoBar } from "../components/appBars/LogoBar";
 
 function IndexPage() {
   return (

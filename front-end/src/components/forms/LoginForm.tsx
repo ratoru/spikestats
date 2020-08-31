@@ -9,10 +9,9 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import PersonRoundedIcon from "@material-ui/icons/PersonRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { FormikField } from "./common/FormikField";
-import { errorToast } from "../util/swals";
+import { FormikField } from "./FormikField";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +22,11 @@ const useStyles = makeStyles({
 interface FormValues {
   username: string;
   password: string;
-  confirmedPassword: string;
+}
+interface LoginFormProps {
+  header: string;
+  loginRoute: string;
+  registerRoute: string;
 }
 
 const SignupSchema = Yup.object().shape({
@@ -35,40 +38,41 @@ const SignupSchema = Yup.object().shape({
     .min(4, "Too short!")
     .max(30, "Too long!")
     .required("Required!"),
-  confirmedPassword: Yup.string().test(
-    "equal",
-    "Passwords do not match!",
-    function (v) {
-      // Don't use arrow functions
-      const ref = Yup.ref("password");
-      return v === this.resolve(ref);
-    }
-  ),
 });
 
-export const RegisterForm: React.FC = () => {
+export const LoginForm: React.FC<LoginFormProps> = ({
+  header,
+  loginRoute,
+  registerRoute,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const initialValues: FormValues = {
     username: "",
     password: "",
-    confirmedPassword: "",
   };
 
   const handleSubmit = (values: FormValues): void => {
     // Call server HERE
-    const serversSuccess = true;
-    if (serversSuccess) {
-      Router.push("/groups");
+    if (values.username === "yes") {
+      Router.push(`${loginRoute}`);
     } else {
-      errorToast.fire();
+      Swal.fire({
+        icon: "error",
+        title: "Wrong username or password",
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+      });
     }
   };
 
   return (
     <Box padding={4} maxWidth="sm" className={classes.root}>
       <Typography component="h1" variant="h5" style={{ textAlign: "left" }}>
-        Register
+        {header}
       </Typography>
       <Formik
         initialValues={initialValues}
@@ -89,12 +93,6 @@ export const RegisterForm: React.FC = () => {
                 type="password"
                 icon={<LockRoundedIcon />}
               />
-              <FormikField
-                name="confirmedPassword"
-                label="Confirm Password"
-                type="password"
-                icon={<VerifiedUserIcon />}
-              />
               <Box my={2}>
                 <Button
                   variant="contained"
@@ -103,12 +101,12 @@ export const RegisterForm: React.FC = () => {
                   type="submit"
                   fullWidth
                 >
-                  Register
+                  Sign In
                 </Button>
               </Box>
-              <Link href={"/"}>
+              <Link href={`${registerRoute}`}>
                 <Typography>
-                  <MuiLink href="#">Login.</MuiLink>
+                  <MuiLink href="#">Register.</MuiLink>
                 </Typography>
               </Link>
             </Form>

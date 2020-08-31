@@ -11,7 +11,7 @@ import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import { useTheme } from "@material-ui/core";
-import { MuiMenu, MuiMenuItem } from "./common/MuiMenu";
+import { MuiMenu, MuiMenuItem } from "./MuiMenu";
 
 export const MainBar: React.FC = () => {
   const router = useRouter();

@@ -5,7 +5,7 @@ import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import { Typography, useTheme } from "@material-ui/core";
-import { MuiMenu, MuiMenuItem } from "./common/MuiMenu";
+import { MuiMenu, MuiMenuItem } from "./MuiMenu";
 
 export const LogoBar = () => {
   const theme = useTheme();

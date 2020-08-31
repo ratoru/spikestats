@@ -1,5 +1,5 @@
 import React from "react";
-import { LogoBar } from "../components/LogoBar";
+import { LogoBar } from "../components/appBars/LogoBar";
 
 export default function Code() {
   return (
