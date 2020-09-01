@@ -1,4 +1,10 @@
 // This file defines the basic type structure of the data structures used.
+export interface Group {
+  id: string;
+  groupname: string;
+  players: Players;
+}
+
 export interface User {
   username: string;
   password: string;

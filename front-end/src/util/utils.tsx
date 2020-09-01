@@ -219,7 +219,7 @@ function setNewWinPercentageDP(
 ) {
   const values = valuesPerPlayer.get(id);
   const dataPoint: WinPercentageDP = {
-    date: game.date,
+    date: game.date_played,
     winPercentage: (values.wins / values.total) * 100,
   };
   dataIds.set(id, [...dataIds.get(id), dataPoint]);

@@ -2,7 +2,7 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
-import { richAndColorfulTheme } from "../components/Layout/themes"; // Changed to my theme.
+import { richAndColorfulTheme } from "../components/layout/themes"; // Changed to my theme.
 
 export default class MyDocument extends Document {
   render() {

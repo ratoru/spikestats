@@ -11,17 +11,13 @@ import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
 import { useTheme } from "@material-ui/core";
-import { MuiMenu, MuiMenuItem } from "./MuiMenu";
+import { LoggedInMenu } from "../menus/LoggedInMenu";
+import { LoggedOutMenu } from "../menus/LoggedOutMenu";
+import { useIsAuthenticated } from "../../providers/Auth";
 
 export const MainBar: React.FC = () => {
   const router = useRouter();
   const theme = useTheme();
-
-  const menu: MuiMenuItem[] = [
-    ["Logout", <LockRoundedIcon />, "/"],
-    ["About", <InfoRoundedIcon />, "/about"],
-    ["Code", <CodeRoundedIcon />, "/code"],
-  ];
 
   return (
     <AppBar position="static">
@@ -43,7 +39,7 @@ export const MainBar: React.FC = () => {
             </Tooltip>
           </Grid>
           <Grid item>
-            <MuiMenu items={menu} color={theme.palette.secondary.main} />
+            {useIsAuthenticated() ? <LoggedInMenu /> : <LoggedOutMenu />}
           </Grid>
         </Grid>
       </Toolbar>

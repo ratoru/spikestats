@@ -3,8 +3,9 @@ import Grid from "@material-ui/core/Grid";
 import { LogoBar } from "../components/appBars/LogoBar";
 import { RegisterForm } from "../components/forms/RegisterForm";
 import { MyFooter } from "../components/common/MyFooter";
+import { withoutAuth } from "../components/authentication/withoutAuth";
 
-export default function Code() {
+export default withoutAuth(function Code() {
   return (
     <React.Fragment>
       <LogoBar />
@@ -17,7 +18,7 @@ export default function Code() {
         style={{ minHeight: "100vh" }}
       >
         <Grid item>
-          <RegisterForm />
+          <RegisterForm loginRoute="/groups" apiRoute="/register" />
         </Grid>
         <Grid item>
           <MyFooter />
@@ -25,4 +26,4 @@ export default function Code() {
       </Grid>
     </React.Fragment>
   );
-}
+});

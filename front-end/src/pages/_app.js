@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { richAndColorfulTheme } from "../components/Layout/themes"; // Changed to my theme.
+import { richAndColorfulTheme } from "../components/layout/themes"; // Changed to my theme.
+import { AuthProvider } from "../providers/Auth";
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -30,7 +31,9 @@ export default function MyApp(props) {
       <ThemeProvider theme={richAndColorfulTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ThemeProvider>
     </React.Fragment>
   );

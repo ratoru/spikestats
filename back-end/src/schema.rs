@@ -13,7 +13,7 @@ table! {
 table! {
     groups (id) {
         id -> Uuid,
-        group_name -> Text,
+        groupname -> Text,
         user_id -> Uuid,
     }
 }
@@ -21,7 +21,7 @@ table! {
 table! {
     players (id) {
         id -> Uuid,
-        player_name -> Text,
+        playername -> Text,
         group_id -> Uuid,
     }
 }

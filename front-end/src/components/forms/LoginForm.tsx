@@ -14,6 +14,7 @@ import { FormikField } from "./FormikField";
 import { errorToast } from "../../util/swals";
 import { User } from "../../util/types";
 import http from "../../services/httpService";
+import { useAuth } from "../../providers/Auth";
 
 const useStyles = makeStyles({
   root: {
@@ -50,11 +51,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   apiRoute,
 }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const initialValues: FormValues = {
     username: "",
     password: "",
   };
+  const { setAuthenticated } = useAuth();
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     const user: User = {
@@ -64,6 +65,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     // Call server HERE
     try {
       await http.post(apiRoute, user);
+      setAuthenticated(true);
       Router.push(`${loginRoute}`);
     } catch (error) {
       errorToast.fire({ title: "Wrong username or password." });
@@ -107,7 +109,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               </Box>
               <Link href={`${registerRoute}`}>
                 <Typography>
-                  <MuiLink href="#">Register.</MuiLink>
+                  <MuiLink href="#" color="error">
+                    Register.
+                  </MuiLink>
                 </Typography>
               </Link>
             </Form>

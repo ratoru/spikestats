@@ -2,12 +2,14 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { MyFooter } from "../components/common/MyFooter";
 import { LoginForm } from "../components/forms/LoginForm";
-import { LogoBar } from "../components/appBars/LogoBar";
+// import { LogoBar } from "../components/appBars/LogoBar";
+import { LoggedOutMenu } from "../components/menus/LoggedOutMenu";
+import { withoutAuth } from "../components/authentication/withoutAuth";
 
-function IndexPage() {
+export default withoutAuth(function IndexPage() {
   return (
     <React.Fragment>
-      <LogoBar />
+      <LoggedOutMenu />
       <Grid
         container
         spacing={0}
@@ -30,6 +32,4 @@ function IndexPage() {
       </Grid>
     </React.Fragment>
   );
-}
-
-export default IndexPage;
+});

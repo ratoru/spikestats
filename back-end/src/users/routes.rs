@@ -20,20 +20,24 @@ fn db_get_all_users(pool: web::Data<Pool>) -> Result<Vec<User>, ServiceError> {
     Ok(all_users)
 }
 
-#[post("/users")]
+#[post("/register")]
 async fn add_user(
     db: web::Data<Pool>,
     item: web::Json<InputUser>,
 ) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || add_single_user(db, item))
         .await
-        .map(|new_user| HttpResponse::Created().json(new_user))?)
+        .map(|jwt| {
+            HttpResponse::Created()
+                .cookie(auth_handler::create_cookie(&jwt))
+                .finish()
+        })?)
 }
 
 fn add_single_user(
     db: web::Data<Pool>,
     item: web::Json<InputUser>,
-) -> Result<ReturnUser, ServiceError> {
+) -> Result<String, ServiceError> {
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let new_user = NewUser {
         username: &item.username,
@@ -42,11 +46,11 @@ fn add_single_user(
     let res = diesel::insert_into(users)
         .values(&new_user)
         .get_result::<User>(&conn)?;
-    let new_user = ReturnUser {
+    let created_user = ReturnUser {
         id: res.id,
         username: res.username,
     };
-    Ok(new_user)
+    auth_handler::generate_token(created_user)
 }
 
 #[post("/login")]
@@ -59,7 +63,7 @@ async fn login(
         .map(|jwt| {
             HttpResponse::Created()
                 .cookie(auth_handler::create_cookie(&jwt))
-                .json("Login succesful.")
+                .finish()
         })?)
 }
 

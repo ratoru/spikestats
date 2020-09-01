@@ -10,18 +10,17 @@ import Collapse from "@material-ui/core/Collapse";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import ExpandLessRounded from "@material-ui/icons/ExpandLessRounded";
 import ExpandMoreRounded from "@material-ui/icons/ExpandMoreRounded";
 import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
-import { Group } from "../GroupList";
+import { Group } from "../../util/types";
 import { PlayerListItem } from "./PlayerListItem";
 import { FormikListItem } from "./FormikListItem";
 
 interface GroupListItemProps {
   group: Group;
-  onDelete: (groupname: string) => void;
+  onDelete: (groupname: string, id: string) => void;
   onRenameGroup: (oldName: string, newName: string) => void;
   onRenamePlayer: (oldPlayerId: string, newName: string) => void;
 }
@@ -94,7 +93,7 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
           </Tooltip>
           <Tooltip title="Delete" arrow>
             <Button
-              onClick={() => onDelete(group.groupname)}
+              onClick={() => onDelete(group.groupname, group.id)}
               aria-label="delete group"
             >
               <DeleteForeverRoundedIcon />

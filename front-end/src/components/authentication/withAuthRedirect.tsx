@@ -10,7 +10,9 @@ function isBrowser(): boolean {
 }
 
 function DefaultLoadingFallback(): ReactElement {
-  return <LoadingAn type="bars" color={richAndColorfulTheme.palette.primary} />;
+  return (
+    <LoadingAn type="bars" color={richAndColorfulTheme.palette.primary.main} />
+  );
 }
 
 /**

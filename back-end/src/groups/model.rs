@@ -8,6 +8,13 @@ use uuid::Uuid;
 #[table_name = "groups"]
 pub struct Group {
     pub id: Uuid,
-    pub group_name: String,
+    pub groupname: String,
+    #[serde(skip_serializing)]
     pub user_id: Uuid,
+}
+
+#[derive(Deserialize)]
+pub struct InputGroup {
+    pub id: Uuid,
+    pub groupname: String,
 }

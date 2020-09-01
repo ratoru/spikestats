@@ -23,14 +23,22 @@ export const AuthProvider = ({
 }): ReactElement => {
   const [isAuthenticated, setAuthenticated] = React.useState<boolean>(false);
   const [isLoading, setLoading] = React.useState<boolean>(true);
+
   React.useEffect(() => {
     const initializeAuth = async (): Promise<void> => {
-      const response = await http.get("/checkAuth");
-      setAuthenticated(response.status === 200);
+      let status: number;
+      try {
+        const response = await http.get("/checkAuth");
+        status = response.status;
+      } catch (error) {
+        status = 401;
+      }
+      setAuthenticated(status === 200);
       setLoading(false);
     };
     initializeAuth();
   }, []);
+
   return (
     <AuthContext.Provider
       value={{

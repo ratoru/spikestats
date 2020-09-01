@@ -1,11 +1,16 @@
 import React from "react";
-import ReactLoading from "react-loading";
+import ReactLoading, { LoadingType } from "react-loading";
 import Grid from "@material-ui/core/Grid";
 
-export const LoadingAn = ({ type, color }) => (
+interface LoadingAnProps {
+  type: LoadingType;
+  color: string;
+}
+
+export const LoadingAn: React.FC<LoadingAnProps> = ({ type, color }) => (
   <Grid container justify="center" alignItems="center">
     <Grid item>
-      <ReactLoading type={type} color={color} height={667} width={375} />
+      <ReactLoading type={type} color={color} width={"35vw"} />
     </Grid>
   </Grid>
 );

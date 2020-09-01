@@ -1,6 +1,6 @@
 use crate::auth_handler::{authorize_user, MyClaim};
 use crate::error_handler::ServiceError;
-use crate::groups::Group;
+use crate::groups::{Group, InputGroup};
 use crate::schema::{groups, users};
 use crate::users::User;
 use crate::Pool;
@@ -27,22 +27,34 @@ fn get_all_groups(pool: web::Data<Pool>, id_req: Uuid) -> Result<Vec<Group>, Ser
     Ok(group_list)
 }
 
+// Figures out user_id of the created group through cookie.
 #[post("/groups")]
 async fn add_group(
     db: web::Data<Pool>,
-    item: web::Json<Group>,
+    item: web::Json<InputGroup>,
     http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
-    Ok(web::block(move || add_single_group(db, item.into_inner()))
-        .await
-        .map(|_| HttpResponse::Created().finish())?)
+    let claim: MyClaim = authorize_user(http_req)?;
+    Ok(
+        web::block(move || add_single_group(db, item.into_inner(), claim))
+            .await
+            .map(|_| HttpResponse::Created().finish())?,
+    )
 }
 
-fn add_single_group(db: web::Data<Pool>, item: Group) -> Result<(), ServiceError> {
+fn add_single_group(
+    db: web::Data<Pool>,
+    item: InputGroup,
+    claim: MyClaim,
+) -> Result<(), ServiceError> {
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
+    let new_group = Group {
+        id: item.id,
+        groupname: item.groupname,
+        user_id: claim.id,
+    };
     diesel::insert_into(groups::table)
-        .values(&item)
+        .values(&new_group)
         .execute(&conn)?;
     Ok(())
 }

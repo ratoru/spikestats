@@ -7,12 +7,12 @@ CREATE TABLE users (
 );
 CREATE TABLE groups (
     id uuid PRIMARY KEY,
-    group_name TEXT NOT NULL,
+    groupname TEXT NOT NULL,
     user_id uuid NOT NULL REFERENCES users(id)
 );
 CREATE TABLE players (
     id uuid PRIMARY KEY,
-    player_name TEXT NOT NULL,
+    playername TEXT NOT NULL,
     group_id uuid NOT NULL REFERENCES groups(id) ON DELETE CASCADE
 );
 CREATE TABLE games (

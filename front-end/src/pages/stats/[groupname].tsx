@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@material-ui/core/Typography";
-import { MainBar } from "../../components/appBars/MainBar";
+// import { MainBar } from "../../components/appBars/MainBar";
+import { LoggedInMenu } from "../../components/menus/LoggedInMenu";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { AllCharts } from "../../components/AllCharts";
@@ -13,8 +14,9 @@ import {
   serveSelection,
   confirmSelection,
 } from "../../util/swals";
+import { withAuth } from "../../components/authentication/withAuth";
 
-export default function Stats() {
+export default withAuth(function Stats() {
   const router = useRouter();
   const { groupname } = router.query;
 
@@ -82,8 +84,8 @@ export default function Stats() {
 
   return (
     <React.Fragment>
-      <MainBar />
+      <LoggedInMenu />
       <NavStats tab1Content={tab1} tab2Content={tab2} onAdd={handleAdd} />
     </React.Fragment>
   );
-}
+});

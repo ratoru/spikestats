@@ -13,12 +13,20 @@ import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { FormikField } from "./FormikField";
 import { errorToast } from "../../util/swals";
+import { User } from "../../util/types";
+import http from "../../services/httpService";
+import { useAuth } from "../../providers/Auth";
 
 const useStyles = makeStyles({
   root: {
     background: "#ECECEC",
   },
 });
+
+interface RegisterFromProps {
+  apiRoute: string;
+  loginRoute: string;
+}
 
 interface FormValues {
   username: string;
@@ -46,7 +54,10 @@ const SignupSchema = Yup.object().shape({
   ),
 });
 
-export const RegisterForm: React.FC = () => {
+export const RegisterForm: React.FC<RegisterFromProps> = ({
+  apiRoute,
+  loginRoute,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const initialValues: FormValues = {
@@ -54,14 +65,20 @@ export const RegisterForm: React.FC = () => {
     password: "",
     confirmedPassword: "",
   };
+  const { setAuthenticated } = useAuth();
 
-  const handleSubmit = (values: FormValues): void => {
+  const handleSubmit = async (values: FormValues): Promise<void> => {
+    const user: User = {
+      username: values.username,
+      password: values.password,
+    };
     // Call server HERE
-    const serversSuccess = true;
-    if (serversSuccess) {
-      Router.push("/groups");
-    } else {
-      errorToast.fire();
+    try {
+      await http.post(apiRoute, user);
+      setAuthenticated(true);
+      Router.push(`${loginRoute}`);
+    } catch (error) {
+      errorToast.fire({ title: "Try a different username." });
     }
   };
 

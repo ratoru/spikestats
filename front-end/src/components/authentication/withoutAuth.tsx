@@ -5,7 +5,7 @@ import withAuthRedirect from "./withAuthRedirect";
  * Require the user to be unauthenticated in order to render the component.
  * If the user is authenticated, forward to the given URL.
  */
-export default function withoutAuth<P>(
+export function withoutAuth<P>(
   WrappedComponent: NextPage<P>,
   location = "/groups"
 ): NextPage<P> {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import List from "@material-ui/core/List";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -13,13 +13,10 @@ import {
   groupPlayerSelection,
   groupConfirmation,
 } from "../util/swals";
-import { Players } from "../util/types";
-
-export interface Group {
-  groupname: string;
-  groupId: string;
-  players: Players;
-}
+import { Players, Group } from "../util/types";
+import http from "../services/httpService";
+import { LoadingAn } from "../components/common/LoadingAn";
+import { richAndColorfulTheme } from "../components/layout/themes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,17 +31,62 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface GroupServer {
+  id: string;
+  groupname: string;
+}
+interface PlayerServer {
+  id: string;
+  playername: string;
+}
+
 export const GroupList: React.FC = () => {
   // Use style
   const classes = useStyles();
 
   // Store groups in state
   const [groups, setGroups] = useState<Group[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Get data from server.
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const storedGroups: Group[] = [];
+      try {
+        // Get user's groups.
+        const groupResult = await http.get("/groups");
+        const returnedGroups: GroupServer[] = groupResult.data;
+        // For each group get the players.
+        for (let group of returnedGroups) {
+          const playersResult = await http.get(`/players/${group.id}`);
+          const returnedPlayers: PlayerServer[] = playersResult.data;
+          const playersMap: Players = new Map(
+            returnedPlayers.map((play): [string, string] => [
+              play.id,
+              play.playername,
+            ])
+          );
+          storedGroups.push({
+            id: group.id,
+            groupname: group.groupname,
+            players: playersMap,
+          });
+        }
+        setGroups(storedGroups);
+      } catch (error) {
+        errorToast.fire();
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   // Add a group
   const handleAdd = async () => {
     let newGroup: Group = {
-      groupId: uuidv4(),
+      id: uuidv4(),
       groupname: "",
       players: new Map(),
     };
@@ -81,9 +123,31 @@ export const GroupList: React.FC = () => {
         newGroup.players = createdPlayers;
         return groupConfirmation(newGroup.groupname, newGroup.players);
       })
-      .then(() => {
+      .then(async () => {
+        const oldGroups = groups;
+        // Update UI
         setGroups((groups) => [...groups, newGroup]);
         // Call server
+        const serverGroup: GroupServer = {
+          id: newGroup.id,
+          groupname: newGroup.id,
+        };
+        const serverPlayers = [];
+        newGroup.players.forEach((value, key) =>
+          serverPlayers.push({
+            id: key,
+            playername: value,
+            group_id: newGroup.id,
+          })
+        );
+        try {
+          await http.post("/groups", serverGroup);
+          await http.post("/players", serverPlayers);
+        } catch (error) {
+          errorToast.fire();
+          // Revert UI
+          setGroups(oldGroups);
+        }
       })
       .catch(() => {
         return;
@@ -91,7 +155,7 @@ export const GroupList: React.FC = () => {
   };
 
   // Delete a group
-  const handleDelete = (groupname: string) => {
+  const handleDelete = (groupname: string, id: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: `You won't be able to revert deleting ${groupname}!`,
@@ -101,7 +165,7 @@ export const GroupList: React.FC = () => {
       focusConfirm: false,
       focusCancel: true,
       cancelButtonText: "No, cancel!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.value) {
         // Save old state
         const prevGroups = [...groups];
@@ -110,8 +174,9 @@ export const GroupList: React.FC = () => {
           groups.filter((curGroup) => curGroup.groupname !== groupname)
         );
         // Call backend and revert if error.
-        const apiSuccess = true;
-        if (!apiSuccess) {
+        try {
+          await http.delete(`/groups/${id}`);
+        } catch (error) {
           errorToast.fire({ text: "The group was already deleted." });
           setGroups(prevGroups);
         }
@@ -212,7 +277,14 @@ export const GroupList: React.FC = () => {
   }
   return (
     <React.Fragment>
-      {content}
+      {isLoading ? (
+        <LoadingAn
+          type="spin"
+          color={`${richAndColorfulTheme.palette.primary.main}`}
+        />
+      ) : (
+        content
+      )}
       <Tooltip title="New Group" arrow placement="top">
         <Fab
           size="large"

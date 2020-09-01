@@ -8,6 +8,7 @@ use uuid::Uuid;
 #[table_name = "players"]
 pub struct Player {
     pub id: Uuid,
-    pub player_name: String,
+    pub playername: String,
+    #[serde(skip_serializing)]
     pub group_id: Uuid,
 }
