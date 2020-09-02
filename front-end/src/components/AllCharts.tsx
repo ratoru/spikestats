@@ -7,7 +7,7 @@ import {
   getPlayerPointsData,
   getPlayerWinsTreeData,
   getWinPercentage,
-} from "../util/utils";
+} from "../util/dataFns";
 
 // Need to use browser rendering for all amCharts.
 // https://github.com/amcharts/amcharts4/issues/272#issuecomment-646326596

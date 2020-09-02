@@ -14,6 +14,7 @@ import {
   groupConfirmation,
 } from "../util/swals";
 import { Players, Group } from "../util/types";
+import { playerVecToMap } from "../util/utils";
 import http from "../services/httpService";
 import { LoadingAn } from "../components/common/LoadingAn";
 import { richAndColorfulTheme } from "../components/layout/themes";
@@ -35,10 +36,10 @@ interface GroupServer {
   id: string;
   groupname: string;
 }
-interface PlayerServer {
-  id: string;
-  playername: string;
-}
+// interface PlayerServer {
+//   id: string;
+//   playername: string;
+// }
 
 export const GroupList: React.FC = () => {
   // Use style
@@ -60,13 +61,14 @@ export const GroupList: React.FC = () => {
         // For each group get the players.
         for (let group of returnedGroups) {
           const playersResult = await http.get(`/players/${group.id}`);
-          const returnedPlayers: PlayerServer[] = playersResult.data;
-          const playersMap: Players = new Map(
-            returnedPlayers.map((play): [string, string] => [
-              play.id,
-              play.playername,
-            ])
-          );
+          const playersMap = playerVecToMap(playersResult.data);
+          // const returnedPlayers: PlayerServer[] = playersResult.data;
+          // const playersMap: Players = new Map(
+          //   returnedPlayers.map((play): [string, string] => [
+          //     play.id,
+          //     play.playername,
+          //   ])
+          // );
           storedGroups.push({
             id: group.id,
             groupname: group.groupname,
@@ -130,7 +132,7 @@ export const GroupList: React.FC = () => {
         // Call server
         const serverGroup: GroupServer = {
           id: newGroup.id,
-          groupname: newGroup.id,
+          groupname: newGroup.groupname,
         };
         const serverPlayers = [];
         newGroup.players.forEach((value, key) =>
@@ -185,7 +187,7 @@ export const GroupList: React.FC = () => {
   };
 
   // Rename a group
-  const handleRenameGroup = (oldName: string, newName: string) => {
+  const handleRenameGroup = async (oldName: string, newName: string) => {
     // New name can't be the old name.
 
     const newGroups: Group[] = [];
@@ -208,16 +210,23 @@ export const GroupList: React.FC = () => {
     }
     setGroups(newGroups);
     // Call server here.
-    if (true) {
+    try {
+      await http.put("/groups", {
+        id: changedGroup.id,
+        groupname: changedGroup.groupname,
+      });
+    } catch (error) {
       errorToast.fire({ text: "Group doesn't exist anymore." });
       setGroups(oldGroups);
     }
   };
 
   // Rename a player.
-  const handleRenamePlayer = (oldPlayerId: string, newName: string) => {
+  const handleRenamePlayer = async (oldPlayerId: string, newName: string) => {
     // New name can't be the old name.
     const newGroups: Group[] = [];
+    let serverPlayer;
+    const oldGroups = groups;
     for (let curGroup of groups) {
       let newPlayers = new Map(curGroup.players);
       if (newPlayers.has(oldPlayerId)) {
@@ -233,11 +242,24 @@ export const GroupList: React.FC = () => {
           return;
         }
         newPlayers.set(oldPlayerId, newName);
+        newGroups.push({ ...curGroup, players: newPlayers });
+        serverPlayer = {
+          id: oldPlayerId,
+          playername: newName,
+          group_id: curGroup.id,
+        };
+        break;
       }
       newGroups.push({ ...curGroup, players: newPlayers });
     }
     setGroups(newGroups);
     // Call server here.
+    try {
+      await http.put("/players", serverPlayer);
+    } catch (error) {
+      errorToast.fire();
+      setGroups(oldGroups);
+    }
   };
 
   let content: React.ReactNode;

@@ -21,6 +21,6 @@ CREATE TABLE games (
     red_team uuid ARRAY [2] NOT NULL,
     score SMALLINT ARRAY [2] NOT NULL,
     serve BOOLEAN NOT NULL,
-    date_played TIMESTAMP NOT NULL,
+    date_played TIMESTAMP WITH TIME ZONE NOT NULL,
     group_id uuid NOT NULL REFERENCES groups(id) ON DELETE CASCADE
 );

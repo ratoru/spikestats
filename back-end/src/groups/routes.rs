@@ -80,18 +80,27 @@ fn delete_single_group(db: web::Data<Pool>, id: Uuid) -> Result<usize, ServiceEr
 #[put("/groups")]
 async fn rename_group(
     db: web::Data<Pool>,
-    new_group: web::Json<Group>,
+    new_group: web::Json<InputGroup>,
     http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
+    let claim = authorize_user(http_req)?;
     Ok(
-        web::block(move || rename_single_group(db, new_group.into_inner()))
+        web::block(move || rename_single_group(db, new_group.into_inner(), claim))
             .await
             .map(|_| HttpResponse::Ok().finish())?,
     )
 }
 
-fn rename_single_group(db: web::Data<Pool>, new_group: Group) -> Result<(), ServiceError> {
+fn rename_single_group(
+    db: web::Data<Pool>,
+    input_group: InputGroup,
+    claim: MyClaim,
+) -> Result<(), ServiceError> {
+    let new_group = Group {
+        id: input_group.id,
+        groupname: input_group.groupname,
+        user_id: claim.id,
+    };
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     diesel::update(&new_group).set(&new_group).execute(&conn)?;
     Ok(())

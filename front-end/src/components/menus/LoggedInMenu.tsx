@@ -4,10 +4,17 @@ import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import SportsKabaddiRoundedIcon from "@material-ui/icons/SportsKabaddiRounded";
 import { BurgerMenu, MyListItem } from "./BurgerMenu";
+import { FlexibleMenu } from "./FlexibleMenu";
 import http from "../../services/httpService";
 import { useAuth } from "../../providers/Auth";
 
-export const LoggedInMenu: React.FC = () => {
+interface LoggedInMenuProps {
+  flexible?: boolean;
+}
+
+export const LoggedInMenu: React.FC<LoggedInMenuProps> = ({
+  flexible = false,
+}) => {
   const { setAuthenticated } = useAuth();
   const item: MyListItem[] = [
     {
@@ -35,5 +42,5 @@ export const LoggedInMenu: React.FC = () => {
       },
     },
   ];
-  return <BurgerMenu item={item} />;
+  return flexible ? <FlexibleMenu item={item} /> : <BurgerMenu item={item} />;
 };

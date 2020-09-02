@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@material-ui/core/Typography";
@@ -13,19 +13,52 @@ import {
   scoreSelection,
   serveSelection,
   confirmSelection,
+  errorToast,
 } from "../../util/swals";
+import { playerVecToMap } from "../../util/utils";
 import { withAuth } from "../../components/authentication/withAuth";
+import { LoadingAn } from "../../components/common/LoadingAn";
+import { richAndColorfulTheme } from "../../components/layout/themes";
+import http from "../../services/httpService";
 
 export default withAuth(function Stats() {
   const router = useRouter();
-  const { groupname } = router.query;
-
+  const { groupname, gId } = router.query;
   const [games, setGames] = useState<Game[]>([]);
-  const players: Players = new Map();
+  const [players, setPlayers] = useState<Players>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleDelete = (id: string) => {
+  // Get data from server.
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Get players.
+        const playersResult = await http.get(`/players/${gId}`);
+        setPlayers(playerVecToMap(playersResult.data));
+        // Get games.
+        const gamesResult = await http.get(`/games/${gId}`);
+        setGames(gamesResult.data);
+      } catch (error) {
+        console.log(error);
+        errorToast.fire();
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDelete = async (id: string) => {
     // Call server here.
+    const oldGames = games;
     setGames(games.filter((game) => game["id"] !== id));
+    try {
+      await http.delete(`/games/${id}`);
+    } catch {
+      errorToast.fire({ title: "This game has already been deleted." });
+      setGames(oldGames);
+    }
   };
 
   const handleAdd = async () => {
@@ -60,11 +93,29 @@ export default withAuth(function Stats() {
           curServingTeam
         );
       })
-      .then(() => {
+      .then(async () => {
         // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
+        const oldGames = games;
         addedGame.date_played = new Date();
         setGames((games) => [...games, addedGame]);
         // Call server!
+        try {
+          const serverGame = {
+            id: addedGame.id,
+            blue_team: addedGame.blueTeam,
+            red_team: addedGame.redTeam,
+            score: addedGame.score,
+            serve: addedGame.serve,
+            date_played: addedGame.date_played,
+            group_id: gId,
+          };
+          console.log(JSON.stringify(serverGame));
+          await http.post("/games", serverGame);
+        } catch (error) {
+          errorToast.fire();
+          console.log(error);
+          setGames(oldGames);
+        }
       })
       .catch(() => {
         return;
@@ -85,7 +136,20 @@ export default withAuth(function Stats() {
   return (
     <React.Fragment>
       <LoggedInMenu />
-      <NavStats tab1Content={tab1} tab2Content={tab2} onAdd={handleAdd} />
+      <NavStats
+        tab1Content={
+          isLoading ? (
+            <LoadingAn
+              type="spin"
+              color={richAndColorfulTheme.palette.primary.main}
+            />
+          ) : (
+            tab1
+          )
+        }
+        tab2Content={tab2}
+        onAdd={handleAdd}
+      />
     </React.Fragment>
   );
 });

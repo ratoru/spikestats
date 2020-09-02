@@ -67,7 +67,10 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
 
   // Navigates to the games page for that group.
   const openGroup = () => {
-    router.push("/stats/[groupname]", `/stats/${group.groupname}`);
+    const query = { gId: group.id };
+    const url = { pathname: "/stats/[groupname]", query };
+    const urlAs = { pathname: `/stats/${group.groupname}`, query };
+    router.push(url, urlAs);
   };
   const normalMode = (
     <ListItem button onClick={openGroup} style={{ height: 80 }}>

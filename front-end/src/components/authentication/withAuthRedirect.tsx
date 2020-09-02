@@ -45,7 +45,7 @@ export default function withAuthRedirect<CP = {}, IP = CP>({
       return <LoadingComponent />;
     }
     if (isBrowser() && expectedAuth !== isAuthenticated) {
-      router.push(location);
+      router.replace(location);
       return <></>;
     }
     return <WrappedComponent {...props} />;

@@ -66,7 +66,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     try {
       await http.post(apiRoute, user);
       setAuthenticated(true);
-      Router.push(`${loginRoute}`);
+      Router.replace(`${loginRoute}`);
     } catch (error) {
       errorToast.fire({ title: "Wrong username or password." });
     }
@@ -110,7 +110,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               <Link href={`${registerRoute}`}>
                 <Typography>
                   <MuiLink href="#" color="error">
-                    Register.
+                    No Account? Register here.
                   </MuiLink>
                 </Typography>
               </Link>

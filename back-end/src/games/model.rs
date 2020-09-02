@@ -13,6 +13,7 @@ pub struct Game {
     pub red_team: Vec<Uuid>,
     pub score: Vec<i16>,
     pub serve: bool,
-    pub date_played: NaiveDateTime,
+    pub date_played: DateTime<Utc>,
+    #[serde(skip_serializing)]
     pub group_id: Uuid,
 }
