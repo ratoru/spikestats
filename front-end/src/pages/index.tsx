@@ -4,11 +4,13 @@ import { MyFooter } from "../components/common/MyFooter";
 import { LoginForm } from "../components/forms/LoginForm";
 // import { LogoBar } from "../components/appBars/LogoBar";
 import { LoggedOutMenu } from "../components/menus/LoggedOutMenu";
+import { Logo } from "../components/Logo";
 import { withoutAuth } from "../components/authentication/withoutAuth";
 
 export default withoutAuth(function IndexPage() {
   return (
     <React.Fragment>
+      <Logo />
       <LoggedOutMenu />
       <Grid
         container

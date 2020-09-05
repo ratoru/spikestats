@@ -1,6 +1,6 @@
 // This file provides helper functions to tranform the data from the server
 // into data the react components can use.
-import { Game, Team, Players } from "./types";
+import { Game, Team, Players, ServeTeam } from "./types";
 
 // Takes in a Game and converts it to the format used in the GameTable.
 export function gameToRow(game: Game, players: Players) {
@@ -18,11 +18,11 @@ function teamToString(team: Team, players: Players): string {
   return team.map((playerId) => players.get(playerId)).join(", ");
 }
 
-interface PlayerServer {
+interface PlayerOnServer {
   id: string;
   playername: string;
 }
-export function playerVecToMap(playerVec: PlayerServer[]): Players {
+export function playerVecToMap(playerVec: PlayerOnServer[]): Players {
   return new Map(
     playerVec.map((play): [string, string] => [play.id, play.playername])
   );

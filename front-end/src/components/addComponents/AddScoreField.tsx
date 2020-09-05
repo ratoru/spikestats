@@ -9,7 +9,7 @@ import { Players, Team } from "../../util/types";
 
 interface AddScoreField {
   players: Players;
-  teams: { blueTeam: Team; redTeam: Team };
+  teams: { blue_team: Team; red_team: Team };
   blueScore: number;
   redScore: number;
   onChange: (points: number, isBlue: boolean) => void;
@@ -40,7 +40,7 @@ export const AddScoreField: React.FC<AddScoreField> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.blueTeam.map((id) => {
+        {teams.blue_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip
@@ -66,7 +66,7 @@ export const AddScoreField: React.FC<AddScoreField> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.redTeam.map((id) => {
+        {teams.red_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip

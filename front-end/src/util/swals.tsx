@@ -22,40 +22,40 @@ export const errorToast = Swal.mixin({
 });
 
 interface Selection {
-  blueTeam: Team;
-  redTeam: Team;
+  blue_team: Team;
+  red_team: Team;
 }
 export async function teamSelection(players: Players): Promise<Selection> {
   const emptyTeamBlue: Team = ["", ""];
   const emptyTeamRed: Team = ["", ""];
-  const selectedTeams = { blueTeam: emptyTeamBlue, redTeam: emptyTeamRed };
+  const selectedTeams = { blue_team: emptyTeamBlue, red_team: emptyTeamRed };
   const handleSelectPlayer = (id: string, isBlue: boolean) => {
     if (isBlue) {
-      if (selectedTeams.blueTeam[0] === "") {
-        selectedTeams.blueTeam[0] = id;
+      if (selectedTeams.blue_team[0] === "") {
+        selectedTeams.blue_team[0] = id;
       } else {
-        selectedTeams.blueTeam[1] = id;
+        selectedTeams.blue_team[1] = id;
       }
     } else {
-      if (selectedTeams.redTeam[0] === "") {
-        selectedTeams.redTeam[0] = id;
+      if (selectedTeams.red_team[0] === "") {
+        selectedTeams.red_team[0] = id;
       } else {
-        selectedTeams.redTeam[1] = id;
+        selectedTeams.red_team[1] = id;
       }
     }
   };
   const handleRemovePlayer = (id: string, isBlue: boolean) => {
     if (isBlue) {
-      if (selectedTeams.blueTeam[0] === id) {
-        selectedTeams.blueTeam[0] = "";
+      if (selectedTeams.blue_team[0] === id) {
+        selectedTeams.blue_team[0] = "";
       } else {
-        selectedTeams.blueTeam[1] = "";
+        selectedTeams.blue_team[1] = "";
       }
     } else {
-      if (selectedTeams.redTeam[0] === id) {
-        selectedTeams.redTeam[0] = "";
+      if (selectedTeams.red_team[0] === id) {
+        selectedTeams.red_team[0] = "";
       } else {
-        selectedTeams.redTeam[1] = "";
+        selectedTeams.red_team[1] = "";
       }
     }
   };
@@ -75,10 +75,10 @@ export async function teamSelection(players: Players): Promise<Selection> {
     currentProgressStep: "0",
     preConfirm: () => {
       if (
-        selectedTeams.blueTeam[0] === "" ||
-        selectedTeams.blueTeam[1] === "" ||
-        selectedTeams.redTeam[0] === "" ||
-        selectedTeams.redTeam[1] === ""
+        selectedTeams.blue_team[0] === "" ||
+        selectedTeams.blue_team[1] === "" ||
+        selectedTeams.red_team[0] === "" ||
+        selectedTeams.red_team[1] === ""
       ) {
         AddGameSwal.showValidationMessage("You must select four players.");
         return false;

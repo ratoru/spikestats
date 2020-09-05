@@ -4,12 +4,14 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 // import { MainBar } from "../components/appBars/MainBar";
 import { LoggedInMenu } from "../components/menus/LoggedInMenu";
+import { Logo } from "../components/Logo";
 import { GroupList } from "../components/GroupList";
 import { withAuth } from "../components/authentication/withAuth";
 
 export default withAuth(function Groups() {
   return (
     <React.Fragment>
+      <Logo />
       <LoggedInMenu />
       <Grid container justify="center" alignItems="center" spacing={5}>
         <Grid item xs={12}>

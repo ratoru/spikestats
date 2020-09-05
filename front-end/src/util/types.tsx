@@ -21,10 +21,11 @@ export enum ServeTeam {
 // Always in order teamBlue, teamRed.
 type Score = [number, number];
 
+// Follows Rust's naming convention to make sending data to the back-end easier.
 export interface Game {
   id: string; // Uuid4
-  blueTeam: Team;
-  redTeam: Team;
+  blue_team: Team;
+  red_team: Team;
   score: Score;
   serve: ServeTeam;
   date_played: Date;

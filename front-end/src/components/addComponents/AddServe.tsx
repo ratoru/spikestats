@@ -10,7 +10,7 @@ import { Players, Team } from "../../util/types";
 
 interface AddServeProps {
   players: Players;
-  teams: { blueTeam: Team; redTeam: Team };
+  teams: { blue_team: Team; red_team: Team };
   score: [number, number];
   onChange: (newSelection: string) => void;
 }
@@ -43,7 +43,7 @@ export const AddServe: React.FC<AddServeProps> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.blueTeam.map((id) => {
+        {teams.blue_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip
@@ -69,7 +69,7 @@ export const AddServe: React.FC<AddServeProps> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.redTeam.map((id) => {
+        {teams.red_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip

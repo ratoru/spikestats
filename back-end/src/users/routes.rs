@@ -6,12 +6,14 @@ use crate::Pool;
 use actix_web::{get, post, web, HttpRequest, HttpResponse};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
+use chrono::Utc;
+
 // This route is for testing purposes and should be deleted later.
 #[get("/users")]
 async fn get_all_users(db: web::Data<Pool>) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || db_get_all_users(db))
         .await
-        .map(|user| HttpResponse::Ok().json(user))?)
+        .map(|_user| HttpResponse::Ok().json(Utc::now()))?)
 }
 
 fn db_get_all_users(pool: web::Data<Pool>) -> Result<Vec<User>, ServiceError> {

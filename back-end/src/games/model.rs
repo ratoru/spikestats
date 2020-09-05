@@ -12,6 +12,7 @@ pub struct Game {
     pub blue_team: Vec<Uuid>,
     pub red_team: Vec<Uuid>,
     pub score: Vec<i16>,
+    // True --> red serve. False --> blue serve.
     pub serve: bool,
     pub date_played: DateTime<Utc>,
     #[serde(skip_serializing)]

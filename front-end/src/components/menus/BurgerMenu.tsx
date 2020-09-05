@@ -20,7 +20,7 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ item }) => {
     <Menu
       right
       styles={styles}
-      customBurgerIcon={<img src="/roundnet-logo.svg" />}
+      // customBurgerIcon={<img src="/roundnet-logo.svg" />}
       customCrossIcon={<CloseRoundedIcon />}
       width={250}
     >
@@ -43,10 +43,10 @@ export const BurgerMenu: React.FC<BurgerMenuProps> = ({ item }) => {
 const styles = {
   bmBurgerButton: {
     position: "fixed",
-    width: "90px",
-    height: "75px",
+    width: "60px", // 90
+    height: "50px", // 75
     right: "36px",
-    top: "28px",
+    top: "36px", // 28
   },
   bmBurgerBars: {
     background: `${richAndColorfulTheme.palette.primary.main}`,

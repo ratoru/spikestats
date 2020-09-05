@@ -47,10 +47,10 @@ export function getPlayerPointsData(
   for (let game of games) {
     const scoreBlue = game.score[0];
     const scoreRed = game.score[1];
-    points.set(game.blueTeam[0], points.get(game.blueTeam[0]) + scoreBlue);
-    points.set(game.blueTeam[1], points.get(game.blueTeam[1]) + scoreBlue);
-    points.set(game.redTeam[0], points.get(game.redTeam[0]) + scoreRed);
-    points.set(game.redTeam[1], points.get(game.redTeam[1]) + scoreRed);
+    points.set(game.blue_team[0], points.get(game.blue_team[0]) + scoreBlue);
+    points.set(game.blue_team[1], points.get(game.blue_team[1]) + scoreBlue);
+    points.set(game.red_team[0], points.get(game.red_team[0]) + scoreRed);
+    points.set(game.red_team[1], points.get(game.red_team[1]) + scoreRed);
   }
   points.forEach((value, key) => {
     data.push({ name: players.get(key), points: value });
@@ -68,13 +68,13 @@ export function getPlayerWinsSliceData(
   const wins = new Map(Array.from(players.keys()).map((key) => [key, 0]));
   const totalGames = new Map(Array.from(players.keys()).map((key) => [key, 0]));
   for (let game of games) {
-    addTotalGames(game.blueTeam, game.redTeam, totalGames);
+    addTotalGames(game.blue_team, game.red_team, totalGames);
     if (game.score[0] > game.score[1]) {
-      wins.set(game.blueTeam[0], wins.get(game.blueTeam[0]) + 1);
-      wins.set(game.blueTeam[1], wins.get(game.blueTeam[1]) + 1);
+      wins.set(game.blue_team[0], wins.get(game.blue_team[0]) + 1);
+      wins.set(game.blue_team[1], wins.get(game.blue_team[1]) + 1);
     } else {
-      wins.set(game.redTeam[0], wins.get(game.redTeam[0]) + 1);
-      wins.set(game.redTeam[1], wins.get(game.redTeam[1]) + 1);
+      wins.set(game.red_team[0], wins.get(game.red_team[0]) + 1);
+      wins.set(game.red_team[1], wins.get(game.red_team[1]) + 1);
     }
   }
   wins.forEach((value, key) => {
@@ -84,14 +84,14 @@ export function getPlayerWinsSliceData(
 }
 
 function addTotalGames(
-  blueTeam: Team,
-  redTeam: Team,
+  blue_team: Team,
+  red_team: Team,
   totalGames: Map<string, number>
 ): void {
-  totalGames.set(blueTeam[0], totalGames.get(blueTeam[0]) + 1);
-  totalGames.set(blueTeam[1], totalGames.get(blueTeam[1]) + 1);
-  totalGames.set(redTeam[0], totalGames.get(redTeam[0]) + 1);
-  totalGames.set(redTeam[1], totalGames.get(redTeam[1]) + 1);
+  totalGames.set(blue_team[0], totalGames.get(blue_team[0]) + 1);
+  totalGames.set(blue_team[1], totalGames.get(blue_team[1]) + 1);
+  totalGames.set(red_team[0], totalGames.get(red_team[0]) + 1);
+  totalGames.set(red_team[1], totalGames.get(red_team[1]) + 1);
 }
 
 // Gets a list of games and players and returns a list of PlayerWinsTreeDPs.
@@ -108,8 +108,8 @@ export function getPlayerWinsTreeData(
   for (let game of games) {
     const [winners, losers] =
       game.score[0] > game.score[1]
-        ? [game.blueTeam, game.redTeam]
-        : [game.redTeam, game.blueTeam];
+        ? [game.blue_team, game.red_team]
+        : [game.red_team, game.blue_team];
     wins.set(winners[0], wins.get(winners[0]) + 1);
     wins.set(winners[1], wins.get(winners[1]) + 1);
     losses.set(losers[0], losses.get(losers[0]) + 1);
@@ -146,10 +146,10 @@ export function getWinPercentage(
   );
 
   for (let game of games) {
-    const player1 = game.blueTeam[0];
-    const player2 = game.blueTeam[1];
-    const player3 = game.redTeam[0];
-    const player4 = game.redTeam[1];
+    const player1 = game.blue_team[0];
+    const player2 = game.blue_team[1];
+    const player3 = game.red_team[0];
+    const player4 = game.red_team[1];
     incrementNumTotal(player1, valuesPerPlayer);
     incrementNumTotal(player2, valuesPerPlayer);
     incrementNumTotal(player3, valuesPerPlayer);

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import Typography from "@material-ui/core/Typography";
 // import { MainBar } from "../../components/appBars/MainBar";
 import { LoggedInMenu } from "../../components/menus/LoggedInMenu";
+import { Logo } from "../../components/Logo";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { AllCharts } from "../../components/AllCharts";
@@ -64,23 +65,23 @@ export default withAuth(function Stats() {
   const handleAdd = async () => {
     const addedGame: Game = {
       id: uuidv4(),
-      blueTeam: ["", ""],
-      redTeam: ["", ""],
+      blue_team: ["", ""],
+      red_team: ["", ""],
       score: [-1, -1],
       serve: ServeTeam.Blue,
       date_played: new Date(),
     };
     teamSelection(players)
       .then((curTeamSelection) => {
-        addedGame.blueTeam = curTeamSelection.blueTeam;
-        addedGame.redTeam = curTeamSelection.redTeam;
+        addedGame.blue_team = curTeamSelection.blue_team;
+        addedGame.red_team = curTeamSelection.red_team;
         return scoreSelection(players, curTeamSelection);
       })
       .then((curScore) => {
         addedGame.score = curScore;
         return serveSelection(
           players,
-          { blueTeam: addedGame.blueTeam, redTeam: addedGame.redTeam },
+          { blue_team: addedGame.blue_team, red_team: addedGame.red_team },
           curScore
         );
       })
@@ -88,29 +89,23 @@ export default withAuth(function Stats() {
         addedGame.serve = curServingTeam;
         return confirmSelection(
           players,
-          { blueTeam: addedGame.blueTeam, redTeam: addedGame.redTeam },
+          { blue_team: addedGame.blue_team, red_team: addedGame.red_team },
           addedGame.score,
           curServingTeam
         );
       })
       .then(async () => {
-        // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
         const oldGames = games;
+        // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
         addedGame.date_played = new Date();
         setGames((games) => [...games, addedGame]);
         // Call server!
         try {
-          const serverGame = {
-            id: addedGame.id,
-            blue_team: addedGame.blueTeam,
-            red_team: addedGame.redTeam,
-            score: addedGame.score,
-            serve: addedGame.serve,
-            date_played: addedGame.date_played,
+          await http.post("/games", {
+            ...addedGame,
+            serve: addedGame.serve ? true : false,
             group_id: gId,
-          };
-          console.log(JSON.stringify(serverGame));
-          await http.post("/games", serverGame);
+          });
         } catch (error) {
           errorToast.fire();
           console.log(error);
@@ -135,6 +130,7 @@ export default withAuth(function Stats() {
 
   return (
     <React.Fragment>
+      <Logo />
       <LoggedInMenu />
       <NavStats
         tab1Content={

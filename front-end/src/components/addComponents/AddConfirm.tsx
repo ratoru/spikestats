@@ -9,7 +9,7 @@ import { Players, Team, ServeTeam } from "../../util/types";
 
 interface AddConfirmProps {
   players: Players;
-  teams: { blueTeam: Team; redTeam: Team };
+  teams: { blue_team: Team; red_team: Team };
   score: [number, number];
   serve: ServeTeam;
 }
@@ -36,7 +36,7 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.blueTeam.map((id) => {
+        {teams.blue_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip
@@ -62,7 +62,7 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
         justify="space-around"
         alignItems="center"
       >
-        {teams.redTeam.map((id) => {
+        {teams.red_team.map((id) => {
           return (
             <Grid item key={id}>
               <Chip
