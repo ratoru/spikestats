@@ -4,6 +4,7 @@ extern crate dotenv;
 
 pub mod auth_handler;
 pub mod error_handler;
+pub mod hash_handler;
 pub mod schema;
 
 use actix_cors::Cors;

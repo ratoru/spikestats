@@ -1,19 +1,18 @@
 use crate::auth_handler;
 use crate::error_handler::ServiceError;
+use crate::hash_handler;
 use crate::schema::users::dsl::*;
 use crate::users::{InputUser, NewUser, ReturnUser, User};
 use crate::Pool;
 use actix_web::{get, post, web, HttpRequest, HttpResponse};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
-use chrono::Utc;
-
 // This route is for testing purposes and should be deleted later.
 #[get("/users")]
 async fn get_all_users(db: web::Data<Pool>) -> Result<HttpResponse, ServiceError> {
     Ok(web::block(move || db_get_all_users(db))
         .await
-        .map(|_user| HttpResponse::Ok().json(Utc::now()))?)
+        .map(|user| HttpResponse::Ok().json(user))?)
 }
 
 fn db_get_all_users(pool: web::Data<Pool>) -> Result<Vec<User>, ServiceError> {
@@ -43,7 +42,7 @@ fn add_single_user(
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let new_user = NewUser {
         username: &item.username,
-        password: &item.password,
+        password: &hash_handler::hash(&item.password),
     };
     let res = diesel::insert_into(users)
         .values(&new_user)
@@ -82,9 +81,12 @@ fn find_user(db: web::Data<Pool>, info: InputUser) -> Result<User, ServiceError>
     let conn = db.get().map_err(|_| ServiceError::InternalServerError)?;
     let res = users
         .filter(username.eq(info.username))
-        .filter(password.eq(info.password))
+        // .filter(password.eq(info.password))
         .get_result::<User>(&conn)?;
-    Ok(res)
+    if hash_handler::verify(&res.password, &info.password) {
+        return Ok(res);
+    }
+    Err(ServiceError::Unauthorized)
 }
 
 // Removes HttpOnly cookie.
