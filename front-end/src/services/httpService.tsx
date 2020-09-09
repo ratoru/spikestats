@@ -1,6 +1,6 @@
 import axios from "axios";
 import { errorToast } from "../util/swals";
-import { apiUrl } from "../../app-config.json";
+// import { apiUrl } from "../../app-config.json";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -14,7 +14,9 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-axios.defaults.baseURL = apiUrl;
+const server = process.env.SERVER;
+
+axios.defaults.baseURL = `${server}/api`;
 // Send cookies on each request.
 axios.defaults.withCredentials = true;
 

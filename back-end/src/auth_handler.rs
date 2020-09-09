@@ -72,6 +72,7 @@ pub fn create_cookie(jwt: &str) -> Cookie {
     Cookie::build("Authorization", jwt.to_owned())
         .max_age_time(Duration::hours(TOKEN_LIFETIME))
         .http_only(true)
+        .secure(true) // Disable for local development
         .same_site(actix_web::cookie::SameSite::None)
         .finish()
 }
