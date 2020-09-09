@@ -26,6 +26,11 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=debug");
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set.");
     let server_url = env::var("SERVER_URL").expect("SERVER_URL must be set.");
+    // Get the port number to listen on.
+    let port = env::var("PORT")
+        .unwrap_or_else(|_| "8080".to_string())
+        .parse()
+        .expect("PORT must be a number");
 
     // create db connection pool
     let manager = ConnectionManager::<PgConnection>::new(database_url);
@@ -57,7 +62,7 @@ async fn main() -> std::io::Result<()> {
                     .configure(games::init_routes),
             )
     })
-    .bind(server_url)?
+    .bind((server_url, port))?
     .run()
     .await
 }
