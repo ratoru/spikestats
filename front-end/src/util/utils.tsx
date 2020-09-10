@@ -6,11 +6,11 @@ import { Game, Team, Players, ServeTeam } from "./types";
 export function gameToRow(game: Game, players: Players) {
   return {
     id: game["id"],
-    blueTeam: teamToString(game["blueTeam"], players),
-    redTeam: teamToString(game["redTeam"], players),
+    blue_team: teamToString(game["blue_team"], players),
+    red_team: teamToString(game["red_team"], players),
     score: game["score"].join(":"),
     serve: game["serve"],
-    date: game["date"],
+    date_played: game["date_played"],
   };
 }
 

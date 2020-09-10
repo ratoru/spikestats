@@ -52,11 +52,11 @@ const tableIcons: Icons = {
 
 interface Row {
   id: string;
-  blueTeam: string;
-  redTeam: string;
+  blue_team: string;
+  red_team: string;
   score: string;
   serve: number;
-  date: Date;
+  date_played: Date;
 }
 
 interface GameTableProps {
