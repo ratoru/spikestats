@@ -10,7 +10,7 @@ interface LoadingAnProps {
 export const LoadingAn: React.FC<LoadingAnProps> = ({ type, color }) => (
   <Grid container justify="center" alignItems="center">
     <Grid item>
-      <ReactLoading type={type} color={color} width={"35vw"} />
+      <ReactLoading type={type} color={color} width={"30vw"} height={"30vh"} />
     </Grid>
   </Grid>
 );

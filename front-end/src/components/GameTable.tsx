@@ -75,12 +75,12 @@ export const GameTable: React.FC<GameTableProps> = ({
     { title: "ID", field: "id", hidden: true },
     {
       title: "Blue Team",
-      field: "blueTeam",
+      field: "blue_team",
       headerStyle: { backgroundColor: theme.palette.primary.main },
     },
     {
       title: "Red Team",
-      field: "redTeam",
+      field: "red_team",
       headerStyle: { backgroundColor: theme.palette.error.main },
     },
     { title: "Score", field: "score" },

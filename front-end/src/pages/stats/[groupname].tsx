@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@material-ui/core/Typography";
-// import { MainBar } from "../../components/appBars/MainBar";
-import { LoggedInMenu } from "../../components/menus/LoggedInMenu";
-import { Logo } from "../../components/Logo";
+import { MyHeader } from "../../components/common/MyHeader";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { AllCharts } from "../../components/AllCharts";
@@ -41,7 +39,6 @@ export default withAuth(function Stats() {
         const gamesResult = await http.get(`/games/${gId}`);
         setGames(gamesResult.data);
       } catch (error) {
-        console.log(error);
         errorToast.fire();
       }
       setIsLoading(false);
@@ -108,7 +105,6 @@ export default withAuth(function Stats() {
           });
         } catch (error) {
           errorToast.fire();
-          console.log(error);
           setGames(oldGames);
         }
       })
@@ -130,8 +126,7 @@ export default withAuth(function Stats() {
 
   return (
     <React.Fragment>
-      <Logo />
-      <LoggedInMenu />
+      <MyHeader isLoggedIn={true} />
       <NavStats
         tab1Content={
           isLoading ? (
