@@ -1,8 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-// import { LogoBar } from "../components/appBars/LogoBar";
-import { Logo } from "../components/Logo";
-import { LoggedOutMenu } from "../components/menus/LoggedOutMenu";
+import { MyHeader } from "../components/common/MyHeader";
 import { RegisterForm } from "../components/forms/RegisterForm";
 import { MyFooter } from "../components/common/MyFooter";
 import { withoutAuth } from "../components/authentication/withoutAuth";
@@ -10,9 +8,7 @@ import { withoutAuth } from "../components/authentication/withoutAuth";
 export default withoutAuth(function Code() {
   return (
     <React.Fragment>
-      <Logo />
-      <LoggedOutMenu />
-      <div style={{ height: "50px" }} />
+      <MyHeader isLoggedIn={false} />
       <Grid
         container
         spacing={0}

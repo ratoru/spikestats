@@ -1,31 +1,17 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { LogoBar } from "../components/appBars/LogoBar";
-
-// Need to use browser rendering for all amCharts.
-// https://github.com/amcharts/amcharts4/issues/272#issuecomment-646326596
-import dynamic from "next/dynamic";
-
-const AboutTimeLine = dynamic(
-  () => import("../components/graphs/AboutTimeLine"),
-  {
-    ssr: false,
-  }
-);
+import { MyHeader } from "../components/common/MyHeader";
 
 export default function About() {
   return (
     <React.Fragment>
-      <LogoBar />
-      <Grid item xs={12}>
-        <Typography variant="h1" style={{ textAlign: "center" }}>
-          About
-        </Typography>
-      </Grid>
+      <MyHeader />
       <Grid container spacing={4} justify="center" alignItems="center">
         <Grid item xs={12}>
-          <AboutTimeLine />
+          <Typography variant="h1" style={{ textAlign: "center" }}>
+            About
+          </Typography>
         </Grid>
         <Grid item container spacing={2} justify="center" alignItems="center">
           <Grid item xs={12}>

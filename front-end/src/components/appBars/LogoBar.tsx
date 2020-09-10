@@ -1,9 +1,6 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
-import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
-import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import { Typography, useTheme } from "@material-ui/core";
 import { LoggedInMenu } from "../menus/LoggedInMenu";
 import { LoggedOutMenu } from "../menus/LoggedOutMenu";
