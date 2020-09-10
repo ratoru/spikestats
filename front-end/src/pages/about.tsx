@@ -25,8 +25,8 @@ export default function About() {
             <Typography>
               Furthermore, this is a programming project I am working on in my
               free time. You can find the code{" "}
-              <a href="https://github.com/raphtorru/spike-stats">here</a>. If
-              you have constructive feedback feel free to contact me.
+              <a href="https://github.com/ratoru/spikestats">here</a>. If you
+              have constructive feedback feel free to contact me.
             </Typography>
           </Grid>
           <Grid item xs={12}>
