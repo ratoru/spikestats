@@ -1,5 +1,6 @@
 use crate::error_handler::ServiceError;
 use crate::users::ReturnUser;
+use actix_web::cookie::SameSite;
 use actix_web::{http::Cookie, web::HttpRequest};
 use chrono::{Duration, Utc};
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
@@ -68,11 +69,16 @@ pub fn generate_token(return_user: ReturnUser) -> Result<String, ServiceError> {
 }
 
 pub fn create_cookie(jwt: &str) -> Cookie {
-    // let server_url = std::env::var("SERVER_URL").expect("SERVER_URL must be set.");
+    // let c: String = format!(
+    //     "Authorization={}; Secure; HttpOnly; SameSite=None; Expires={};",
+    //     jwt,
+    //     Duration::hours(TOKEN_LIFETIME).to_string()
+    // );
+    // Cookie::parse(c).unwrap()
     Cookie::build("Authorization", jwt.to_owned())
         .max_age_time(Duration::hours(TOKEN_LIFETIME))
         .http_only(true)
         .secure(true) // Disable for local development
-        .same_site(actix_web::cookie::SameSite::None)
+        .same_site(SameSite::None)
         .finish()
 }

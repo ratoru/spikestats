@@ -29,7 +29,7 @@ export const FormikField: React.FC<InputFormFieldProps> = ({
       autoComplete={autoComplete}
       type={type}
       helperText={<ErrorMessage name={name} />}
-      id="input-with-icon-textfield"
+      id={`${name}-input`}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">{icon}</InputAdornment>
