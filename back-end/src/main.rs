@@ -25,7 +25,7 @@ async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
     std::env::set_var("RUST_LOG", "actix_web=debug");
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set.");
-    let server_url = env::var("SERVER_URL").expect("SERVER_URL must be set.");
+    // let server_url: String = env::var("SERVER_URL").expect("SERVER_URL must be set.");
     // Get the port number to listen on.
     let port = env::var("PORT")
         .unwrap_or_else(|_| "8080".to_string())
@@ -62,7 +62,7 @@ async fn main() -> std::io::Result<()> {
                     .configure(games::init_routes),
             )
     })
-    .bind((server_url, port))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }

@@ -93,7 +93,7 @@ fn find_user(db: web::Data<Pool>, info: InputUser) -> Result<User, ServiceError>
 #[post("/logout")]
 async fn logout() -> Result<HttpResponse, ServiceError> {
     let c = actix_web::http::Cookie::parse(
-        "Authorization=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+        "Authorization=; HttpOnly; Secure; expires=Thu, 01 Jan 1970 00:00:00 GMT",
     )
     .unwrap();
     Ok(HttpResponse::Ok().cookie(c).finish())
