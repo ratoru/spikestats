@@ -15,7 +15,7 @@ export const MyHeader: React.FC<MyHeaderProps> = ({
     <React.Fragment>
       {isLoggedIn ? <LoggedInMenu /> : <LoggedOutMenu />}
       <Logo />
-      <div style={{ height: "50px" }} />
+      <div style={{ height: "131px" }} />
     </React.Fragment>
   );
 };

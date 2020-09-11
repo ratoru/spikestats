@@ -1,10 +1,12 @@
 use crate::error_handler::ServiceError;
 use crate::users::ReturnUser;
+use actix_http::http::Cookie;
 use actix_web::cookie::SameSite;
-use actix_web::{http::Cookie, web::HttpRequest};
+use actix_web::web::HttpRequest;
 use chrono::{Duration, Utc};
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
+use time;
 use uuid::Uuid;
 
 const TOKEN_LIFETIME: i64 = 2;
@@ -72,11 +74,11 @@ pub fn create_cookie(jwt: &str) -> Cookie {
     // let c: String = format!(
     //     "Authorization={}; Secure; HttpOnly; SameSite=None; Expires={};",
     //     jwt,
-    //     Duration::hours(TOKEN_LIFETIME).to_string()
+    //     Utc::now() + Duration::hours(TOKEN_LIFETIME)
     // );
     // Cookie::parse(c).unwrap()
     Cookie::build("Authorization", jwt.to_owned())
-        .max_age_time(Duration::hours(TOKEN_LIFETIME))
+        .max_age(time::Duration::hours(TOKEN_LIFETIME))
         .http_only(true)
         .secure(true) // Disable for local development
         .same_site(SameSite::None)
