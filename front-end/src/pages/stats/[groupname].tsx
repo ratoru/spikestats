@@ -6,6 +6,7 @@ import { MyHeader } from "../../components/common/MyHeader";
 import { NavStats } from "../../components/NavStats";
 import { GameTable } from "../../components/GameTable";
 import { AllCharts } from "../../components/AllCharts";
+import { CenteredMessage } from "../../components/common/CenteredMessage";
 import { Game, Players, ServeTeam } from "../../util/types";
 import {
   teamSelection,
@@ -116,9 +117,10 @@ export default withAuth(function Stats() {
   const tab1 = games.length ? (
     <AllCharts groupname={groupname} games={games} players={players} />
   ) : (
-    <Typography variant="h5" style={{ textAlign: "center" }}>
-      There is no data to display yet. Add games by clicking the button below.
-    </Typography>
+    <CenteredMessage
+      header="No games yet."
+      paragraph="Add games by clicking the button below."
+    />
   );
   const tab2 = (
     <GameTable onDelete={handleDelete} games={games} players={players} />

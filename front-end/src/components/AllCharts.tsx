@@ -41,52 +41,53 @@ export const AllCharts: React.FC<AllChartsProps> = ({
   players,
 }) => {
   return (
-    <Grid container spacing={5} justify="center" alignItems="baseline">
-      <Grid item xs={12}>
-        <Typography variant="h5" style={{ textAlign: "center" }}>
-          {groupname}'s Stats!
-        </Typography>
-        <Typography variant="h6" style={{ textAlign: "center" }}>
-          Your group played {games.length} games so far.
-        </Typography>
-      </Grid>
-      <Grid item xs={12} container justify="center" alignItems="center">
+    <Grid container spacing={10} direction="column">
+      <Grid
+        item
+        container
+        style={{ height: "100%" }}
+        justify="center"
+        alignItems="center"
+      >
         <Grid item xs={12}>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
-            How did each player's winrate develop over time?
+          <Typography variant="h2" align="center" paragraph>
+            {groupname}
+          </Typography>
+          <Typography variant="h3" align="center">
+            Your group has played {games.length}{" "}
+            {games.length > 1 ? "games" : "game"}.
           </Typography>
         </Grid>
-        <Grid item>
+      </Grid>
+      <Grid item container justify="center" alignItems="center">
+        <Grid item xs={12}>
+          <Typography variant="h6" align="center">
+            How did each player's winrate develop over time?
+          </Typography>
           <WinPercentage data={getWinPercentage(games, players)} />
         </Grid>
       </Grid>
-      <Grid item xs={12} container justify="center" alignItems="center">
+      <Grid item container justify="center" alignItems="center">
         <Grid item xs={12}>
           <Typography variant="h6" style={{ textAlign: "center" }}>
             How many points did each player contribute to?
           </Typography>
-        </Grid>
-        <Grid item>
           <PlayerPoints data={getPlayerPointsData(games, players)} />
         </Grid>
       </Grid>
-      <Grid item xs={12} container justify="center" alignItems="center">
+      <Grid item container justify="center" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
+          <Typography variant="h6" align="center">
             A second way of looking at player wins.
           </Typography>
-          <Grid item xs={12}>
-            <PlayerWinsTree data={getPlayerWinsTreeData(games, players)} />
-          </Grid>
+          <PlayerWinsTree data={getPlayerWinsTreeData(games, players)} />
         </Grid>
       </Grid>
-      <Grid item xs={12} container justify="center" alignItems="center">
+      <Grid item container justify="center" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
+          <Typography variant="h6" align="center">
             How often does the team with the first serve win?
           </Typography>
-        </Grid>
-        <Grid item>
           <ServePictorial data={getServeData(games)} />
         </Grid>
       </Grid>

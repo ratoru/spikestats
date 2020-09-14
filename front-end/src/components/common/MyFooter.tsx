@@ -1,5 +1,7 @@
 import React from "react";
-import { Typography, Divider, Box } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import Box from "@material-ui/core/Box";
 
 export const MyFooter = () => {
   return (

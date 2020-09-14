@@ -267,14 +267,13 @@ export const GroupList: React.FC = () => {
     content = (
       <React.Fragment>
         <Typography align="center">
-          A group contains players you commonly play with. Please note that once
-          a group has been created players can't be added or deleted. Players
-          can be renamed, though.
-        </Typography>
-        <Typography align="center">
+          A group contains players you commonly play with.
+          <br />
+          Please note that once a group has been created players can't be added
+          or deleted. Players can be renamed, though.
+          <br />
           By clicking on a group, you can view that group's statistics.
-        </Typography>
-        <Typography align="center">
+          <br />
           Seems like you have no groups yet. Create one by clicking the button
           below.
         </Typography>

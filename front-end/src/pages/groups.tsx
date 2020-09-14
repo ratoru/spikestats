@@ -15,9 +15,9 @@ export default withAuth(function Groups() {
       <LoggedInMenu />
       <Grid container justify="center" alignItems="center" spacing={5}>
         <Grid item xs={12}>
-          <Box mt={4}>
+          <Box mt={"20vh"}>
             <Typography align="center" variant="h2">
-              My Groups
+              Your Groups
             </Typography>
           </Box>
         </Grid>
