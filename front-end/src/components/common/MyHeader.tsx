@@ -6,16 +6,18 @@ import { useIsAuthenticated } from "../../providers/Auth";
 
 interface MyHeaderProps {
   isLoggedIn?: boolean;
+  withPadding?: boolean;
 }
 
 export const MyHeader: React.FC<MyHeaderProps> = ({
   isLoggedIn = useIsAuthenticated(),
+  withPadding = true,
 }) => {
   return (
     <React.Fragment>
       {isLoggedIn ? <LoggedInMenu /> : <LoggedOutMenu />}
       <Logo />
-      <div style={{ height: "131px" }} />
+      {withPadding && <div style={{ height: "131px" }} />}
     </React.Fragment>
   );
 };

@@ -4,15 +4,8 @@ import CodeRoundedIcon from "@material-ui/icons/CodeRounded";
 import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import SportsHandballRoundedIcon from "@material-ui/icons/SportsHandballRounded";
 import { BurgerMenu, MyListItem } from "./BurgerMenu";
-import { FlexibleMenu } from "./FlexibleMenu";
 
-interface LoggedOutMenuProps {
-  flexible?: boolean;
-}
-
-export const LoggedOutMenu: React.FC<LoggedOutMenuProps> = ({
-  flexible = false,
-}) => {
+export const LoggedOutMenu: React.FC = () => {
   const item: MyListItem[] = [
     {
       icon: <SportsHandballRoundedIcon />,
@@ -35,5 +28,5 @@ export const LoggedOutMenu: React.FC<LoggedOutMenuProps> = ({
       href: "/code",
     },
   ];
-  return flexible ? <FlexibleMenu item={item} /> : <BurgerMenu item={item} />;
+  return <BurgerMenu item={item} />;
 };
