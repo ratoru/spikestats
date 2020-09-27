@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { MyHeader } from "../components/common/MyHeader";
@@ -148,6 +149,23 @@ export default function About() {
               Special thanks to Christina Joo for helping me with the logo
               design.
             </Typography>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          container
+          xs={12}
+          style={{
+            height: "100vh",
+            background: "#1a1a1a",
+          }}
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <a href="https://ratoru.com">
+              <img src="/RTR-logo-only.svg" alt="Raphael's logo" />
+            </a>
           </Grid>
         </Grid>
       </Grid>
