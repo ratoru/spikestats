@@ -15,7 +15,6 @@ export default withoutAuth(function IndexPage() {
         direction="column"
         justify="center"
         alignItems="center"
-        style={{ minHeight: "100vh" }}
       >
         <Grid item>
           <LoginForm
@@ -24,9 +23,6 @@ export default withoutAuth(function IndexPage() {
             registerRoute="/register"
             apiRoute="/login"
           />
-        </Grid>
-        <Grid item>
-          <MyFooter />
         </Grid>
       </Grid>
     </React.Fragment>

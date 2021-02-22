@@ -59,8 +59,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     const user: User = {
-      username: values.username,
-      password: values.password,
+      username: values.username.trim(),
+      password: values.password.trim(),
     };
     // Call server HERE
     try {

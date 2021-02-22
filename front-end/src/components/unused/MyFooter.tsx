@@ -7,7 +7,14 @@ export const MyFooter = () => {
   return (
     <Box mt={12}>
       <Divider />
-      <Typography align="center">Created by Raphael</Typography>
+      <Typography align="center">
+        <a
+          href="https://ratoru.com"
+          style={{ textDecoration: "inherit", color: "inherit" }}
+        >
+          Created by Raphael
+        </a>
+      </Typography>
     </Box>
   );
 };
