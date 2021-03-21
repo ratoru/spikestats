@@ -47,11 +47,10 @@ async fn main() -> std::io::Result<()> {
                     .clone()
                     .split(',')
                     .fold(
-                        Cors::new().allowed_origin("http://localhost:3000"),
+                        Cors::default().allowed_origin("http://localhost:3000"),
                         |cors, origin| cors.allowed_origin(origin),
                     )
                     .supports_credentials()
-                    .finish(),
             )
             .data(pool.clone())
             .service(
