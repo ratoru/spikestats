@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import { MyFooter } from "../components/common/MyFooter";
 import { LoginForm } from "../components/forms/LoginForm";
 import { MyHeader } from "../components/common/MyHeader";
 import { withoutAuth } from "../components/authentication/withoutAuth";

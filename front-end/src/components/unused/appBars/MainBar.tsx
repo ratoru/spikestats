@@ -8,9 +8,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { useTheme } from "@material-ui/core";
-import { LoggedInMenu } from "../../menus/LoggedInMenu";
-import { LoggedOutMenu } from "../../menus/LoggedOutMenu";
-import { useIsAuthenticated } from "../../../providers/Auth";
+import { LoggedInMenu } from "../menus/LoggedInMenu";
+import { LoggedOutMenu } from "../menus/LoggedOutMenu";
+import { useIsAuthenticated } from "../../providers/Auth";
 
 export const MainBar: React.FC = () => {
   const router = useRouter();
