@@ -17,7 +17,7 @@ export const MainHeader: React.FC = () => {
               <Link href="/about">
                 <a
                   className="text-gray-400 dark:text-white  hover:text-gray-800  px-3 py-2 rounded-md text-lg font-medium"
-                  href="/#"
+                  href="/"
                 >
                   About
                 </a>
@@ -28,7 +28,7 @@ export const MainHeader: React.FC = () => {
               >
                 Code
               </a>
-              <Link href="/">
+              <Link href="/faq">
                 <a className="text-gray-400  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-lg font-medium">
                   FAQ
                 </a>
@@ -42,7 +42,7 @@ export const MainHeader: React.FC = () => {
               items={[
                 { label: "About", link: "/about" },
                 { label: "Code", link: "https://github.com/ratoru/spikestats" },
-                { label: "FAQ", link: "/" },
+                { label: "FAQ", link: "/faq" },
               ]}
             />
           </div>
