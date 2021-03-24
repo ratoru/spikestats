@@ -1,5 +1,5 @@
 {
-  "name": "roundnet-stats",
+  "name": "front-end",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,31 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.2",
-    "@amcharts/amcharts4-fonts": "^4.0.1",
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@sweetalert2/theme-material-ui": "^3.2.0",
-    "@types/uuid": "^8.3.0",
-    "@types/yup": "^0.29.7",
-    "axios": "^0.20.0",
-    "fontsource-roboto": "^2.2.6",
-    "formik": "^2.1.5",
-    "material-table": "^1.69.0",
-    "next": "9.4.4",
-    "next-transpile-modules": "^4.1.0",
-    "react": "16.13.1",
-    "react-burger-menu": "^2.7.1",
-    "react-dom": "16.13.1",
-    "react-loading": "^2.0.3",
-    "sweetalert2": "^9.17.2",
-    "sweetalert2-react-content": "^3.2.0",
-    "uuid": "^8.3.0",
-    "yup": "^0.29.3"
+    "@headlessui/react": "^0.3.1",
+    "next": "10.0.9",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@types/node": "^14.10.1",
-    "@types/react": "^16.9.49",
-    "typescript": "^3.9.7"
+    "@types/node": "^14.14.35",
+    "@types/react": "^17.0.3",
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "tailwindcss": "^2.0.4",
+    "typescript": "^4.2.3"
   }
 }
