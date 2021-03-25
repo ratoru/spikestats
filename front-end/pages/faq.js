@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { MainHeader } from "../components/Nav/MainHeader";
 
 export default function Home() {
@@ -28,12 +29,9 @@ export default function Home() {
             think it's only fair to rank Player 1 higher until Player 2 plays
             more games. The method mentioned above accomplishes exactly this.
             For more info{" "}
-            <a
-              href="https://www.evanmiller.org/how-not-to-sort-by-average-rating.html"
-              className="text-yellow-600 hover:underline"
-            >
-              read this
-            </a>
+            <Link href="https://www.evanmiller.org/how-not-to-sort-by-average-rating.html">
+              <a className="text-yellow-600 hover:underline">read this</a>
+            </Link>
             .
           </p>
           <div className="mt-12">

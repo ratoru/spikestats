@@ -1,14 +1,9 @@
 -- Your SQL goes here
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TABLE users (
-    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-);
 CREATE TABLE groups (
     id uuid PRIMARY KEY,
     groupname TEXT NOT NULL,
-    user_id uuid NOT NULL REFERENCES users(id)
+    user_id uuid NOT NULL
 );
 CREATE TABLE players (
     id uuid PRIMARY KEY,

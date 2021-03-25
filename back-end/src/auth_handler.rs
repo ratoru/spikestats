@@ -1,86 +1,36 @@
+// Code from https://github.com/auth0-blog/actix-diesel-auth/blob/master/src/auth.rs
 use crate::error_handler::ServiceError;
-use crate::users::ReturnUser;
-use actix_http::http::Cookie;
-use actix_web::cookie::SameSite;
-use actix_web::web::HttpRequest;
-use chrono::{Duration, Utc};
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use alcoholic_jwt::{token_kid, validate, Validation, JWKS};
 use serde::{Deserialize, Serialize};
-use time;
-use uuid::Uuid;
+use std::error::Error;
 
-const TOKEN_LIFETIME: i64 = 2;
-
-#[derive(Serialize, Deserialize)]
-pub struct MyClaim {
-    pub exp: i64,
-    pub id: Uuid,
-    pub username: String,
+#[derive(Debug, Serialize, Deserialize)]
+struct Claims {
+    sub: String,
+    company: String,
+    exp: usize,
 }
 
-// Decodes a token, thereby checking whether the token was set correctly.
-pub fn authorize_token(token: &str) -> Result<MyClaim, ServiceError> {
-    let secret =
-        std::env::var("ACCESS_TOKEN_SECRET").map_err(|_| ServiceError::InternalServerError)?;
-    let result = decode::<MyClaim>(
-        token,
-        &DecodingKey::from_secret(secret.as_ref()),
-        &Validation::default(),
-    )?;
-    Ok(result.claims)
-}
-
-// Gets a token from the header of a request.
-// is_cookie toggles between Httponly Cookies and Auth Bearer.
-pub fn get_header_token(http_req: HttpRequest, is_cookie: bool) -> Result<String, ServiceError> {
-    let mut header_name = "Authorization";
-    let mut prefix_length = 7;
-    if is_cookie {
-        header_name = "Cookie";
-        prefix_length = 14;
-    }
-    let headers = http_req.headers();
-    let auth_header = headers.get(header_name).ok_or(ServiceError::Unauthorized)?;
-    let token: &str = auth_header
-        .to_str()
-        .map_err(|_| ServiceError::Unauthorized)?;
-    // Skip "Bearer " with [7..] and "Authorization=" with [14..]
-    Ok(token[prefix_length..].to_owned())
-}
-
-pub fn authorize_user(http_req: HttpRequest) -> Result<MyClaim, ServiceError> {
-    let token = get_header_token(http_req, true)?;
-    authorize_token(&token)
-}
-
-pub fn generate_token(return_user: ReturnUser) -> Result<String, ServiceError> {
-    let secret =
-        std::env::var("ACCESS_TOKEN_SECRET").map_err(|_| ServiceError::InternalServerError)?;
-    let exp_time = Utc::now() + Duration::hours(TOKEN_LIFETIME);
-    let my_claims = MyClaim {
-        exp: exp_time.timestamp(),
-        id: return_user.id,
-        username: return_user.username,
+pub fn validate_token(token: &str) -> Result<bool, ServiceError> {
+    let authority = std::env::var("AUTHORITY").expect("AUTHORITY must be set");
+    let jwks = fetch_jwks(&format!(
+        "{}{}",
+        authority.as_str(),
+        ".well-known/jwks.json"
+    ))
+    .expect("failed to fetch jwks");
+    let validations = vec![Validation::Issuer(authority), Validation::SubjectPresent];
+    let kid = match token_kid(&token) {
+        Ok(res) => res.expect("failed to decode kid"),
+        Err(_) => return Err(ServiceError::JWKSFetchError),
     };
-    encode(
-        &Header::default(),
-        &my_claims,
-        &EncodingKey::from_secret(secret.as_ref()),
-    )
-    .map_err(|_| ServiceError::InternalServerError)
+    let jwk = jwks.find(&kid).expect("Specified key not found in set");
+    let res = validate(token, jwk, validations);
+    Ok(res.is_ok())
 }
 
-pub fn create_cookie(jwt: &str) -> Cookie {
-    // let c: String = format!(
-    //     "Authorization={}; Secure; HttpOnly; SameSite=None; Expires={};",
-    //     jwt,
-    //     Utc::now() + Duration::hours(TOKEN_LIFETIME)
-    // );
-    // Cookie::parse(c).unwrap()
-    Cookie::build("Authorization", jwt.to_owned())
-        .max_age(time::Duration::hours(TOKEN_LIFETIME))
-        .http_only(true)
-        .secure(true) // Disable for local development
-        .same_site(SameSite::None)
-        .finish()
+fn fetch_jwks(uri: &str) -> Result<JWKS, Box<dyn Error>> {
+    let res = reqwest::blocking::get(uri)?;
+    let val = res.json::<JWKS>()?;
+    return Ok(val);
 }

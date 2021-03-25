@@ -2,4 +2,3 @@
 DROP TABLE games;
 DROP TABLE players;
 DROP TABLE groups;
-DROP TABLE users;
