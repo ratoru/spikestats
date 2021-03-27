@@ -6,6 +6,7 @@ interface Props {
   label?: string;
   icon?: JSX.Element;
   items: DDMItem[];
+  loggedIn: boolean;
 }
 
 export interface DDMItem {
@@ -18,7 +19,7 @@ export interface DDMItem {
 export const DropDownMenu = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="relative inline-block text-left mr-2">
+    <div className="relative inline-block text-left">
       {!isOpen && (
         <button
           type="button"
@@ -31,25 +32,49 @@ export const DropDownMenu = (props: Props) => {
           {props.icon || (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
               viewBox="0 0 24 24"
+              fill="none"
               stroke="currentColor"
-              className="h-8 w-8"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-8 h-8"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           )}
         </button>
       )}
       <Transition
         show={isOpen}
-        className="fixed inset-0 flex flex-col justify-center align-middle w-full h-full bg-gray-50 z-30"
+        className="fixed inset-0 flex flex-col justify-center align-middle w-full h-full bg-gray-50 z-40"
       >
+        {props.loggedIn && (
+          <Link href="/">
+            <a
+              className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900"
+              role="menuitem"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-6 h-6 mr-2"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span className="flex flex-col text-center">Log Out</span>
+            </a>
+          </Link>
+        )}
         {props.items.map((item) => {
           return (
             <Link href={item.link || "#"} key={item.label}>
@@ -79,17 +104,17 @@ export const DropDownMenu = (props: Props) => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
             className="w-8 h-8"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
           </svg>
         </button>
       </Transition>

@@ -11,7 +11,10 @@
     "@headlessui/react": "^0.3.1",
     "next": "10.0.9",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "sweetalert2": "^10.15.6",
+    "sweetalert2-react-content": "^3.3.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.35",

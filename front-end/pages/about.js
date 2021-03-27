@@ -2,7 +2,7 @@ import Head from "next/head";
 import { MainHeader } from "../components/Nav/MainHeader";
 import { PersonalInfo } from "../components/PersonalInfo";
 
-export default function Home() {
+export default function About() {
   return (
     <div>
       <Head>
@@ -13,16 +13,16 @@ export default function Home() {
           href="/spikestats-icon.svg"
         />
       </Head>
-      <body className="flex flex-col  align-middle bg-gray-50 w-screen h-screen">
-        <MainHeader />
+      <div className="flex flex-col  align-middle bg-gray-100 w-screen min-h-full">
+        <MainHeader loggedIn={false} />
         <h1 className="text-2xl text-center tracking-wide font-extrabold m-4 text-gray-900">
           ABOUT
         </h1>
         <div className="flex flex-col align-middle max-w-md mx-auto px-4">
-          <h2 className="text-xl text-green-600 font-bold text-center mt-12">
+          <h2 className="text-xl text-blue-600 font-bold text-center mt-12">
             Constraints
           </h2>
-          <p className="mt-2 text-gray-900">
+          <p className="mt-2 text-gray-900 text-justify">
             This is a personal project of mine. As such, this web app uses
             Vercel's and Heroku's free plan. This means... <br />
             1) if no one used the website for a long time it will take
@@ -33,17 +33,17 @@ export default function Home() {
             to me.
           </p>
           <div className="mt-12">
-            <h2 className="text-xl text-green-600 font-bold text-center">
+            <h2 className="text-xl text-blue-600 font-bold text-center">
               Contributions
             </h2>
-            <p className="mt-2 text-gray-900">
+            <p className="mt-2 text-gray-900 text-justify">
               Special thanks to Christina Joo for helping me with the logo
               design.
             </p>
           </div>
         </div>
         <PersonalInfo />
-      </body>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { MainHeader } from "../components/Nav/MainHeader";
 
-export default function Home() {
+export default function Faq() {
   return (
     <div>
       <Head>
@@ -13,13 +13,13 @@ export default function Home() {
           href="/spikestats-icon.svg"
         />
       </Head>
-      <body className="flex flex-col  align-middle bg-gray-50 w-screen h-screen">
-        <MainHeader />
+      <div className="flex flex-col  align-middle bg-gray-100 w-screen min-h-full">
+        <MainHeader loggedIn={false} />
         <h1 className="text-2xl text-center tracking-wide font-extrabold m-4 text-gray-900 uppercase">
           FAQ
         </h1>
         <div className="flex flex-col align-middle max-w-md mx-auto px-4 pb-20">
-          <h2 className="text-xl text-green-600 font-bold text-center mt-12">
+          <h2 className="text-xl text-blue-600 font-bold text-center mt-12">
             How do you determine which player is the best?
           </h2>
           <p className="mt-2 text-gray-900 text-justify">
@@ -35,7 +35,7 @@ export default function Home() {
             .
           </p>
           <div className="mt-12">
-            <h2 className="text-xl text-green-600 font-bold text-center">
+            <h2 className="text-xl text-blue-600 font-bold text-center">
               My account is not loading although it worked previously.
             </h2>
             <p className="mt-2 text-gray-900 text-justify">
@@ -47,7 +47,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </body>
+      </div>
     </div>
   );
 }

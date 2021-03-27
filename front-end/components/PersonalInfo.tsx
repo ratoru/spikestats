@@ -5,7 +5,7 @@ export const PersonalInfo: React.FC = () => {
   return (
     <div className="flex justify-center items-center w-screen p-16">
       <Link href="https://github.com/ratoru">
-        <a className="m-6 text-gray-900 hover:text-green-600">
+        <a className="m-6 text-gray-900 hover:text-blue-600">
           <svg
             width="24"
             height="24"
@@ -30,7 +30,7 @@ export const PersonalInfo: React.FC = () => {
         </a>
       </Link>
       <Link href="https://www.linkedin.com/in/ratoru/">
-        <a className="m-6 text-gray-900 hover:text-green-600">
+        <a className="m-6 text-gray-900 hover:text-blue-600">
           <svg
             width="24"
             height="24"
