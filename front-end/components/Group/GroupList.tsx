@@ -177,7 +177,7 @@ export const GroupList: React.FC = () => {
       </button>
       {groups.length == 0 && (
         <InfoCard
-          title="Groups"
+          title="Group"
           info="A group tracks the stats of players that frequently play together. Once a group has been created players cannot be added. Add one by clicking the button above."
         />
       )}

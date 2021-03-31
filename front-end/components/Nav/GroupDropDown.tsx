@@ -1,22 +1,16 @@
 import React, { useState } from "react";
-import { Transition } from "@headlessui/react";
 import Link from "next/link";
+import { Transition } from "@headlessui/react";
+import { SidebarElem } from "./Sidebar";
+import { groups } from "../../util/icons";
 
 interface Props {
   label?: string;
   icon?: JSX.Element;
-  items: DDMItem[];
-  loggedIn: boolean;
+  items: SidebarElem[];
 }
 
-export interface DDMItem {
-  icon?: JSX.Element;
-  label: string;
-  desc?: string;
-  link?: string;
-}
-
-export const DropDownMenu = (props: Props) => {
+export const GroupDropDown: React.FC<Props> = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="relative inline-block text-left">
@@ -53,49 +47,53 @@ export const DropDownMenu = (props: Props) => {
       >
         {props.items.map((item) => {
           return (
-            <Link href={item.link || "#"} key={item.label}>
-              <a
-                className={`${
-                  item.icon ? "flex items-center" : "block"
-                } block py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900`}
-                role="menuitem"
-              >
-                {item.icon}
-
-                <span className="flex flex-col text-center">
-                  <span>{item.label}</span>
-                  {item.desc && (
-                    <span className="text-gray-400 text-xs">{item.desc}</span>
-                  )}
-                </span>
-              </a>
-            </Link>
+            <button
+              className={`flex items-center justify-center py-4 text-xl ${
+                item.isActive ? `text-blue-500` : `text-gray-900`
+              } hover:shadow-lg rounded-lg focus:outline-none`}
+              role="menuitem"
+              key={item.title}
+              onClick={() => {
+                item.onClick();
+                setIsOpen(!isOpen);
+              }}
+            >
+              <div className="w-6 h-6 mr-4">{item.icon}</div>
+              <span className="flex flex-col text-center">{item.title}</span>
+            </button>
           );
         })}
-        {props.loggedIn && (
-          <Link href="/">
-            <a
-              className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900"
-              role="menuitem"
+        <Link href="/groups">
+          <a
+            className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg"
+            role="menuitem"
+          >
+            <span className="w-6 h-6 mr-4">{groups}</span>
+            <span className="flex flex-col text-center">Groups</span>
+          </a>
+        </Link>
+        <Link href="/">
+          <a
+            className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg"
+            role="menuitem"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-6 h-6 mr-4"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6 mr-2"
-              >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-              <span className="flex flex-col text-center">Log Out</span>
-            </a>
-          </Link>
-        )}
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span className="flex flex-col text-center">Log Out</span>
+          </a>
+        </Link>
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}

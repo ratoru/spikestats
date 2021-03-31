@@ -22,7 +22,7 @@ export const GroupCard: React.FC<Props> = ({ group, switchColor = false }) => {
   return (
     <button
       onClick={openGroup}
-      className="w-4/5 sm:w-1/2 md:w-1/2 lg:w-1/3 px-4 py-4 bg-white my-12 rounded-lg shadow-lg group"
+      className="w-4/5 sm:w-1/2 md:w-1/2 lg:w-1/3 px-4 py-4 bg-white my-12 rounded-lg shadow-lg group focus:outline-none"
     >
       <div
         className={`flex items-center mx-auto justify-center h-12 w-12 rounded-md ${
