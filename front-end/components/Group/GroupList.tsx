@@ -45,6 +45,7 @@ export async function groupPlayerSelection(
       />
     ),
     showCancelButton: true,
+    reverseButtons: true,
     confirmButtonText: "Next &rarr;",
     progressSteps: ["1", "2", "3"],
     currentProgressStep: "1",
@@ -75,11 +76,12 @@ export async function groupConfirmation(
 ): Promise<boolean> {
   const confirmSwal = withReactContent(Swal);
   const result = await confirmSwal.fire({
-    title: "Confirm",
+    title: "Looks good?",
     icon: "success",
     html: <GroupConfirm groupname={groupname} players={players} />,
     showCancelButton: true,
-    confirmButtonText: "Finish",
+    reverseButtons: true,
+    confirmButtonText: "Create Group",
     progressSteps: ["1", "2", "3"],
     currentProgressStep: "2",
   });
@@ -117,6 +119,7 @@ export const GroupList: React.FC = () => {
       text: "Must be a unique group name.",
       icon: "question",
       showCancelButton: true,
+      reverseButtons: true,
       confirmButtonText: "Next &rarr;",
       input: "text",
       inputPlaceholder: "New group name",

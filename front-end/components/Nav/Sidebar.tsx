@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { groups } from "../../util/icons";
+import { home } from "../../util/icons";
 
 export interface SidebarElem {
   title: string;
@@ -49,39 +49,41 @@ export const Sidebar: React.FC<Props> = ({ items }) => {
               </div>
             );
           })}
+        </div>
+        <div>
           <Link href="/groups">
             <a
               className="w-full font-thin uppercase text-gray-500 dark:text-gray-200 flex items-center p-4 my-2 transition-colors duration-200 justify-start hover:text-blue-500"
               href="#"
             >
-              <span className="text-left">{groups}</span>
+              <span className="text-left">{home}</span>
               <span className="mx-4 text-sm font-normal">Groups</span>
             </a>
           </Link>
+          <a
+            className="w-full font-thin uppercase text-gray-500 dark:text-gray-200 flex items-center p-4 my-2 transition-colors duration-200 justify-start hover:text-blue-500"
+            href="#"
+          >
+            <span className="text-left">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </span>
+            <span className="mx-4 text-sm font-normal">Logout</span>
+          </a>
         </div>
-        <a
-          className="w-full font-thin uppercase text-gray-500 dark:text-gray-200 flex items-center p-4 my-2 transition-colors duration-200 justify-start hover:text-blue-500"
-          href="#"
-        >
-          <span className="text-left">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-          </span>
-          <span className="mx-4 text-sm font-normal">Logout</span>
-        </a>
       </div>
     </div>
   );

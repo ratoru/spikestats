@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { DropDownMenu } from "./DropDownMenu";
+import { code, info, help } from "../../util/icons";
 
 interface Props {
   loggedIn: boolean;
@@ -48,9 +49,13 @@ export const MainHeader: React.FC<Props> = ({ loggedIn }) => {
           <div className="md:hidden">
             <DropDownMenu
               items={[
-                { label: "About", link: "/about" },
-                { label: "Code", link: "https://github.com/ratoru/spikestats" },
-                { label: "FAQ", link: "/faq" },
+                { label: "About", link: "/about", icon: info },
+                {
+                  label: "Code",
+                  link: "https://github.com/ratoru/spikestats",
+                  icon: code,
+                },
+                { label: "FAQ", link: "/faq", icon: help },
               ]}
               loggedIn={loggedIn}
             />

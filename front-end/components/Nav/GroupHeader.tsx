@@ -17,7 +17,7 @@ export const GroupHeader: React.FC<Props> = ({ groupname, items }) => {
       <h1 className="text-center text-2xl md:text-3xl my-auto font-bold tracking-wide">
         {groupname}
       </h1>
-      <button className="flex items-center px-6 py-2 transition ease-in duration-200 uppercase font-semibold tracking-wide rounded-full text-green-500 hover:bg-green-500 hover:text-white border-2 border-green-500 focus:outline-none ">
+      <button className="flex items-center px-6 py-2 uppercase font-semibold tracking-wide rounded-full bg-green-500 text-white hover:bg-green-600 focus:outline-none">
         <span className="w-6 h-6 mr-2">{play}</span>
         Play
       </button>

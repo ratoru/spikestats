@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
 import { SidebarElem } from "./Sidebar";
-import { groups } from "../../util/icons";
+import { home } from "../../util/icons";
 
 interface Props {
   label?: string;
@@ -68,7 +68,7 @@ export const GroupDropDown: React.FC<Props> = (props: Props) => {
             className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg"
             role="menuitem"
           >
-            <span className="w-6 h-6 mr-4">{groups}</span>
+            <span className="w-6 h-6 mr-4">{home}</span>
             <span className="flex flex-col text-center">Groups</span>
           </a>
         </Link>

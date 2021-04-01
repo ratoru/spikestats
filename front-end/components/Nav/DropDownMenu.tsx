@@ -56,11 +56,11 @@ export const DropDownMenu = (props: Props) => {
             <Link href={item.link || "#"} key={item.label}>
               <a
                 className={`${
-                  item.icon ? "flex items-center" : "block"
-                } block py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900`}
+                  item.icon ? "flex justify-center items-center" : "block"
+                } py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900`}
                 role="menuitem"
               >
-                {item.icon}
+                <div className="w-6 h-6 mr-4">{item.icon}</div>
 
                 <span className="flex flex-col text-center">
                   <span>{item.label}</span>
