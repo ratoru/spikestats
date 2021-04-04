@@ -8,7 +8,7 @@ interface Props {
 
 export const Settings: React.FC<Props> = ({ group }) => {
   return (
-    <div className="md:mx-4">
+    <>
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1">
           <div className="px-4 sm:px-0">
@@ -28,7 +28,7 @@ export const Settings: React.FC<Props> = ({ group }) => {
                 <div className="grid grid-cols-3 gap-6">
                   <div className="col-span-3 sm:col-span-2">
                     <label
-                      htmlFor="company_website"
+                      htmlFor="group_name"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Group Name
@@ -41,8 +41,8 @@ export const Settings: React.FC<Props> = ({ group }) => {
                       </span>
                       <input
                         type="text"
-                        name="company_website"
-                        id="company_website"
+                        name="group_name"
+                        id="group_name"
                         className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                         placeholder={group.groupname}
                       />
@@ -50,7 +50,7 @@ export const Settings: React.FC<Props> = ({ group }) => {
                   </div>
                   <div className="col-span-3 sm:col-span-2">
                     <label
-                      htmlFor="company_website"
+                      htmlFor="player 1"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Players
@@ -66,8 +66,8 @@ export const Settings: React.FC<Props> = ({ group }) => {
                           </span>
                           <input
                             type="text"
-                            name="company_website"
-                            id="company_website"
+                            name={`player ${index + 1}`}
+                            id={`player ${index + 1}`}
                             className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                             placeholder={player.name}
                           />
@@ -90,18 +90,18 @@ export const Settings: React.FC<Props> = ({ group }) => {
         </div>
       </div>
 
-      <div className="hidden sm:block" aria-hidden="true">
+      <div className="hidden sm:block w-full" aria-hidden="true">
         <div className="py-5">
           <div className="border-t border-gray-200"></div>
         </div>
       </div>
 
-      <div className="mt-10 sm:mt-0">
+      <div className="mt-10 sm:mt-0 w-full">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-red-600">
-                Danger Zone!
+                Danger Zone
               </h3>
               <p className="mt-1 text-sm text-gray-600">
                 Any changes here cannot be undone.
@@ -120,6 +120,6 @@ export const Settings: React.FC<Props> = ({ group }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

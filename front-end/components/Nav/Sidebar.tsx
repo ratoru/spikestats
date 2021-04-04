@@ -16,7 +16,7 @@ interface Props {
 export const Sidebar: React.FC<Props> = ({ items }) => {
   return (
     <div className="h-screen w-72 p-4 hidden md:block">
-      <div className="h-full w-full bg-white rounded-2xl shadow-xl flex-col flex items-center justify-between">
+      <div className="h-full w-full bg-white rounded-2xl shadow flex-col flex justify-between">
         <div className="w-full">
           <div className="h-12 my-8">
             <Link href="/groups">
