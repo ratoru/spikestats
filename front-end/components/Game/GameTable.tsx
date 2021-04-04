@@ -7,9 +7,10 @@ import { trash } from "../../util/icons";
 interface Props {
   games: Game[];
   players: Player[];
+  onDelete: (id: string) => void;
 }
 
-export const GameTable: React.FC<Props> = ({ games, players }) => {
+export const GameTable: React.FC<Props> = ({ games, players, onDelete }) => {
   const data = useMemo(() => games, [games]);
 
   const columns = React.useMemo(
@@ -44,7 +45,7 @@ export const GameTable: React.FC<Props> = ({ games, players }) => {
         },
       },
       {
-        Header: "Serving Team",
+        Header: "Initial Serve",
         accessor: "serve",
         Cell: ({ value }) => {
           return (
@@ -76,11 +77,7 @@ export const GameTable: React.FC<Props> = ({ games, players }) => {
           <button
             className="transform hover:text-red-500 hover:scale-110 flex items-center justify-center"
             onClick={() => {
-              // ES6 Syntax use the rvalue if your data is an array.
-              // const dataCopy = [...data];
-              // It should not matter what you name tableProps. It made the most sense to me.
-              // dataCopy.splice(tableProps.row.index, 1);
-              // setData(dataCopy);
+              onDelete(tableProps.row.original["id"]);
             }}
           >
             <span className="w-5 h-5 flex justify-center items-center">
@@ -113,10 +110,7 @@ export const GameTable: React.FC<Props> = ({ games, players }) => {
             className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"
           >
             {headerGroup.headers.map((column) => (
-              <th
-                {...column.getHeaderProps()}
-                className="py-3 px-6 text-center"
-              >
+              <th {...column.getHeaderProps()} className="p-6 text-center">
                 {column.render("Header")}
               </th>
             ))}
@@ -139,7 +133,7 @@ export const GameTable: React.FC<Props> = ({ games, players }) => {
             >
               {row.cells.map((cell) => {
                 return (
-                  <td {...cell.getCellProps()} className="py-3 px-6 text-left">
+                  <td {...cell.getCellProps()} className="p-6 text-left">
                     <div className="w-full flex justify-center items-center">
                       {cell.render("Cell")}
                     </div>

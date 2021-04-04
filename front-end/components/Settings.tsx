@@ -1,12 +1,14 @@
 import React from "react";
-import { Group } from "../util/types";
+import { Player } from "../util/types";
 import { trash, group as groupIcon } from "../util/icons";
 
 interface Props {
-  group: Group;
+  gId: string;
+  groupname: string;
+  players: Player[];
 }
 
-export const Settings: React.FC<Props> = ({ group }) => {
+export const Settings: React.FC<Props> = ({ gId, groupname, players }) => {
   return (
     <>
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -44,7 +46,7 @@ export const Settings: React.FC<Props> = ({ group }) => {
                         name="group_name"
                         id="group_name"
                         className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                        placeholder={group.groupname}
+                        placeholder={groupname}
                       />
                     </div>
                   </div>
@@ -55,7 +57,7 @@ export const Settings: React.FC<Props> = ({ group }) => {
                     >
                       Players
                     </label>
-                    {group.players.map((player, index) => {
+                    {players.map((player, index) => {
                       return (
                         <div
                           className="m-3 flex rounded-md shadow-sm"

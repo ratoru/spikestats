@@ -4,7 +4,7 @@ import { SidebarElem } from "./Sidebar";
 import { play } from "../../util/icons";
 
 interface Props {
-  groupname: string | string[];
+  groupname: string;
   items: SidebarElem[];
 }
 
