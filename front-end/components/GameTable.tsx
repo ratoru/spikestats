@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
-import { Game, Player, ServeTeam, Team } from "../../util/types";
-import { teamToNames } from "../../util/conversions";
-import { trash } from "../../util/icons";
+import { Game, Player, ServeTeam, Team } from "../util/types";
+import { teamToNames } from "../util/conversions";
+import { trash } from "../util/icons";
 
 interface Props {
   games: Game[];

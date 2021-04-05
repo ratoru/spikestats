@@ -7,7 +7,7 @@ interface Props {
 
 export const InfoCard: React.FC<Props> = ({ title, info }) => {
   return (
-    <div className="w-4/5 sm:w-1/2 md:w-1/2 lg:w-1/3 px-4 py-4 bg-white mt-11  shadow-lg rounded-lg">
+    <div className="w-4/5 sm:w-1/2 md:w-1/2 lg:w-1/3 px-4 py-4 bg-white mt-11 shadow rounded-lg">
       <div className="flex items-center mx-auto justify-center h-12 w-12 rounded-md bg-green-500 text-white -mt-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"

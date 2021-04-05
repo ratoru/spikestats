@@ -2,6 +2,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import { v4 as uuidv4 } from "uuid";
 import { Sidebar } from "../../components/Nav/Sidebar";
 import { InfoCard } from "../../components/InfoCard";
 import { GroupHeader } from "../../components/Nav/GroupHeader";
@@ -9,7 +10,13 @@ import { charPie, list, settings } from "../../util/icons";
 import { Game, ServeTeam, Player } from "../../util/types";
 import { Settings } from "../../components/Settings";
 import { Statistics } from "../../components/Statistics";
-import { GameTable } from "../../components/Game/GameTable";
+import { GameTable } from "../../components/GameTable";
+import {
+  teamSelection,
+  scoreSelection,
+  serveSelection,
+  confirmSelection,
+} from "../../components/Game/GameSwals";
 
 const testGames: Game[] = [
   {
@@ -58,6 +65,60 @@ export default function Stats() {
 
   const [games, setGames] = useState<Game[]>(testGames);
   const [players, setPlayers] = useState<Player[]>(testPlayers);
+
+  const handleAdd = async () => {
+    const addedGame: Game = {
+      id: uuidv4(),
+      blue_team: ["", ""],
+      red_team: ["", ""],
+      score: [-1, -1],
+      serve: ServeTeam.Blue,
+      date_played: new Date(),
+    };
+    teamSelection(players)
+      .then((curTeamSelection) => {
+        addedGame.blue_team = curTeamSelection.blue_team;
+        addedGame.red_team = curTeamSelection.red_team;
+        return scoreSelection(players, curTeamSelection);
+      })
+      .then((curScore) => {
+        addedGame.score = curScore;
+        return serveSelection(
+          players,
+          { blue_team: addedGame.blue_team, red_team: addedGame.red_team },
+          curScore
+        );
+      })
+      .then((curServingTeam) => {
+        addedGame.serve = curServingTeam;
+        return confirmSelection(
+          players,
+          { blue_team: addedGame.blue_team, red_team: addedGame.red_team },
+          addedGame.score,
+          curServingTeam
+        );
+      })
+      .then(async () => {
+        const oldGames = games;
+        // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
+        addedGame.date_played = new Date();
+        setGames((games) => [...games, addedGame]);
+        // Call server!
+        // try {
+        //   await http.post("/games", {
+        //     ...addedGame,
+        //     serve: addedGame.serve ? true : false,
+        //     group_id: gId,
+        //   });
+        // } catch (error) {
+        //   errorToast.fire();
+        //   setGames(oldGames);
+        // }
+      })
+      .catch(() => {
+        return;
+      });
+  };
 
   const handleDelete = async (id: string) => {
     Swal.fire({
@@ -127,23 +188,29 @@ export default function Stats() {
         <div className="flex items-start justify-between h-full">
           <Sidebar items={items} />
           <div className="flex flex-col w-full h-full md:ml-4 md:pl-0 p-4 md:space-y-4 items-center">
-            <GroupHeader groupname={String(groupname)} items={items} />
+            <GroupHeader
+              groupname={String(groupname)}
+              items={items}
+              onAdd={handleAdd}
+            />
             <div className="overflow-auto flex flex-col w-full h-full">
-              {curTab === Tab.Stats && (
-                <div className="m-auto">
-                  <InfoCard
-                    title="Game"
-                    info="Just what you think it is! You need to add a game before you can see your statistics. Add a game by clicking play!"
-                  />
-                </div>
-              )}
-              {curTab === Tab.Games && (
+              {curTab === Tab.Stats && games.length > 0 && <Statistics />}
+              {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
                   games={games}
                   players={players}
                   onDelete={handleDelete}
                 />
               )}
+              {(curTab === Tab.Stats || curTab === Tab.Games) &&
+                games.length === 0 && (
+                  <div className="w-full h-full flex justify-center items-center">
+                    <InfoCard
+                      title="Game"
+                      info="Just what you think it is! Seems like you have no games yet. Add a game by clicking play."
+                    />
+                  </div>
+                )}
               {curTab === Tab.Settings && (
                 <Settings
                   gId={String(gId)}
