@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlayerChip } from "./PlayerChip";
+import { PlayerButton } from "./PlayerButton";
 import { Player } from "../../util/types";
 
 interface PlayerChip {
@@ -84,7 +84,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
         {chips.map((chip, index) => {
           if (chip.isBlue) {
             return (
-              <PlayerChip
+              <PlayerButton
                 key={chip.id}
                 name={chip.label}
                 color="blue"
@@ -99,7 +99,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
         {chips.map((chip, index) => {
           if (chip.isRed) {
             return (
-              <PlayerChip
+              <PlayerButton
                 key={chip.id}
                 name={chip.label}
                 color="red"
@@ -114,7 +114,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
         {chips.map((chip, index) => {
           if (!(chip.isBlue || chip.isRed)) {
             return (
-              <PlayerChip
+              <PlayerButton
                 key={chip.id}
                 name={chip.label}
                 color="gray"

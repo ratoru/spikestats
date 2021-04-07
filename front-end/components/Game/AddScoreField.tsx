@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { PlayerChip } from "./PlayerChip";
 import { Player, Team } from "../../util/types";
+import { idToPlayerName } from "../../util/conversions";
 
 interface AddScoreField {
   players: Player[];
@@ -21,21 +23,25 @@ export const AddScoreField: React.FC<AddScoreField> = ({
 
   return (
     <div className="w-full h-full grid grid-cols-2 gap-4">
-      <div className="cols-span-1 flex flex-wrap justify-around items-center">
+      <div className="cols-span-1 flex flex-col justify-around items-center">
         {teams.blue_team.map((id) => {
           return (
-            <div key={id} className="bg-blue-500 px-2 py-4">
-              {id}
-            </div>
+            <PlayerChip
+              key={id}
+              name={idToPlayerName(id, players)}
+              color="blue"
+            />
           );
         })}
       </div>
-      <div className="cols-span-1 flex flex-wrap justify-around items-center">
+      <div className="cols-span-1 flex flex-col justify-around items-center">
         {teams.red_team.map((id) => {
           return (
-            <div key={id} className="bg-red-500 px-2 py-4">
-              {id}
-            </div>
+            <PlayerChip
+              key={id}
+              name={idToPlayerName(id, players)}
+              color="red"
+            />
           );
         })}
       </div>

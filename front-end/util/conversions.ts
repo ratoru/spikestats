@@ -1,12 +1,7 @@
 import { Player, Team } from "./types";
 
-function idToPlayerName (id: string, players: Player[]): string {
-    for (let player of players) {
-        if (player.uuid === id) {
-            return player.name;
-        }
-    }
-    return "Not Found";
+export function idToPlayerName (id: string, players: Player[]): string {
+    return players.find(player => {return player.uuid === id}).name;
 }
 
 export function teamToNames (teamIds: Team, players: Player[]): string {

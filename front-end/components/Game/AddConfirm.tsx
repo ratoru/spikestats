@@ -1,5 +1,7 @@
 import React from "react";
+import { PlayerChip } from "./PlayerChip";
 import { Player, Team, ServeTeam } from "../../util/types";
+import { idToPlayerName } from "../../util/conversions";
 
 interface AddConfirmProps {
   players: Player[];
@@ -16,24 +18,28 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
 }) => {
   return (
     <div className="w-full h-full grid grid-cols-3 gap-4">
-      <div className="col-span-1 flex flex-wrap justify-around items-center">
+      <div className="col-span-1 flex flex-col justify-around items-center">
         {teams.blue_team.map((id) => {
           return (
-            <div key={id} className="bg-blue-500 px-2 py-4">
-              {id}
-            </div>
+            <PlayerChip
+              key={id}
+              name={idToPlayerName(id, players)}
+              color="blue"
+            />
           );
         })}
       </div>
       <div className="col-span-1 text-xl font-bold text-center my-auto">
         {score[0]}:{score[1]}
       </div>
-      <div className="col-span-1 flex flex-wrap justify-around items-center">
+      <div className="col-span-1 flex flex-col justify-around items-center">
         {teams.red_team.map((id) => {
           return (
-            <div key={id} className="bg-red-500 px-2 py-4">
-              {id}
-            </div>
+            <PlayerChip
+              key={id}
+              name={idToPlayerName(id, players)}
+              color="red"
+            />
           );
         })}
       </div>
