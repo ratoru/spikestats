@@ -35,7 +35,7 @@ export const AddServe: React.FC<AddServeProps> = ({
           );
         })}
       </div>
-      <div className="col-span-1 text-xl font-bold text-center my-auto">
+      <div className="col-span-1 text-3xl font-bold tracking-wider text-center my-auto">
         {score[0]}:{score[1]}
       </div>
       <div className="col-span-1 flex flex-col justify-around items-center">

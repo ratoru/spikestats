@@ -2,6 +2,7 @@ import React from "react";
 import { PlayerChip } from "./PlayerChip";
 import { Player, Team, ServeTeam } from "../../util/types";
 import { idToPlayerName } from "../../util/conversions";
+import { serve as serveIcon } from "../../util/icons";
 
 interface AddConfirmProps {
   players: Player[];
@@ -29,8 +30,17 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
           );
         })}
       </div>
-      <div className="col-span-1 text-xl font-bold text-center my-auto">
-        {score[0]}:{score[1]}
+      <div className="col-span-1 flex-col items-center justify-around text-center my-auto">
+        <div className="text-3xl font-bold tracking-wider">
+          {score[0]}:{score[1]}
+        </div>
+        <div
+          className={`flex justify-center items-center mt-6 ${
+            serve ? "text-red-500" : "text-blue-500"
+          }`}
+        >
+          {serveIcon}
+        </div>
       </div>
       <div className="col-span-1 flex flex-col justify-around items-center">
         {teams.red_team.map((id) => {
@@ -43,7 +53,6 @@ export const AddConfirm: React.FC<AddConfirmProps> = ({
           );
         })}
       </div>
-      <div className="col-span-3">{serve ? "Red" : "Blue"} Serve</div>
     </div>
   );
 };

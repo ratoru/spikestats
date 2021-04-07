@@ -48,8 +48,10 @@ export const AddScoreField: React.FC<AddScoreField> = ({
       <div className="cols-span-1">
         <input
           type="number"
+          className="rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
           autoComplete="off"
           autoFocus
+          placeholder="Blue Score"
           value={curBlue}
           onChange={(event) => {
             if (event.target.type === "number") {
@@ -66,7 +68,9 @@ export const AddScoreField: React.FC<AddScoreField> = ({
       <div className="cols-span-1">
         <input
           type="number"
+          className="rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
           autoComplete="off"
+          placeholder="Red Score"
           value={curRed}
           onChange={(event) => {
             if (event.target.type === "number") {
