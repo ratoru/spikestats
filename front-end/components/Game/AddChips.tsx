@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PlayerChip } from "./PlayerChip";
 import { Player } from "../../util/types";
 
 interface PlayerChip {
@@ -79,32 +80,32 @@ export const AddChips: React.FC<AddChipsProps> = ({
     <div className="w-full h-full grid grid-cols-2 gap-4">
       <div className="text-lg font-medium mx-auto col-span-1">Blue Team</div>
       <div className="text-lg font-medium mx-auto col-span-1">Red Team</div>
-      <div className="col-span-1 flex flex-wrap justify-around items-center">
+      <div className="col-span-1 flex flex-col justify-around items-center">
         {chips.map((chip, index) => {
           if (chip.isBlue) {
             return (
-              <button
+              <PlayerChip
                 key={chip.id}
-                className="bg-blue-500 py-4 px-2 text-center"
+                name={chip.label}
+                color="blue"
                 onClick={() => handleDelete(index)}
-              >
-                {chip.label}
-              </button>
+                isSelected={true}
+              />
             );
           }
         })}
       </div>
-      <div className="col-span-1 flex flex-wrap justify-around items-center">
+      <div className="col-span-1 flex flex-col justify-around items-center">
         {chips.map((chip, index) => {
           if (chip.isRed) {
             return (
-              <button
+              <PlayerChip
                 key={chip.id}
-                className="bg-red-500 py-4 px-2 text-center"
+                name={chip.label}
+                color="red"
                 onClick={() => handleDelete(index)}
-              >
-                {chip.label}
-              </button>
+                isSelected={true}
+              />
             );
           }
         })}
@@ -113,13 +114,13 @@ export const AddChips: React.FC<AddChipsProps> = ({
         {chips.map((chip, index) => {
           if (!(chip.isBlue || chip.isRed)) {
             return (
-              <button
+              <PlayerChip
                 key={chip.id}
-                className="bg-gray-500 py-4 px-2 text-center"
+                name={chip.label}
+                color="gray"
                 onClick={() => handleClick(index)}
-              >
-                {chip.label}
-              </button>
+                isSelected={false}
+              />
             );
           }
         })}

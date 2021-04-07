@@ -1,5 +1,4 @@
 import React from "react";
-import { award } from "../util/icons";
 
 export const Statistics = () => {
   return (
