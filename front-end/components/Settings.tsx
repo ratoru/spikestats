@@ -98,7 +98,7 @@ export const Settings: React.FC<Props> = ({ gId, groupname, players }) => {
                       type="text"
                       name="group_name"
                       id="group_name"
-                      className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                      className="form-input focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                       placeholder={groupname}
                       value={groupField}
                       onChange={(e) => {
@@ -131,7 +131,7 @@ export const Settings: React.FC<Props> = ({ gId, groupname, players }) => {
                             checkCorrect(player.uuid)
                               ? `focus:ring-blue-500 focus:border-blue-500`
                               : `focus:ring-red-500 focus:border-red-500`
-                          } flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300`}
+                          } form-input flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300`}
                           placeholder={player.name}
                           value={fields.get(player.uuid)}
                           onChange={(e) => {

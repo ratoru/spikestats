@@ -123,7 +123,7 @@ export default function Stats() {
   const handleDelete = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert deleting this game!",
+      text: "You won't be able to undo deleting this game!",
       icon: "warning",
       showCancelButton: true,
       reverseButtons: true,

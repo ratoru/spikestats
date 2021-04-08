@@ -47,7 +47,7 @@ export async function teamSelection(players: Player[]): Promise<Selection> {
   };
   const AddGameSwal = withReactContent(Swal);
   const { value: finalSelection } = await AddGameSwal.fire({
-    title: "Choose Teams",
+    title: "Time to make teams!",
     html: (
       <AddChips
         players={players}
@@ -88,9 +88,9 @@ export async function scoreSelection(
   players: Player[],
   teamSelection: Selection
 ): Promise<[number, number]> {
-  let blueScore: number;
-  let redScore: number;
-  const handleChange = (score: number, isBlue: boolean) => {
+  let blueScore = "";
+  let redScore = "";
+  const handleChange = (score: string, isBlue: boolean) => {
     isBlue ? (blueScore = score) : (redScore = score);
   };
   const scoreSwal = withReactContent(Swal);
@@ -111,8 +111,14 @@ export async function scoreSelection(
     progressSteps: ["1", "2", "3", "4"],
     currentProgressStep: "1",
     preConfirm: () => {
-      if (blueScore >= 0 && redScore >= 0 && blueScore !== redScore) {
-        const score: [number, number] = [blueScore, redScore];
+      const blueScoreNum = parseInt(blueScore);
+      const redScoreNum = parseInt(redScore);
+      if (
+        blueScoreNum >= 0 &&
+        redScoreNum >= 0 &&
+        blueScoreNum !== redScoreNum
+      ) {
+        const score: [number, number] = [blueScoreNum, redScoreNum];
         return score;
       }
       scoreSwal.showValidationMessage("The score can't be a tie.");
@@ -135,13 +141,14 @@ export async function serveSelection(
   teamSelection: Selection,
   score: [number, number]
 ): Promise<ServeTeam> {
-  let curServeSelection = "";
-  const handleChange = (newSelection: string) => {
-    curServeSelection = newSelection;
+  let curServeSelection: ServeTeam = ServeTeam.Blue;
+  const handleChange = () => {
+    curServeSelection =
+      curServeSelection === ServeTeam.Blue ? ServeTeam.Red : ServeTeam.Blue;
   };
 
   const scoreSwal = withReactContent(Swal);
-  const { value: teamWithServe } = await scoreSwal.fire({
+  const { value: teamWithServe, isDismissed } = await scoreSwal.fire({
     title: "First Serve",
     html: (
       <AddServe
@@ -156,20 +163,20 @@ export async function serveSelection(
     confirmButtonText: "Next &rarr;",
     progressSteps: ["1", "2", "3", "4"],
     currentProgressStep: "2",
-    preConfirm: () => {
-      if (curServeSelection === "") {
-        scoreSwal.showValidationMessage("Select who had the initial serve.");
-        return false;
-      }
-      return curServeSelection;
-    },
+    // preConfirm: () => {
+    //   if (curServeSelection === undefined) {
+    //     scoreSwal.showValidationMessage("Select who had the initial serve.");
+    //     return false;
+    //   }
+    //   return curServeSelection;
+    // },
   });
   // Correct and neccessary syntax??
   return new Promise((resolve, reject) => {
-    if (!teamWithServe) {
+    if (isDismissed) {
       reject();
     } else {
-      resolve(teamWithServe === "blue" ? ServeTeam.Blue : ServeTeam.Red);
+      resolve(curServeSelection);
     }
   });
 }
@@ -182,7 +189,7 @@ export async function confirmSelection(
   serve: ServeTeam
 ): Promise<boolean> {
   const scoreSwal = withReactContent(Swal);
-  const result = await scoreSwal.fire({
+  const { isDismissed } = await scoreSwal.fire({
     icon: "success",
     title: "Confirm Game",
     html: (
@@ -201,7 +208,7 @@ export async function confirmSelection(
   });
   // Correct and neccessary syntax??
   return new Promise((resolve, reject) => {
-    if (!result) {
+    if (isDismissed) {
       reject();
     } else {
       resolve(true);

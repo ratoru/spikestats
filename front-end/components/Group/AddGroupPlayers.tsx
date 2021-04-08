@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PlayerButton } from "../Game/PlayerButton";
 import { Player } from "../../util/types";
 
 interface Props {
@@ -43,32 +44,13 @@ export const AddGroupPlayers: React.FC<Props> = ({
       <div className="flex flex-row flex-wrap justify-center items-center w-full">
         {chips.map((chip) => {
           return (
-            <span
+            <PlayerButton
               key={chip}
-              className="px-4 py-2 flex items-center text-lg rounded-lg text-white bg-blue-600 max-w-min m-2"
-            >
-              <p className="mr-2 select-none">{chip}</p>
-              <button
-                onClick={() => {
-                  handleDelete(chip);
-                }}
-                className="focus:outline-none"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-5 h-5"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </span>
+              name={chip}
+              color="gray"
+              isSelected={true}
+              onClick={() => handleDelete(chip)}
+            />
           );
         })}
       </div>
@@ -95,7 +77,7 @@ export const AddGroupPlayers: React.FC<Props> = ({
             autoFocus
             autoComplete="off"
             id="player-with-icon"
-            className={`rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`form-input rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:border-transparent ${
               checkCorrect() ? "focus:ring-blue-600" : "focus:ring-red-600"
             }`}
             placeholder="New Player"

@@ -6,9 +6,9 @@ import { idToPlayerName } from "../../util/conversions";
 interface AddScoreField {
   players: Player[];
   teams: { blue_team: Team; red_team: Team };
-  blueScore: number;
-  redScore: number;
-  onChange: (points: number, isBlue: boolean) => void;
+  blueScore: string;
+  redScore: string;
+  onChange: (points: string, isBlue: boolean) => void;
 }
 
 export const AddScoreField: React.FC<AddScoreField> = ({
@@ -45,41 +45,39 @@ export const AddScoreField: React.FC<AddScoreField> = ({
           );
         })}
       </div>
-      <div className="cols-span-1">
+      <div className="cols-span-1 mb-2">
         <input
           type="number"
-          className="rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+          className="form-input w-full rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
           autoComplete="off"
           autoFocus
           placeholder="Blue Score"
           value={curBlue}
           onChange={(event) => {
             if (event.target.type === "number") {
-              const enteredScore = parseInt(event.target.value);
-              onChange(enteredScore, true);
-              setBlue(enteredScore);
+              onChange(event.target.value, true);
+              setBlue(event.target.value);
             } else {
-              onChange(0, true);
-              setBlue(0);
+              onChange("", true);
+              setBlue("");
             }
           }}
         ></input>
       </div>
-      <div className="cols-span-1">
+      <div className="cols-span-1 mb-2">
         <input
           type="number"
-          className="rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+          className="form-input w-full rounded-md bg-gray-200 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
           autoComplete="off"
           placeholder="Red Score"
           value={curRed}
           onChange={(event) => {
             if (event.target.type === "number") {
-              const enteredScore = parseInt(event.target.value);
-              onChange(enteredScore, false);
-              setRed(enteredScore);
+              onChange(event.target.value, false);
+              setRed(event.target.value);
             } else {
-              onChange(0, false);
-              setRed(0);
+              onChange("", false);
+              setRed("");
             }
           }}
         ></input>

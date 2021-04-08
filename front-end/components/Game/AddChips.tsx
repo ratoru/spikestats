@@ -78,8 +78,26 @@ export const AddChips: React.FC<AddChipsProps> = ({
 
   return (
     <div className="w-full h-full grid grid-cols-2 gap-4">
-      <div className="text-lg font-medium mx-auto col-span-1">Blue Team</div>
-      <div className="text-lg font-medium mx-auto col-span-1">Red Team</div>
+      {chips.filter((chip) => {
+        return chip.isBlue || chip.isRed;
+      }).length === 0 && (
+        <div className="col-span-2 text-center leading-7 mt-4">
+          Who is on the blue team? <br /> Click them first.
+        </div>
+      )}
+      {chips.filter((chip) => {
+        return chip.isBlue || chip.isRed;
+      }).length !== 0 && (
+        <>
+          <div className="text-2xl font-semibold tracking-wide mx-auto col-span-1">
+            Blue Team
+          </div>
+          <div className="text-2xl font-semibold tracking-wide mx-auto col-span-1">
+            Red Team
+          </div>
+        </>
+      )}
+
       <div className="col-span-1 flex flex-col justify-around items-center">
         {chips.map((chip, index) => {
           if (chip.isBlue) {
