@@ -1,6 +1,5 @@
-1) Add styling to add game funcitonality.
-    1.4) Radio buttons!
 2) Add stats.
     2.1) Use Chart.Js.
     2.2) Store games in state, calculate all data sets in useEffect. Pass into chartjs.
 3) Add error checking to settings.
+4) Improve design of add group.

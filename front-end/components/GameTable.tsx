@@ -101,7 +101,7 @@ export const GameTable: React.FC<Props> = ({ games, players, onDelete }) => {
   return (
     <table
       {...getTableProps()}
-      className="w-full lg:w-5/6 table-auto bg-white shadow-md mx-auto"
+      className="w-full lg:w-5/6 table-auto bg-white shadow-md rounded-md overflow-hidden mx-auto"
     >
       <thead>
         {headerGroups.map((headerGroup) => (

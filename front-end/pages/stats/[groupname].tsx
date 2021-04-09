@@ -8,6 +8,7 @@ import { InfoCard } from "../../components/InfoCard";
 import { GroupHeader } from "../../components/Nav/GroupHeader";
 import { charPie, list, settings } from "../../util/icons";
 import { Game, ServeTeam, Player } from "../../util/types";
+import { createStatsMap } from "../../util/calculations";
 import { Settings } from "../../components/Settings";
 import { Statistics } from "../../components/Statistics";
 import { GameTable } from "../../components/GameTable";
@@ -65,6 +66,8 @@ export default function Stats() {
 
   const [games, setGames] = useState<Game[]>(testGames);
   const [players, setPlayers] = useState<Player[]>(testPlayers);
+
+  const statsMap = createStatsMap(games, players);
 
   const handleAdd = async () => {
     const addedGame: Game = {
@@ -194,7 +197,9 @@ export default function Stats() {
               onAdd={handleAdd}
             />
             <div className="overflow-auto flex flex-col w-full h-full">
-              {curTab === Tab.Stats && games.length > 0 && <Statistics />}
+              {curTab === Tab.Stats && games.length > 0 && (
+                <Statistics stats={statsMap} />
+              )}
               {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
                   games={games}
