@@ -4,7 +4,7 @@ export interface Group {
   groupname: string;
   players: Player[];
 }
-  
+
 // Two player Ids. (Both uuids)
 export type Team = [string, string];
 
