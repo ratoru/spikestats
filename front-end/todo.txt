@@ -1,3 +1,4 @@
+1) Think about sorting teams to make them easier to identify.
 2) Add stats.
     2.1) Use Chart.Js.
     2.2) Store games in state, calculate all data sets in useEffect. Pass into chartjs.

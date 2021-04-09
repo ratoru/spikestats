@@ -148,7 +148,7 @@ export async function serveSelection(
   };
 
   const scoreSwal = withReactContent(Swal);
-  const { value: teamWithServe, isDismissed } = await scoreSwal.fire({
+  const { isDismissed } = await scoreSwal.fire({
     title: "First Serve",
     html: (
       <AddServe

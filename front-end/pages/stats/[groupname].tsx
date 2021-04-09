@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
@@ -11,6 +11,7 @@ import { Game, ServeTeam, Player } from "../../util/types";
 import {
   createStatsMap,
   addStatsOfGame,
+  updateBestPerformers,
   AllStats,
 } from "../../util/calculations";
 import { Settings } from "../../components/Settings";
@@ -113,9 +114,10 @@ export default function Stats() {
         addedGame.date_played = new Date();
         setGames((games) => [...games, addedGame]);
         // Update Stats
-        let newMap = JSON.parse(JSON.stringify(statsMap));
-        addStatsOfGame(newMap, addedGame);
-        setStatsMap(newMap);
+        let newObj = JSON.parse(JSON.stringify(statsMap));
+        addStatsOfGame(newObj, addedGame);
+        updateBestPerformers(newObj, players);
+        setStatsMap(newObj);
         // Call server!
         // try {
         //   await http.post("/games", {
@@ -210,7 +212,7 @@ export default function Stats() {
             />
             <div className="overflow-auto flex flex-col w-full h-full">
               {curTab === Tab.Stats && games.length > 0 && (
-                <Statistics stats={statsMap} />
+                <Statistics stats={statsMap} players={players} />
               )}
               {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
