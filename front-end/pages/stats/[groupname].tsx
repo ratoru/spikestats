@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +8,11 @@ import { InfoCard } from "../../components/InfoCard";
 import { GroupHeader } from "../../components/Nav/GroupHeader";
 import { charPie, list, settings } from "../../util/icons";
 import { Game, ServeTeam, Player } from "../../util/types";
-import { createStatsMap } from "../../util/calculations";
+import {
+  createStatsMap,
+  addStatsOfGame,
+  AllStats,
+} from "../../util/calculations";
 import { Settings } from "../../components/Settings";
 import { Statistics } from "../../components/Statistics";
 import { GameTable } from "../../components/GameTable";
@@ -67,7 +71,9 @@ export default function Stats() {
   const [games, setGames] = useState<Game[]>(testGames);
   const [players, setPlayers] = useState<Player[]>(testPlayers);
 
-  const statsMap = createStatsMap(games, players);
+  const [statsMap, setStatsMap] = useState<AllStats>(
+    createStatsMap(games, players)
+  );
 
   const handleAdd = async () => {
     const addedGame: Game = {
@@ -106,6 +112,10 @@ export default function Stats() {
         // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
         addedGame.date_played = new Date();
         setGames((games) => [...games, addedGame]);
+        // Update Stats
+        let newMap = JSON.parse(JSON.stringify(statsMap));
+        addStatsOfGame(newMap, addedGame);
+        setStatsMap(newMap);
         // Call server!
         // try {
         //   await http.post("/games", {
@@ -139,6 +149,8 @@ export default function Stats() {
         // const oldGames = games;
         const filteredGames = games.filter((game) => game["id"] !== id);
         setGames(filteredGames);
+        // Update Stats
+        setStatsMap(createStatsMap(filteredGames, players));
         // Call server here.
         // try {
         //   await http.delete(`/games/${id}`);
