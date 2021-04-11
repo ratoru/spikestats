@@ -260,3 +260,22 @@ function getBestTeam(statsObj: AllStats, players: Player[]): Team {
   }
   return bestTeam.sort();
 }
+
+/**
+ * Returns the percent change between the last two entries.
+ * 
+ * @param numbers Array of total wins
+ * @returns Percentage change of last two entries.
+ */
+export function getChange(numbers: number[]): number {
+  let numLength = numbers.length;
+  if (numLength < 2) {
+    return 0;
+  }
+  return (
+    ((numbers[numLength - 1] / numLength -
+      numbers[numLength - 2] / (numLength - 1)) /
+      (numbers[numLength - 2] / (numLength - 1))) *
+    100
+  );
+}

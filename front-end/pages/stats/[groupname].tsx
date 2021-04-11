@@ -38,7 +38,7 @@ const testGames: Game[] = [
     red_team: ["2", "1"],
     blue_team: ["4", "5"],
     score: [21, 17],
-    serve: ServeTeam.Blue,
+    serve: ServeTeam.Red,
     date_played: new Date(),
   },
   {
@@ -47,6 +47,14 @@ const testGames: Game[] = [
     blue_team: ["2", "4"],
     score: [16, 21],
     serve: ServeTeam.Red,
+    date_played: new Date(),
+  },
+  {
+    id: "4",
+    red_team: ["2", "1"],
+    blue_team: ["5", "4"],
+    score: [16, 21],
+    serve: ServeTeam.Blue,
     date_played: new Date(),
   },
 ];
