@@ -11,7 +11,7 @@ interface Props {
 
 export const GroupHeader: React.FC<Props> = ({ groupname, items, onAdd }) => {
   return (
-    <header className="w-full flex px-4 md:px-0 py-4 mb-4 justify-between bg-white shadow rounded-2xl md:bg-transparent md:shadow-none md:rounded-none">
+    <header className="w-full flex px-4 md:px-0 py-4 mb-1 justify-between bg-white shadow rounded-2xl md:bg-transparent md:shadow-none md:rounded-none">
       <div className="md:hidden">
         <GroupDropDown items={items} />
       </div>

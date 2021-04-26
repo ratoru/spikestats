@@ -220,7 +220,7 @@ export default function Stats() {
             />
             <div className="overflow-auto flex flex-col w-full h-full">
               {curTab === Tab.Stats && games.length > 0 && (
-                <Statistics stats={statsMap} players={players} />
+                <Statistics allStats={statsMap} players={players} />
               )}
               {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
