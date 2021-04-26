@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Sidebar } from "../../components/Nav/Sidebar";
 import { InfoCard } from "../../components/InfoCard";
 import { GroupHeader } from "../../components/Nav/GroupHeader";
-import { charPie, list, settings } from "../../util/icons";
+import { charPie, list, settings, play } from "../../util/icons";
 import { Game, ServeTeam, Player } from "../../util/types";
 import {
   createStatsMap,
@@ -17,6 +17,7 @@ import {
 import { Settings } from "../../components/Settings";
 import { Statistics } from "../../components/Statistics";
 import { GameTable } from "../../components/GameTable";
+import { PlayFullGame } from "../../components/Simulator/PlayFullGame";
 import {
   teamSelection,
   scoreSelection,
@@ -68,6 +69,7 @@ const testPlayers: Player[] = [
 
 enum Tab {
   Stats,
+  Play,
   Games,
   Settings,
 }
@@ -182,6 +184,14 @@ export default function Stats() {
       isActive: curTab === Tab.Stats,
     },
     {
+      title: "Play",
+      onClick: () => {
+        setCurTab(Tab.Play);
+      },
+      icon: play,
+      isActive: curTab === Tab.Play,
+    },
+    {
       title: "Games",
       onClick: () => {
         setCurTab(Tab.Games);
@@ -222,6 +232,7 @@ export default function Stats() {
               {curTab === Tab.Stats && games.length > 0 && (
                 <Statistics allStats={statsMap} players={players} />
               )}
+              {curTab === Tab.Play && <PlayFullGame players={players} />}
               {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
                   games={games}
