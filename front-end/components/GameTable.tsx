@@ -1,8 +1,14 @@
 import React, { useMemo } from "react";
-import { useTable } from "react-table";
+import { useTable, usePagination } from "react-table";
 import { Game, Player, ServeTeam, Team } from "../util/types";
 import { teamToNames } from "../util/conversions";
-import { trash } from "../util/icons";
+import {
+  trash,
+  chevronLeft,
+  chevronRight,
+  chevronsLeft,
+  chevronsRight,
+} from "../util/icons";
 
 interface Props {
   games: Game[];
@@ -45,7 +51,7 @@ export const GameTable: React.FC<Props> = ({ games, players, onDelete }) => {
         },
       },
       {
-        Header: "Initial Serve",
+        Header: "First Serve",
         accessor: "serve",
         Cell: ({ value }) => {
           return (
@@ -94,56 +100,110 @@ export const GameTable: React.FC<Props> = ({ games, players, onDelete }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
-  } = useTable({ columns, data });
+    page, // Instead of using 'rows', we'll use page,
+    // which has only the rows for the active page
+
+    // The rest of these things are super handy, too ;)
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    state: { pageIndex },
+  } = useTable({ columns, data, initialState: { pageSize: 6 } }, usePagination);
 
   return (
-    <table
-      {...getTableProps()}
-      className="w-full lg:w-5/6 table-auto bg-white shadow-md rounded-md overflow-hidden mx-auto"
-    >
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr
-            {...headerGroup.getHeaderGroupProps()}
-            className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"
-          >
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} className="p-6 text-center">
-                {column.render("Header")}
-              </th>
+    <>
+      <div className="w-full lg:w-5/6 mx-auto">
+        <table
+          {...getTableProps()}
+          className="w-full table-auto bg-white shadow-md overflow-hidden rounded-md mx-auto mt-4 md:mt-0"
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"
+              >
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()} className="p-6 text-center">
+                    {column.render("Header")}
+                  </th>
+                ))}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </thead>
+          </thead>
 
-      <tbody
-        {...getTableBodyProps()}
-        className="text-gray-600 text-sm font-light"
-      >
-        {rows.map((row, index) => {
-          prepareRow(row);
-          return (
-            <tr
-              {...row.getRowProps()}
-              className={`border-t border-gray-200 hover:bg-gray-100 ${
-                index % 2 === 1 ? `bg-gray-50` : ``
-              }`}
-            >
-              {row.cells.map((cell) => {
-                return (
-                  <td {...cell.getCellProps()} className="p-6 text-left">
-                    <div className="w-full flex justify-center items-center">
-                      {cell.render("Cell")}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          <tbody
+            {...getTableBodyProps()}
+            className="text-gray-600 text-sm font-light"
+          >
+            {page.map((row, index) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  className={`border-t border-gray-200 hover:bg-gray-100 ${
+                    index % 2 === 1 ? `bg-gray-50` : ``
+                  }`}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()} className="p-6 text-left">
+                        <div className="w-full flex justify-center items-center">
+                          {cell.render("Cell")}
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="w-full md:w-5/6 flex justify-between items-center mx-auto mt-4">
+        <p className="text-sm text-gray-700 ml-6">
+          Page <span className="font-medium">{pageIndex + 1}</span> of{" "}
+          <span className="font-medium">{pageOptions.length}</span>
+        </p>
+        <div className="mr-6 flex align-middle">
+          <button
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+            className="p-4 md:p-2 rounded-md hover:bg-white hover:shadow hover:text-gray-700 text-gray-500"
+          >
+            {chevronsLeft}
+          </button>
+          <button
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className="p-4 md:p-2 rounded-md hover:bg-white hover:shadow hover:text-gray-700 text-gray-500"
+          >
+            {chevronLeft}
+          </button>
+          <span className="p-4 md:p-2 font-medium text-gray-700">
+            {pageIndex + 1}
+          </span>
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className="p-4 md:p-2 rounded-md hover:bg-white hover:shadow hover:text-gray-700 text-gray-500"
+          >
+            {chevronRight}
+          </button>
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+            className="p-4 md:p-2 rounded-md hover:bg-white hover:shadow hover:text-gray-700 text-gray-500"
+          >
+            {chevronsRight}
+          </button>
+        </div>
+      </div>
+    </>
   );
 };

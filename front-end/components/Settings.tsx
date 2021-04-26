@@ -35,6 +35,14 @@ export const Settings: React.FC<Props> = ({ gId, groupname, players }) => {
     setFields(new Map(players.map((player) => [player.uuid, ""])));
   };
 
+  const handlePlayerRename = () => {
+    fields.forEach((val, key, map) => {
+      if (val !== "") {
+        // rename player here!
+      }
+    });
+  };
+
   const handleSubmit = () => {
     // Call server
     const query = { gId: gId };

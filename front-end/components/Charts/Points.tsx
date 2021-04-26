@@ -32,13 +32,14 @@ export const Points: React.FC<Props> = ({ dataset, labels }) => {
         data: dataset,
         backgroundColor: colorsInOrder,
         borderWidth: 0,
+        borderRadius: 5,
       },
     ],
   };
   return (
     <div className="w-full bg-white rounded-lg shadow px-4 md:px-8 py-6">
       <div className="text-center">
-        <h4 className="text-sm uppercase text-gray-500 leading-tight mb-6">
+        <h4 className="text-sm uppercase text-gray-500 leading-tight mb-6 rounded">
           Points Per Player
         </h4>
       </div>
