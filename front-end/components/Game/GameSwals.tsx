@@ -147,8 +147,8 @@ export async function serveSelection(
       curServeSelection === ServeTeam.Blue ? ServeTeam.Red : ServeTeam.Blue;
   };
 
-  const scoreSwal = withReactContent(Swal);
-  const { isDismissed } = await scoreSwal.fire({
+  const serveSwal = withReactContent(Swal);
+  const { isDismissed } = await serveSwal.fire({
     title: "First Serve",
     html: (
       <AddServe
@@ -171,7 +171,7 @@ export async function serveSelection(
     //   return curServeSelection;
     // },
   });
-  // Correct and neccessary syntax??
+  // Correct and neccessary syntax? Yes.
   return new Promise((resolve, reject) => {
     if (isDismissed) {
       reject();
@@ -188,8 +188,8 @@ export async function confirmSelection(
   score: [number, number],
   serve: ServeTeam
 ): Promise<boolean> {
-  const scoreSwal = withReactContent(Swal);
-  const { isDismissed } = await scoreSwal.fire({
+  const confirmSwal = withReactContent(Swal);
+  const { isDismissed } = await confirmSwal.fire({
     icon: "success",
     title: "Confirm Game",
     html: (

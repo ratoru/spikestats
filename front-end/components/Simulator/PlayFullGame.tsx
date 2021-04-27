@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Player, Game } from "../../util/types";
 import { GameSimulator } from "./GameSimulator";
-import { AddChips } from "../Game/AddChips";
+import { PlayerSelection } from "./PlayerSelection";
 
 interface Props {
   players: Player[];
@@ -23,7 +23,10 @@ export const PlayFullGame: React.FC<Props> = ({ players, onAdd }) => {
   return (
     <div className="w-full h-full">
       {curStage === Stage.PlayerSelection && (
-        <button onClick={() => setCurStage(Stage.PlayingGame)}>Play</button>
+        <PlayerSelection
+          players={players}
+          onContinue={() => setCurStage(Stage.PlayingGame)}
+        />
       )}
       {curStage === Stage.PlayingGame && (
         <GameSimulator

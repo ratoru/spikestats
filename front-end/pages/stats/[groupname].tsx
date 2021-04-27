@@ -69,7 +69,7 @@ const testPlayers: Player[] = [
 
 enum Tab {
   Stats,
-  Play,
+  PlayLive,
   Games,
   Settings,
 }
@@ -188,12 +188,12 @@ export default function Stats() {
       isActive: curTab === Tab.Stats,
     },
     {
-      title: "Play",
+      title: "Live",
       onClick: () => {
-        setCurTab(Tab.Play);
+        setCurTab(Tab.PlayLive);
       },
       icon: play,
-      isActive: curTab === Tab.Play,
+      isActive: curTab === Tab.PlayLive,
     },
     {
       title: "Games",
@@ -236,7 +236,7 @@ export default function Stats() {
               {curTab === Tab.Stats && games.length > 0 && (
                 <Statistics allStats={statsMap} players={players} />
               )}
-              {curTab === Tab.Play && (
+              {curTab === Tab.PlayLive && (
                 <PlayFullGame players={players} onAdd={addGameToServer} />
               )}
               {curTab === Tab.Games && games.length > 0 && (
