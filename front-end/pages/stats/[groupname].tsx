@@ -86,6 +86,29 @@ export default function Stats() {
     createStatsMap(games, players)
   );
 
+  const addGameToServer = (gameToAdd: Game) => {
+    const oldGames = games;
+    // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
+    gameToAdd.date_played = new Date();
+    setGames((games) => [...games, gameToAdd]);
+    // Update Stats
+    let newObj = JSON.parse(JSON.stringify(statsMap));
+    addStatsOfGame(newObj, gameToAdd);
+    updateBestPerformers(newObj, players);
+    setStatsMap(newObj);
+    // Call server!
+    // try {
+    //   await http.post("/games", {
+    //     ...addedGame,
+    //     serve: addedGame.serve ? true : false,
+    //     group_id: gId,
+    //   });
+    // } catch (error) {
+    //   errorToast.fire();
+    //   setGames(oldGames);
+    // }
+  };
+
   const handleAdd = async () => {
     const addedGame: Game = {
       id: uuidv4(),
@@ -119,26 +142,7 @@ export default function Stats() {
         );
       })
       .then(async () => {
-        const oldGames = games;
-        // Insert here so that games always have the latest date possible when added. (for same user in 2 tabs.)
-        addedGame.date_played = new Date();
-        setGames((games) => [...games, addedGame]);
-        // Update Stats
-        let newObj = JSON.parse(JSON.stringify(statsMap));
-        addStatsOfGame(newObj, addedGame);
-        updateBestPerformers(newObj, players);
-        setStatsMap(newObj);
-        // Call server!
-        // try {
-        //   await http.post("/games", {
-        //     ...addedGame,
-        //     serve: addedGame.serve ? true : false,
-        //     group_id: gId,
-        //   });
-        // } catch (error) {
-        //   errorToast.fire();
-        //   setGames(oldGames);
-        // }
+        addGameToServer(addedGame);
       })
       .catch(() => {
         return;
@@ -232,7 +236,9 @@ export default function Stats() {
               {curTab === Tab.Stats && games.length > 0 && (
                 <Statistics allStats={statsMap} players={players} />
               )}
-              {curTab === Tab.Play && <PlayFullGame players={players} />}
+              {curTab === Tab.Play && (
+                <PlayFullGame players={players} onAdd={addGameToServer} />
+              )}
               {curTab === Tab.Games && games.length > 0 && (
                 <GameTable
                   games={games}

@@ -27,13 +27,12 @@ export const PlayerButton: React.FC<Props> = ({
   isBlue,
   onClick,
 }) => {
+  const color = getColor(hasServe, isBlue);
+
   return (
     <button
       onClick={onClick}
-      className={`flex justify-between items-center rounded-lg shadow-lg text-center text-xl font-semibold tracking-wide bg-${getColor(
-        hasServe,
-        isBlue
-      )}-500 p-4`}
+      className={`flex justify-between items-center bg-${color}-200 hover:bg-${color}-300 text-gray-700 py-2 px-5 md:py-3 md:px-6 md:text-xl shadow rounded-full text-lg font-medium focus:outline-none`}
     >
       {name}
       {hasServe && (

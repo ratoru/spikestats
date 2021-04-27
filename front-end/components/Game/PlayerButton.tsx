@@ -15,7 +15,7 @@ export const PlayerButton: React.FC<Props> = ({
 }) => {
   return (
     <button
-      className={`bg-${color}-200 text-${color}-600 py-2 px-5 flex flex-nowrap items-center shadow rounded-full text-lg font-medium m-2 focus:outline-none`}
+      className={`bg-${color}-200 hover:bg-${color}-300 text-gray-600 py-2 px-5 flex flex-nowrap items-center shadow rounded-full text-lg font-medium m-2 focus:outline-none`}
       onClick={onClick}
     >
       {name}
