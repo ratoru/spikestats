@@ -33,7 +33,7 @@ export default function Home() {
               <button
                 type="button"
                 className="py-4 px-6 bg-blue-600 hover:bg-blue-800 text-gray-50 w-full text-center text-base font-semibold shadow-md focus:outline-none rounded-lg "
-                onClick={router.push("/groups")}
+                onClick={() => router.push("/groups")}
               >
                 Get started
               </button>

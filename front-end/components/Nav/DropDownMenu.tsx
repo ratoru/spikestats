@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
 import Link from "next/link";
+import { logIn, logOut } from "../../util/icons";
 
 interface Props {
   label?: string;
@@ -78,21 +79,19 @@ export const DropDownMenu = (props: Props) => {
               className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900"
               role="menuitem"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6 mr-2"
-              >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
+              <span className="w-6 h-6 mr-4">{logOut}</span>
               <span className="flex flex-col text-center">Log Out</span>
+            </a>
+          </Link>
+        )}
+        {!props.loggedIn && (
+          <Link href="/groups">
+            <a
+              className="flex items-center justify-center py-4 text-xl text-gray-900 hover:shadow-lg rounded-lg hover:text-gray-900"
+              role="menuitem"
+            >
+              <span className="w-6 h-6 mr-4">{logIn}</span>
+              <span className="flex flex-col text-center">Log In</span>
             </a>
           </Link>
         )}
