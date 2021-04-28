@@ -5,6 +5,7 @@ interface Props {
   color: string;
   onClick: () => void;
   isSelected: boolean;
+  disabled: boolean;
 }
 
 export const PlayerButton: React.FC<Props> = ({
@@ -12,11 +13,13 @@ export const PlayerButton: React.FC<Props> = ({
   color,
   onClick,
   isSelected,
+  disabled,
 }) => {
   return (
     <button
       className={`bg-${color}-200 hover:bg-${color}-300 text-gray-600 py-2 px-5 flex flex-nowrap items-center shadow rounded-full text-lg font-medium m-2 focus:outline-none`}
       onClick={onClick}
+      disabled={disabled}
     >
       {name}
       {isSelected && (

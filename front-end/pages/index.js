@@ -1,7 +1,9 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { MainHeader } from "../components/Nav/MainHeader";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div>
       <Head>
@@ -31,6 +33,7 @@ export default function Home() {
               <button
                 type="button"
                 className="py-4 px-6 bg-blue-600 hover:bg-blue-800 text-gray-50 w-full text-center text-base font-semibold shadow-md focus:outline-none rounded-lg "
+                onClick={router.push("/groups")}
               >
                 Get started
               </button>

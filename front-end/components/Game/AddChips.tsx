@@ -108,6 +108,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
                 color="blue"
                 onClick={() => handleDelete(index)}
                 isSelected={true}
+                disabled={chip.disabled}
               />
             );
           }
@@ -123,6 +124,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
                 color="red"
                 onClick={() => handleDelete(index)}
                 isSelected={true}
+                disabled={chip.disabled}
               />
             );
           }
@@ -138,6 +140,7 @@ export const AddChips: React.FC<AddChipsProps> = ({
                 color="gray"
                 onClick={() => handleClick(index)}
                 isSelected={false}
+                disabled={chip.disabled}
               />
             );
           }
