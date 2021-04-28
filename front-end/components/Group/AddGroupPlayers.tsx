@@ -50,6 +50,7 @@ export const AddGroupPlayers: React.FC<Props> = ({
               color="gray"
               isSelected={true}
               onClick={() => handleDelete(chip)}
+              disabled={false}
             />
           );
         })}
