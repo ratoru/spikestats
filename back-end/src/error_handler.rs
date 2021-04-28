@@ -1,7 +1,6 @@
 use actix_web::error::BlockingError;
 use actix_web::{HttpResponse, ResponseError};
 use diesel::result::Error as DieselError;
-use jsonwebtoken::errors::Error as JwtError;
 use std::fmt;
 
 #[derive(Debug)]
@@ -12,6 +11,7 @@ pub enum ServiceError {
     Conflict,
     Unauthorized,
     Forbidden,
+    JWKSFetchError,
 }
 
 impl fmt::Display for ServiceError {
@@ -24,6 +24,7 @@ impl fmt::Display for ServiceError {
             ServiceError::Conflict => error_message = "Conflict",
             ServiceError::Unauthorized => error_message = "Authenticate Yourself",
             ServiceError::Forbidden => error_message = "Access forbidden",
+            ServiceError::JWKSFetchError => error_message = "Could not fetch JWKS",
         };
         f.write_str(error_message)
     }
@@ -49,13 +50,6 @@ impl From<BlockingError<ServiceError>> for ServiceError {
     }
 }
 
-// Maybe change to 401 error.
-impl From<JwtError> for ServiceError {
-    fn from(_error: JwtError) -> ServiceError {
-        ServiceError::Unauthorized
-    }
-}
-
 impl ResponseError for ServiceError {
     fn error_response(&self) -> HttpResponse {
         match self {
@@ -73,6 +67,9 @@ impl ResponseError for ServiceError {
                 HttpResponse::Unauthorized().json("Authenticate yourself.")
             }
             ServiceError::Forbidden => HttpResponse::Forbidden().json("Access forbidden."),
+            ServiceError::JWKSFetchError => {
+                HttpResponse::InternalServerError().json("Could not fetch JWKS")
+            }
         }
     }
 }

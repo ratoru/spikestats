@@ -1,4 +1,3 @@
-use crate::auth_handler::authorize_user;
 use crate::error_handler::ServiceError;
 use crate::groups::Group;
 use crate::players::Player;
@@ -12,9 +11,7 @@ use uuid::Uuid;
 async fn get_players_by_id(
     db: web::Data<Pool>,
     group_id: web::Path<Uuid>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(
         web::block(move || get_group_players(db, group_id.into_inner()))
             .await
@@ -33,9 +30,7 @@ fn get_group_players(db: web::Data<Pool>, group_id: Uuid) -> Result<Vec<Player>,
 async fn add_players(
     db: web::Data<Pool>,
     players: web::Json<Vec<Player>>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(web::block(move || insert_players(db, players.into_inner()))
         .await
         .map(|count| HttpResponse::Created().json(count))?)
@@ -53,9 +48,7 @@ fn insert_players(db: web::Data<Pool>, players: Vec<Player>) -> Result<usize, Se
 async fn rename_player(
     db: web::Data<Pool>,
     new_player: web::Json<Player>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(
         web::block(move || rename_single_player(db, new_player.into_inner()))
             .await

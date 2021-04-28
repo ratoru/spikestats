@@ -9,14 +9,3 @@ services:
       POSTGRES_DB: my_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: statsarefun
-  # actix-server:
-  #   build: ./back-end
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:statsarefun@db:5432/my_db
-  #     ACCESS_TOKEN_SECRET: 2467BA753FD2BEB5EE10C406740F400BDA4AAC434D4BD6DE1C3A9FBE608FA227
-  #     SERVER_URL: 0.0.0.0:8080
-  #     ALLOWED_CORS: https://localhost:3000
-  #   depends_on:
-  #     - db

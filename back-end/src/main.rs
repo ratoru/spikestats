@@ -4,21 +4,40 @@ extern crate dotenv;
 
 pub mod auth_handler;
 pub mod error_handler;
-pub mod hash_handler;
 pub mod schema;
 
 use actix_cors::Cors;
-use actix_web::{web, App, HttpServer};
+use actix_web::{dev::ServiceRequest, web, App, Error, HttpServer};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 use std::env;
 
+use actix_web_httpauth::extractors::bearer::{BearerAuth, Config};
+use actix_web_httpauth::extractors::AuthenticationError;
+use actix_web_httpauth::middleware::HttpAuthentication;
+
 mod games;
 mod groups;
 mod players;
-mod users;
 
 pub type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
+
+async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, Error> {
+    let config = req
+        .app_data::<Config>()
+        .map(|data| data.clone())
+        .unwrap_or_else(Default::default);
+    match auth_handler::validate_token(credentials.token()) {
+        Ok(res) => {
+            if res == true {
+                Ok(req)
+            } else {
+                Err(AuthenticationError::from(config).into())
+            }
+        }
+        Err(_) => Err(AuthenticationError::from(config).into()),
+    }
+}
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -41,22 +60,22 @@ async fn main() -> std::io::Result<()> {
 
     // Start http server
     HttpServer::new(move || {
+        let auth = HttpAuthentication::bearer(validator);
         App::new()
+            .wrap(auth)
             .wrap(
                 allowed_cors
                     .clone()
                     .split(',')
                     .fold(
-                        Cors::new().allowed_origin("http://localhost:3000"),
+                        Cors::default().allowed_origin("http://localhost:3000"),
                         |cors, origin| cors.allowed_origin(origin),
                     )
-                    .supports_credentials()
-                    .finish(),
+                    .supports_credentials(),
             )
             .data(pool.clone())
             .service(
                 web::scope("/api")
-                    .configure(users::init_routes)
                     .configure(groups::init_routes)
                     .configure(players::init_routes)
                     .configure(games::init_routes),

@@ -1,4 +1,3 @@
-use crate::auth_handler::authorize_user;
 use crate::error_handler::ServiceError;
 use crate::games::Game;
 use crate::groups::Group;
@@ -12,9 +11,7 @@ use uuid::Uuid;
 async fn find_games_by_id(
     group_id: web::Path<Uuid>,
     db: web::Data<Pool>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(web::block(move || get_all_games(db, group_id.into_inner()))
         .await
         .map(|game| HttpResponse::Ok().json(game))?)
@@ -33,9 +30,7 @@ fn get_all_games(pool: web::Data<Pool>, group_id: Uuid) -> Result<Vec<Game>, Ser
 async fn add_game(
     db: web::Data<Pool>,
     game: web::Json<Game>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(web::block(move || add_single_game(db, game.into_inner()))
         .await
         .map(|_| HttpResponse::Created().finish())?)
@@ -53,9 +48,7 @@ fn add_single_game(db: web::Data<Pool>, game: Game) -> Result<(), ServiceError> 
 async fn delete_game(
     db: web::Data<Pool>,
     id: web::Path<Uuid>,
-    http_req: web::HttpRequest,
 ) -> Result<HttpResponse, ServiceError> {
-    authorize_user(http_req)?;
     Ok(web::block(move || delete_single_game(db, id.into_inner()))
         .await
         .map(|count| HttpResponse::Ok().json(count))?)

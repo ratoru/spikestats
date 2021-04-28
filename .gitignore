@@ -34,3 +34,6 @@ yarn-error.log*
 # will have compiled files and executables
 debug/
 target/
+
+# VS code settings
+.vscode/

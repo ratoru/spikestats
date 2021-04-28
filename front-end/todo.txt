@@ -1,0 +1,12 @@
+1) Add backend
+1) Change Menu to grid
+2) Table Sorting
+3) Add error checking to settings.
+4) Improve design of add group.
+5) Additional Features
+    5.1) Play Full Game
+    5.2) Team vs Team Stats
+
+--- Long Term ---
+Think about requiring every player to sign in.
+--> Players can join groups and have stats overarching groups.

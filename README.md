@@ -1,3 +1,5 @@
+# [SpikeStats](https://spikestats.ratoru.com)
+
 This is a website to track your roundnet statistics.
 It was built with Nextjs, and Actix Web.
 
