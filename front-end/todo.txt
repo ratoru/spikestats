@@ -3,11 +3,11 @@
 3) Add error checking to settings.
 4) Improve design of add group.
 5) Additional Features
-    5.1) Play Full Game
-        5.1.1) Add progress bar
-    5.2) Team vs Team Stats
+    5.1) Team vs Team Stats
 6) Change Menu to grid
 
 --- Long Term ---
 Think about requiring every player to sign in.
 --> Players can join groups and have stats overarching groups.
+
+Track individual stats

@@ -8,6 +8,10 @@ interface Props {
 }
 
 export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
+  let barWidth = "w-0";
+  if (step > 0) {
+    barWidth = step === 4 ? "w-full" : `w-${step}/4`;
+  }
   return (
     <div className="w-4/5 py-6 grid grid-cols-7 gap-4 mx-auto">
       <div className="col-span-1 flex flex-col items-center justify-center">
@@ -21,11 +25,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
 
       <div className="col-span-2">
         <div className="w-full mt-4 bg-gray-200 rounded items-center align-middle align-center flex-1">
-          <div
-            className={`w-${
-              step === 0 ? `0` : `${step}/4`
-            } bg-green-300 py-1 rounded`}
-          ></div>
+          <div className={`${barWidth} bg-green-300 py-1 rounded`}></div>
         </div>
       </div>
 
