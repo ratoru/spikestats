@@ -8,9 +8,13 @@ interface Props {
 }
 
 export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
-  let barWidth = "w-0";
-  if (step > 0) {
-    barWidth = step === 4 ? "w-full" : `w-${step}/4`;
+  let barStyles = "bg-green-300 py-1 rounded ";
+  if (step === 0) {
+    barStyles += "w-0";
+  } else if (step === 4) {
+    barStyles += "w-full";
+  } else {
+    barStyles += `w-${step}/4`;
   }
   return (
     <div className="w-4/5 py-6 grid grid-cols-7 gap-4 mx-auto">
@@ -25,7 +29,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
 
       <div className="col-span-2">
         <div className="w-full mt-4 bg-gray-200 rounded items-center align-middle align-center flex-1">
-          <div className={`${barWidth} bg-green-300 py-1 rounded`}></div>
+          <div className={barStyles}></div>
         </div>
       </div>
 
