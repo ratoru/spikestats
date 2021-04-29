@@ -5,6 +5,7 @@
 5) Additional Features
     5.1) Team vs Team Stats
 6) Change Menu to grid
+7) Change flow of group items
 
 --- Long Term ---
 Think about requiring every player to sign in.

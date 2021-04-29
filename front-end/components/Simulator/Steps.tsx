@@ -17,7 +17,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
       <div className="col-span-1 flex flex-col items-center justify-center">
         <StepCard
           title="Make Teams"
-          color="green-400"
+          color="bg-green-400"
           icon={plus}
           isActive={true}
         />
@@ -32,7 +32,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
       <div className="col-span-1 flex flex-col items-center justify-center">
         <StepCard
           title="Pick Serve"
-          color="green-400"
+          color="bg-green-400"
           icon={serveSmall}
           isActive={step === 4}
         />
@@ -51,7 +51,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
       <div className="col-span-1 flex flex-col items-center justify-center">
         <StepCard
           title="Play Game"
-          color="green-400"
+          color="bg-green-400"
           icon={check}
           isActive={hasSelected}
         />

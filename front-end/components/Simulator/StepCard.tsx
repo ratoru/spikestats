@@ -8,12 +8,11 @@ interface Props {
 }
 
 export const StepCard: React.FC<Props> = ({ title, color, icon, isActive }) => {
-  const activeColor = `bg-${color}`;
   return (
     <>
       <div
         className={`w-10 h-10 rounded-full text-lg text-white flex items-center justify-center ${
-          isActive ? activeColor : `bg-white border-2 border-gray-200`
+          isActive ? color : `bg-white border-2 border-gray-200`
         }`}
       >
         <span
