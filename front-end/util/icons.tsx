@@ -195,12 +195,13 @@ export const trash = (
   </svg>
 );
 
-// Google Icons
+// Google Icon
 export const serve = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     enableBackground="new 0 0 24 24"
-    className="w-10 h-10"
+    width="48"
+    height="48"
     viewBox="0 0 24 24"
     fill="currentColor"
   >
