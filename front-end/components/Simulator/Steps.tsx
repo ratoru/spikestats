@@ -8,14 +8,22 @@ interface Props {
 }
 
 export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
-  let barStyles = "bg-green-300 py-1 rounded ";
-  if (step === 0) {
-    barStyles += "w-0";
-  } else if (step === 4) {
-    barStyles += "w-full";
-  } else {
-    barStyles += `w-${step}/4`;
+  let barWidth = "w-full";
+  switch (step) {
+    case 0:
+      barWidth = "w-0";
+      break;
+    case 1:
+      barWidth = "w-1/4";
+      break;
+    case 2:
+      barWidth = "w-2/4";
+      break;
+    case 3:
+      barWidth = "w-3/4";
+      break;
   }
+
   return (
     <div className="w-4/5 py-6 grid grid-cols-7 gap-4 mx-auto">
       <div className="col-span-1 flex flex-col items-center justify-center">
@@ -29,7 +37,7 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
 
       <div className="col-span-2">
         <div className="w-full mt-4 bg-gray-200 rounded items-center align-middle align-center flex-1">
-          <div className={barStyles}></div>
+          <div className={`bg-green-300 py-1 rounded ${barWidth}`}></div>
         </div>
       </div>
 
@@ -45,8 +53,8 @@ export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
       <div className="col-span-2">
         <div className="w-full mt-4 bg-gray-200 rounded items-center align-middle align-center flex-1">
           <div
-            className={`w-${
-              hasSelected ? `full` : `0`
+            className={`${
+              hasSelected ? `w-full` : `w-0`
             } bg-green-300 py-1 rounded`}
           />
         </div>
