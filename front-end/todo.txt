@@ -1,4 +1,5 @@
 1) Add backend
+    1.1) Loading state skeleton with animation-pulse
 2) Table Sorting
 3) Add error checking to settings.
 4) Improve design of add group.
@@ -6,6 +7,7 @@
     5.1) Team vs Team Stats
 6) Change Menu to grid
 7) Change flow of group items
+8) Add info explaining how to play to live play.
 
 --- Long Term ---
 Think about requiring every player to sign in.

@@ -24,7 +24,7 @@ export default function Faq() {
           </h2>
           <p className="mt-2 text-gray-900 text-justify">
             Good question. I calculate a 95% confidence interval for each
-            player's winrate and rank players by their lower bound. Why? Say
+            player's win rate and rank players by their lower bound. Why? Say
             Player 1 has a record of 20-3, and Player 2 has a record of 1-0. I
             think it's only fair to rank Player 1 higher until Player 2 plays
             more games. The method mentioned above accomplishes exactly this.

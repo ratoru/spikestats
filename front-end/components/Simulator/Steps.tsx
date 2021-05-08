@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const Steps: React.FC<Props> = ({ step, hasSelected }) => {
+  // Full string names to avoid PurgeCss removing them from the style sheet.
   let barWidth = "w-full";
   switch (step) {
     case 0:
